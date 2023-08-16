@@ -7,7 +7,6 @@ body {
     background-color: #ffe3ae;
     font-family: Arial, Helvetica, sans-serif;
     padding: 3rem 0;
-    min-width: 500px;
 }
 
 img {
@@ -45,6 +44,7 @@ header {
     background-color: white;
     border: 2px solid gray;
     font-size: 1.5rem;
+
 }
 
 .about h2 {
@@ -99,6 +99,10 @@ a {
 }
 
 @media (max-width: 800px) {
+    :root {
+        font-size: 0.7rem;
+    }
+
     body {
         min-width: 500px
     }
