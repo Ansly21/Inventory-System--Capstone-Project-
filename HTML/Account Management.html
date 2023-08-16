@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/Account Management.css">
+    <title>Account Management</title>
+</head>
+<body>
+    <a href="/index.html">
+        <img src="/images/Six7TwoLogo.png" alt="">
+    </a>
+    <h1 class="title">ACCOUNT MANAGEMENT</h1>
+    
+    <main class="container">
+        <div class="nav">
+            <button>Products</button>
+            <button>Inventory</button>
+            <button>Reports</button>
+            <button class="page-btn">Accounts</button>
+        </div>
+      
+
+        <section class="mgt-sec">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="text-align: center;">Type</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <!-- <th>Action</th> -->
+                    </tr>
+                </thead>
+
+                <form id="reg-form">
+                    <!-- Copy <tr> up to </tr> to test if incrementing accounts will work -->
+                    <tr>
+                        <td>
+                            <select class="select">
+                            <option value="type1">Student</option>
+                            <option value="type2">Admin</option>
+                            </select>
+                        </td>
+
+                        <td>                
+                            <input type="email" id="email" autocomplete="off" placeholder="Email">  
+                            </td>
+                        <td>                
+                            <input type="password" id="password" placeholder="Password"> 
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger delete-btn" name="remove">Delete Account</button>  
+                        </td>
+                    </tr>
+
+                    
+            </table>
+                <button class="registerBtn">REGISTER ACCOUNT</button>
+                </form>
+      </section>
+
+    </main>
+    
+</body>
+</html>
