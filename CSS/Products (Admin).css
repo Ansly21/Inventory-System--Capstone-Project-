@@ -95,6 +95,10 @@ table {
     align-items: center;
 }
 
+#date {
+    font-weight: bold;
+}
+
 table th{
     background-color: #54ac32;
     padding: 1rem 0.5rem;
