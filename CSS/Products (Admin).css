@@ -1,0 +1,172 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 90%;
+    margin: 3rem auto 0 auto;
+    background-color: #ffe3ae;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    margin: 0 auto;
+}
+
+img {
+    width: 15rem;
+}
+
+header {
+    display: flex;
+    align-items: center;
+}
+
+.image {
+    width: 0%;
+}
+
+
+header h1 {
+    margin: auto;
+    font-size: 3rem;
+}
+
+main {
+    padding: 3rem;
+    display: flex;
+}
+
+input[type="search"] {
+    padding: 0.5rem;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 2rem; 
+    margin-right: 2rem;  
+}
+
+button {
+    cursor: pointer;
+}
+
+.nav button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+    background-color: #444444;
+    color: white;
+    width: 150px;
+    margin: 0 auto;
+}
+
+.nav .page-btn{
+    background-color: rgb(241, 241, 26);
+    color: #444444;
+    border: 1px solid gray;
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 0;
+    margin-top: 1rem;
+}
+
+.table-container {
+    padding: 1rem;
+    background-color: #f7f6f6;
+    border: 3px solid black;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+table th{
+    background-color: #54ac32;
+    padding: 1rem 0.5rem;
+    color: white;
+    border: 1px solid rgb(96, 96, 96);
+}
+
+tr input {
+    display: block;
+    margin: 1rem auto;
+    width: 90%;
+    padding: 0.4rem 0;
+    text-align: center;
+}
+
+tr input[type="range"] {
+    width: 50px;
+}
+
+table th {
+    background-color: #54ac32;
+    padding: 1rem 0.5rem;
+    color: white;
+    width: 14.28%; /* Distributing headers evenly among 7 columns */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Allow headers to wrap content and adjust width */
+    white-space: normal; /* Allow content to wrap */
+}
+
+.save-addproduct {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: 1rem;
+}
+
+.save-addproduct button {
+    margin: 0 1rem;
+    border: 0;
+    width: 12.5rem;
+    padding: 0.2rem;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 3px;
+    font-size: 1.2rem;
+}
+
+.saveBtn {
+    background-color: #92d36d;
+}
+
+.addBtn {
+    background-color: #ebeaeb;
+}
+
+
+@media (max-width:800px) {
+    :root {
+        font-size: 0.5rem;
+    }
+
+    main {
+        flex-direction: column-reverse;
+    }
+
+    tr input[type="range"] {
+        width: 30px;
+    }
+
+    .nav {
+        margin-top:  5rem;
+    }
+
+}
