@@ -38,10 +38,6 @@ main {
     display: flex;
 }
 
-input[type="search"] {
-    padding: 0.5rem;
-}
-
 .nav {
     display: flex;
     flex-direction: column;
@@ -74,74 +70,66 @@ button {
 }
 
 table {
+    max-width: 1000px;
     width: 100%;
     table-layout: fixed;
-    border-spacing: 0;
     margin-top: 1rem;
 }
 
 .table-container {
     padding: 1rem;
-    background-color: #f7f6f6;
-    border: 1.5px solid black;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
 }
 
-.search-date {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#date {
-    font-weight: bold;
-}
-
-tr input {
+tr input, tr select, tr button {
     display: block;
     margin: 1rem auto;
     width: 90%;
-    padding: 0.4rem 0;
-    text-align: center;
+    padding: 0.4rem 0.3rem;
 }
 
-tr input[type="range"] {
-    width: 50px;
+input, table button, select {
+    font-size: 1.2rem;
 }
 
 table th {
-    background-color: #54ac32;
-    padding: 0.7rem 0.5rem;
-    color: white;
-    width: 14.28%; /* Distributing headers evenly among 7 columns */
+    font-size: 2rem;
+    padding: 1.2rem 0.5rem;
+    width: 20%; /* Distributing headers evenly among 7 columns */
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow:ellipsis;
     /* Allow headers to wrap content and adjust width */
     white-space: normal; /* Allow content to wrap */
 }
 
-.save-addproduct {
+.delete-btn {
+    background-color: rgb(240, 104, 104);
+    border: 0;
+    padding: 0.7rem 0;
+    margin: 0 auto;
+    width: 90%;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.register-container {
     display: flex;
     justify-content: center;
     margin-top: auto;
     margin-bottom: 1rem;
 }
 
-.save-addproduct button {
+.registerBtn {
+    background-color: #92d36d;
     margin: 0 1rem;
     border: 0;
-    width: 12.5rem;
-    padding: 0.2rem;
+    padding: 1rem;
     font-weight: bold;
     border: 1px solid black;
     border-radius: 3px;
     font-size: 1.2rem;
-}
-
-.saveBtn {
-    background-color: #92d36d;
 }
 
 .addBtn {
@@ -158,12 +146,13 @@ table th {
         flex-direction: column-reverse;
     }
 
-    tr input[type="range"] {
-        width: 30px;
-    }
-
     .nav {
         margin-top:  5rem;
     }
+
+    .registerBtn {
+        margin-top: 10rem;
+    }
+
 
 }
