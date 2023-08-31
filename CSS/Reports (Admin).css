@@ -119,3 +119,26 @@ i {
 .stockCostContainer {
     background-color: #ffa834;
 }
+
+@media (max-width:1000px) {
+    :root {
+        font-size: 0.9rem;
+    }
+
+    main {
+        flex-direction: column-reverse;
+    }
+
+    .nav {
+        margin-top:  5rem;
+    }
+
+    .nav button {
+        font-size: 1.2rem;
+    }
+
+    .info-container {
+        width: 100%;
+         margin-right: 1rem;
+    }
+}
