@@ -103,7 +103,7 @@ tr input {
     display: block;
     margin: 1rem auto;
     width: 90%;
-    padding: 0.4rem 0;
+    padding: 0.4rem 0 0.4rem 0.5rem;
     text-align: center;
 }
 

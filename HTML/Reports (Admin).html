@@ -40,40 +40,72 @@
         </div>
 
 
-        <section>
-            <div class="info-container totalProductsContainer">
-                <i class="bi bi-cart-plus"></i>
-                <div class="info">
-                    <p class="info-title">Total Products</p>
-                    <p class="info-num">2</p>
+        <div class="right-side">
+            <section>
+                <div class="info-container totalProductsContainer">
+                    <i class="bi bi-cart-plus"></i>
+                    <div class="info">
+                        <p class="info-title">Total Products</p>
+                        <p class="info-num">2</p>
+                    </div>
+                </div>
+
+                <div class="info-container lowStockContainer">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <div class="info">
+                        <p class="info-title">Low Stock</p>
+                        <p class="info-num">1</p>
+                    </div>
+                </div>
+
+                <div class="info-container stockValueContainer">
+                    <i class="bi bi-coin"></i>
+                    <div class="info">
+                        <p class="info-title">Stock Value</p>
+                        <p class="info-num">355</p>
+                    </div>
+                </div>
+
+                <div class="info-container stockCostContainer">
+                    <i class="bi bi-cash-stack"></i>
+                    <div class="info">
+                        <p class="info-title">Stock Cost</p>
+                        <p class="info-num">185</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="table-container">
+                <select name="" id="" class="selectOptions">
+                    <option value="">Low Stock</option>
+                </select>
+
+                <table>
+                    <caption>LOW STOCK TABLE</caption>
+                    <tr>
+                        <th>Code</th>
+                        <th>Product Name</th>
+                        <th>Current Stock</th>
+                        <th>Low Stock Threshold</th>
+                        <th>Unit Cost</th>
+                    </tr>
+    
+                    <tr>
+                        <td>2</td>
+                        <td>Pencil</td>
+                        <td>15</td>
+                        <td>20</td>
+                        <td>3</td>
+                    </tr>
+    
+                    
+                </table>
+
+                <div class="download-container">
+                    <button id="downloadBtn">Download as PDF</button>
                 </div>
             </div>
-
-            <div class="info-container lowStockContainer">
-                <i class="bi bi-exclamation-circle"></i>
-                <div class="info">
-                    <p class="info-title">Low Stock</p>
-                    <p class="info-num">1</p>
-                </div>
-            </div>
-
-            <div class="info-container stockValueContainer">
-                <i class="bi bi-coin"></i>
-                <div class="info">
-                    <p class="info-title">Stock Value</p>
-                    <p class="info-num">355</p>
-                </div>
-            </div>
-
-            <div class="info-container stockCostContainer">
-                <i class="bi bi-cash-stack"></i>
-                <div class="info">
-                    <p class="info-title">Stock Cost</p>
-                    <p class="info-num">185</p>
-                </div>
-            </div>
-
-        </section>
+        </div>
 
        
 

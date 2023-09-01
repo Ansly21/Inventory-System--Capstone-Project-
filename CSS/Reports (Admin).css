@@ -72,12 +72,14 @@ button {
 }
 
 /* COPY ABOVE FOR CSS HEADERS AND NAV BTNS */
+.right-side {
+    width: 80%;
+    margin: 0 auto;
+}
 
 section {
     display: flex;
-    align-items: flex-start;
-    width: 100%;
-    justify-content: space-evenly;
+    justify-content: space-between;
 
 }
 
@@ -120,6 +122,62 @@ i {
     background-color: #ffa834;
 }
 
+.table-container {
+    margin-top: 2rem;
+}
+
+.selectOptions {
+    font-size: 1.2rem;
+    border-radius: 10px;
+    padding: 0.8rem 0.4rem;
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-spacin   g: 0;
+    margin-top: 2rem;
+}
+
+table th {
+    background-color: #e5e5e5;
+    border: 1px solid #aeaeae;
+    padding: 1.2rem 0.5rem;
+    width: 20%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Allow headers to wrap content and adjust width */
+    white-space: normal; /* Allow content to wrap */
+}
+
+caption {
+    background-color: #e5e5e5;
+    padding: 1rem 0;
+}
+
+tr {
+    text-align: center;
+}
+
+td {
+    background-color: white;
+    padding: 1rem;
+    border: 1px solid #aeaeae;
+}
+
+.download-container {
+    display: flex;
+    justify-content: end;
+    margin-top: 2rem;
+    
+}
+
+#downloadBtn {
+    font-size: 1.2rem;
+    padding: 0.8rem;
+}
+
+
 @media (max-width:1000px) {
     :root {
         font-size: 0.9rem;
@@ -127,6 +185,7 @@ i {
 
     main {
         flex-direction: column-reverse;
+        padding: 3rem 0;
     }
 
     .nav {
@@ -137,8 +196,12 @@ i {
         font-size: 1.2rem;
     }
 
+    section {
+        display: block;
+    }
+
     .info-container {
         width: 100%;
-         margin-right: 1rem;
+        margin-right: 1rem;
     }
 }
