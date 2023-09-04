@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 
 
 
-//ESTABLISHING MONGODB NODESERVER CONNECTION(CHECK .env)
+//ESTABLISHING MONGODB NODESERVER CONNECTION(CHECK .env file). Enter "npm start" or "node app" to run app.js
 mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
 const db = mongoose.connection
 
@@ -31,12 +31,3 @@ app.use(bodyParser.json())
 
 
 
-// Port to listen(AUTOMATIC) OR localhost:3000/
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () =>{
-    console.log(`Server running at port ${PORT}`)
-})
-
-
-app.use('/', pagesRoute) //USE PAGES ROUTE
