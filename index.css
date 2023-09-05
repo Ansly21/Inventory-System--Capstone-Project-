@@ -44,6 +44,7 @@ header {
     background-color: white;
     border: 2px solid gray;
     font-size: 1.5rem;
+    align-self: center;
 }
 
 .about h2 {
