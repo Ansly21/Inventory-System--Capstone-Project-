@@ -59,7 +59,7 @@ app.listen(PORT, () =>{
 
 
 //mongoose test
-
+/*
 app.get('/products', (req,res) =>{
     const product = new Product({
         productName:'HBW Ballpen',
@@ -80,7 +80,7 @@ app.get('/products', (req,res) =>{
         .catch((err)=>{
             console.log(err);
         });
-})
+})*/
 
 
 
@@ -89,7 +89,7 @@ app.get('/products', (req,res) =>{
 app.get('/', (req, res)=>{
 
    // res.send();
-    res.sendFile('index.html', {root: __dirname});
+    res.render('index', {title: 'Six7Two Inventory System'});
 
 })
 
