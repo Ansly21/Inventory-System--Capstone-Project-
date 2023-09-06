@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products (Admin)</title>
+    <link rel="stylesheet" href="/Products (Admin).css">
+</head>
+<body>
+
+    <header>
+        <div class="image">
+            <a href="/index.html">
+                <img src="/images/Six7TwoLogo.png" alt="">
+            </a>
+        </div>
+
+            <h1 id="title">PRODUCTS</h1>
+ 
+    </header>
+
+    <main>
+
+        <div class="nav">
+            <a href="/products">
+                <button>Products</button>
+            </a>
+
+            <a href="/inventory">
+                <button>Inventory</button>
+            </a>
+
+            <a href="/reports">
+                <button>Reports</button>
+            </a>
+
+            <a href="account">
+                <button class="page-btn">Accounts</button>
+            </a>
+        </div>
+
+        <div class="table-container">
+            <div class="search-date">
+                <input type="search" placeholder="enter product name or id">
+                <p id="date">
+                    <!-- Date is dynamically rendered from JS -->
+                </p> 
+            </div>
+
+            <table>
+                <tr>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>UNIT COST</th>
+                    <th>UNIT PRICE</th>
+                    <th>LOW STOCK THRESHOLD</th>
+                    <th>STARTING INVENTORY</th>
+                    <th>STATUS</th>
+                </tr>
+
+                <tr>
+                    <td><input type="text" value="1"></td>
+                    <td><input type="text" value="HBW Ballpen"></td>
+                    <td><input type="number" value="4"></td>
+                    <td><input type="number" value="7"></td>
+                    <td><input type="number" value="20"></td>
+                    <td><input type="number" value="35"></td>
+                    <td><input type="range" min="0" max="1"></td>
+                </tr>
+                
+
+                
+            </table>
+
+            <div class="save-addproduct">
+                <button class="saveBtn">SAVE</button>
+                <button class="addBtn">ADD NEW PRODUCT</button>
+            </div>
+        </div>
+
+    </main> 
+
+    <script src="/JS/Products (Admin).js"></script>
+</body>
+</html>
