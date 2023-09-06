@@ -26,14 +26,14 @@ app.use(express.static(path.join('public'))) //USE files in 'public' folder
 
 
 //ESTABLISHING MONGODB NODESERVER CONNECTION(CHECK .env file). Enter "npm start" or "node app" to run app.js
-//mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
+mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
 //connect to mongodb
-const dburi = 'mongodb+srv://dababies:letsgo123@six7twoinventorysystem.lij0pnd.mongodb.net/Six7TwoInventorySystem?retryWrites=true&w=majority';
+/* const dburi = 'mongodb+srv://dababies:letsgo123@six7twoinventorysystem.lij0pnd.mongodb.net/Six7TwoInventorySystem?retryWrites=true&w=majority';
 mongoose.connect(dburi, {useNewUrlParser: true, useUnifiedTopology: true} )
     .then((result)=> console.log ('connected na sa db'))
     .catch((err) => console.log(err));
-
-/*const db = mongoose.connection
+ */
+const db = mongoose.connection
 
 db.on('error', (err) => {
     console.log(err)
@@ -41,7 +41,7 @@ db.on('error', (err) => {
 
 db.once('open', () => {
     console.log('MongoDB Server Database Connection Established...')
-})*/
+})
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: true}))
