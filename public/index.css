@@ -17,7 +17,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 4rem;
+
 }
 
 .title {
@@ -33,18 +33,18 @@ header {
     margin: 0 auto;
 }
 
-.about, .login {
+.about, .login, .selections {
     padding: 2rem;
 }
 
 .about {
     width: 400px;
     padding: 0 1.5rem;
-    text-align: center;
+    text-align: center; 
     background-color: white;
     border: 2px solid gray;
     font-size: 1.5rem;
-
+    align-self: center;
 }
 
 .about h2 {
@@ -92,10 +92,41 @@ button {
     padding: 1rem 2rem;
     align-self: center;
     cursor: pointer;
+
 }
 
 a {
     margin: 0 auto;
+}
+
+.selections {
+    display: none;
+    flex-direction: column;
+    font-size: 1.5rem;
+}
+
+.selections a {
+    margin: 0   ;
+}
+
+.selections h2 {
+    text-align: center;
+}
+
+.selections button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: 100%;
+}
+
+.gray-bg-white-color {
+    background-color: #444444;
+    color: white;
 }
 
 @media (max-width: 800px) {

@@ -3,40 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/index.css">
-    <title>Inventory System | Login</title>
+    <link rel="stylesheet" href="index.css">
+    <title><%= title %>></title>
 </head>
 <body>
     
     <header>
-        <a href="/">
-            <img src="Six7TwoLogo.png" alt=""/>
+        <a href="#">
+            <img src="images/Six7TwoLogo.png" alt="">
         </a>
-        <h1 class="title">Inventory Management System</h1>
+        <h1 class="title">Inventory Management EJS</h1>
     </header>
 
     <div class="container">
+        <!-- LEFT SIDE -->
         <div class="about">
             <h2>About the System</h2>
             <p>This System is dedicated to only be used by Six 7 Two Printshop Staff. Its main purpose is to record the inventory of the Business and Generate Reports with Analysis in order to aid the Business in Monitoring their Inventory with the Integration of Information Technology Infrastructure Library (ITIL) Practices.</p>
         </div>
 
-        <form id="form" action="/home">
-            <div class="login">
+        <!-- RIGHT SIDE -->
+        <form id="form" action="/HTML/Home (Admin).html">
+
+            <div class="login" id="loginContainer">
                 <h2>Login to Get Started</h2>
                 <input type="email" class="email" placeholder="EMAIL" required>
-                <input type="password" name="" id="" placeholder="PASSWORD" required>
-                <a href="#" class="forgotPassword">Forgot password</a>
-                <a href="/home">
-                    <button id="loginBtn">LOGIN</button>
-                    <a href="/account">
-                    <button type="button">Account Management(TESTING)</button>
-                </a>
-                </a>
+                     <input type="password" name="" id="" placeholder="PASSWORD" required>
+                     <a href="#" class="forgotPassword">Forgot password</a>
+                     <a href="/HTML/Home (Admin).html">
+                        <button id="loginBtn">LOGIN</button>
+                    </a>
+                    
+                        <button type="button" id="test">Account Management(TESTING)</button>
+                 
+            </div>
+
+                <div class="selections" id="selectionsContainer">
+                        <h2>Get Started</h2>
+                        <a href="/HTML/Products (Admin).html">
+                        <button type="button" class="gray-bg-white-color menu">PRODUCTS</button>
+                        </a>
+
+                        <a href="HTML/Inventory (Admin).html">
+                        <button type="button" class="gray-bg-white-color menu">INVENTORY</button>
+                        </a>
+
+                        <a href="HTML/Reports (Admin).html">
+                        <button type="button" class="gray-bg-white-color menu">REPORTS</button>
+                        </a>
+
+                        <a href="HTML/Account Management (Admin).html">
+                        <button type="button" class="gray-bg-white-color menu">ACCOUNTS</button>
+                        </a>
+
+                        <a href="#">
+                        <button>CHANGE PASSWORD</button>
+                        </a>
+
+                        <a href="/index.html">    
+                            <button id="logoutBtn" type="button">LOGOUT</button>
+                        </a>
+                    </div>
+
+                        
+                
             </div>
         </form>
     </div>
-
-    <script src="index.js"></script>
+<!-- 
+    <script src="index.js"></script> -->
 </body>
 </html>

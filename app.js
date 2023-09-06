@@ -44,7 +44,7 @@ db.once('open', () => {
 })
 
 app.use(morgan('dev'))
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 // END OF ESTABLISHING MONGODB CONNECTION
 
