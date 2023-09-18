@@ -4,9 +4,13 @@ const app = express();
 const path = require ('path');
 const mongoose = require('mongoose');
 
+
+
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs')
 const Product = require('./models/products');
+const User = require('./models/user')
 
 //Set EJS as the View engine
 app.set('view engine', 'ejs');
@@ -96,12 +100,72 @@ app.get('/', (req, res)=>{
 
 
 //ACCOUNT MGT
-app.get('/account', (req, res)=>{
-
-    // res.send();
-    res.render('AccManagement(admin)', {title: 'Account Management'});
- 
+app.get('/account', async(req, res)=>{
+    try {
+        const users = await User.find({})
+        res.render('AccManagement(admin)', {users, title: 'Account Management'});
+    } catch (err) {
+        console.error(err)
+        res.status(500).send('Internal server error')
+    }
  })
+
+
+ app.post('/account', async(req,res) => {
+    const email = req.body.email;
+    const plainTextPassword = req.body.password;
+    const type = req.body.type;
+    
+    if(plainTextPassword.length < 5) {
+        return res.json({status: 'error', error:"Password too short"})
+    }
+
+    const password = await bcrypt.hash(plainTextPassword, 3)
+
+    try {
+        const response = await User.create({
+            type,
+            email,
+            password
+        })
+        console.log("User created successfully", response)
+    } catch(error) {
+        if(error.code === 11000) {
+            return res.json({status: 'error', error: "Email already in use"})
+        }
+        throw error
+    }
+
+    try {
+        const userData = await User.find({});
+        
+        res.json({status: 'ok', userData: userData});
+      } catch (error) {
+        console.log(error);
+        res.json({status: 'error', error: error});
+      }
+
+})
+
+app.delete('/account/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    console.log(userId)
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.json({status: 'error', error: 'User not found'});
+      }
+  
+  
+      // Delete the user with userId from User collection
+      await user.deleteOne();
+      console.log('User deleted successfully', user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal server error');
+    }   
+    res.json({status: 'ok'});
+  });
 
 
 

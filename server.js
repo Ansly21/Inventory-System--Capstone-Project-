@@ -13,7 +13,7 @@ const bodyParser = require('body-parser')
 app.set('view engine', 'ejs');
 
 //IMPORT ROUTES(/routes/)
-const pagesRoute = require('./routes/pages')
+const pagesRoute = require('/app')
 app.use(express.static(path.join('public'))) //USE files in 'public' folder
 
 

@@ -1,4 +1,4 @@
-const form = document.getElementById("form")
+/* const form = document.getElementById("form")
 const loginBtn = document.getElementById("loginBtn")
 const testBtn = document.getElementById("test")
 const loginContainer = document.getElementById("loginContainer")
@@ -17,4 +17,4 @@ testBtn.addEventListener("click", () => {
 logoutBtn.addEventListener("click", () => {
     loginContainer.style.display = "flex"
     selectionsContainer.style.display = "none"
-})
+}) */
