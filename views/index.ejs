@@ -27,12 +27,12 @@
 
             <div class="login" id="loginContainer">
                 <h2>Login to Get Started</h2>
-                <input type="email" class="email" placeholder="EMAIL" required>
-                     <input type="password" name="" id="" placeholder="PASSWORD" required>
-                     <a href="#" class="forgotPassword">Forgot password</a>
-                     <a href="#">
-                        <button id="loginBtn">LOGIN</button>
-                    </a>
+                <input type="email" class="email" placeholder="EMAIL" id="email" required>
+                <input type="password" name="" id="password" placeholder="PASSWORD" required>
+                <a href="#" class="forgotPassword">Forgot password</a>
+                <a href="#">
+                    <button type="submit" id="loginBtn">LOGIN</button>
+                </a>
                     
                     <a href="/account">
                         <button type="button" id="test">Account Management(TESTING)</button>
@@ -54,7 +54,7 @@
                         </a>
 
                         <a href="/account">
-                        <button type="button" class="gray-bg-white-color menu">ACCOUNTS</button>
+                        <button type="button" class="gray-bg-white-color menu" id="accBtn">ACCOUNTS</button>
                         </a>
 
                         <a href="#">
@@ -62,7 +62,7 @@
                         </a>
 
                         <a href="/">    
-                            <button id="logoutBtn" type="button">LOGOUT</button>
+                            <button id="logoutBtn" type="button" onclick="logout()">LOGOUT</button>
                         </a>
                     </div>
 
@@ -72,6 +72,75 @@
         </form>
     </div>
 
-<!--     <script src="index.js"></script> -->
+
+<script>
+const form = document.getElementById('form')
+        form.addEventListener('submit', login)
+        
+        let signedIn = false;
+        async function login(event) {
+            event.preventDefault()
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+
+            const result = await fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            }).then((res) => res.json())
+            if(result.status === 'ok') {
+                alert('Successfully logged in')
+                location.href="/"
+                signedIn = true;
+                localStorage.setItem("TOKEN", result.data)
+            }else {
+                alert(result.error)
+            }
+        }
+
+const selectionBtns = document.getElementById("selectionsContainer")
+
+//FOR DECODING JWT TOKEN AFTER LOGGING IN
+function parseJwt (token) { 
+        var base64Url = token.split('.')[1];
+        var base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(base64);
+}
+
+let accBtn = document.getElementById("accBtn")
+let accType = parseJwt(localStorage.getItem("TOKEN")).type
+console.log(accType)
+if (localStorage.getItem("TOKEN")) {
+    document.getElementById("loginContainer").style.display = "none"
+    selectionBtns.style.display = "flex"
+
+    if (accType === "Admin") {
+        
+    } else {
+        console.log("Employee")
+        accBtn.style.display = "none"
+    }
+}
+
+
+function logout() {
+    if (localStorage.getItem("TOKEN")) {
+        localStorage.removeItem("TOKEN")
+        window.location.href = "/"
+        alert("Logged out sucessfully, redirecting to homepage")
+    } else {
+        fullSentence.textContent = "Not logged in"
+        showEmail.textContent = " "
+    }
+}
+</script>
 </body>
 </html>

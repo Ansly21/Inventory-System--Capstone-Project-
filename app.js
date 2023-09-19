@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const JWT_SECRET = 'asy7ejh09uads0uj'
 const Product = require('./models/products');
 const User = require('./models/user')
 
@@ -98,6 +100,28 @@ app.get('/', (req, res)=>{
 })
 
 
+app.post('/', async(req, res)=>{ 
+    const {email, password} = req.body
+    const user = await User.findOne({email}).lean()
+
+    if(!user) {
+        return res.json({status: 'error', error: "Invalid email/password"})
+    }
+
+    if(await bcrypt.compare(password, user.password)) {
+
+        const token = jwt.sign({
+            id: user._id,
+            email: user.email,
+            type: user.type
+        }, 
+        JWT_SECRET
+    )
+        return res.json({status: 'ok', data: token})
+    }
+    res.json({status: 'error', error: "Invalid email/password"})
+}) 
+
 
 //ACCOUNT MGT
 app.get('/account', async(req, res)=>{
@@ -170,12 +194,11 @@ app.delete('/account/:userId', async (req, res) => {
 
 
  //HOME
-app.get('/home', (req, res)=>{
-
-   
+app.get('/home', (req, res)=>{ 
     res.render('Home(admin)', { title: 'Home' });
- 
  })
+
+
 
 
  //Inventory
