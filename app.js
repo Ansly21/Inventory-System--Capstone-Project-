@@ -18,7 +18,7 @@ const User = require('./models/user')
 app.set('view engine', 'ejs');
 
 
-//IMPORT ROUTES(/routes/)
+//IMPORT ROUTES(/routes/)sdsd
 
 //const pagesRoute = require('./routes/pages')
 
@@ -32,13 +32,16 @@ app.use(express.static(path.join('public'))) //USE files in 'public' folder
 
 
 //ESTABLISHING MONGODB NODESERVER CONNECTION(CHECK .env file). Enter "npm start" or "node app" to run app.js
-mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
+//mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
 //connect to mongodb
-/* const dburi = 'mongodb+srv://dababies:letsgo123@six7twoinventorysystem.lij0pnd.mongodb.net/Six7TwoInventorySystem?retryWrites=true&w=majority';
+ const dburi = 'mongodb+srv://dababies:letsgo123@six7twoinventorysystem.lij0pnd.mongodb.net/Six7TwoInventorySystem?retryWrites=true&w=majority';
 mongoose.connect(dburi, {useNewUrlParser: true, useUnifiedTopology: true} )
     .then((result)=> console.log ('connected na sa db'))
     .catch((err) => console.log(err));
- */
+ 
+
+
+ 
 const db = mongoose.connection
 
 db.on('error', (err) => {
@@ -73,9 +76,7 @@ app.get('/products', (req,res) =>{
         unitPrice: 10.00,
         lowStockThreshold: 20,
         startingInventory: 50,
-        numOfPurchased: 40,
-        numOfSold: 30
-
+        status: 1
 
     });
 
@@ -86,10 +87,91 @@ app.get('/products', (req,res) =>{
         .catch((err)=>{
             console.log(err);
         });
+})
+*/
+/*
+app.get('/products', (req,res) =>{
+    const product = new Product({
+        productName:'Mongol Pencil#2',
+        unitCost: 3.00,
+        unitPrice: 8.00,
+        lowStockThreshold: 20,
+        startingInventory: 30,
+        status: 1
+    });
+
+    product.save()
+        .then((result)=>{
+            res.send(result);
+            console.log("saved na");
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+}) */
+
+/*
+app.get('/products', (req,res) =>{
+    const product = new Product({
+        productName:'Pasig Science Uniform',
+        unitCost: 150.00,
+        unitPrice: 450.00,
+        lowStockThreshold: 10,
+        startingInventory: 40,
+        status: 1
+    });
+
+    product.save()
+        .then((result)=>{
+            res.send(result);
+            console.log("saved na");
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+})
+*/
+/*
+app.get('/products', (req,res) =>{
+    const product = new Product({
+        productName:'Cattleya Math Notebook',
+        unitCost: 20.00,
+        unitPrice: 50.00,
+        lowStockThreshold: 20,
+        startingInventory: 50,
+        status: 1
+    });
+
+    product.save()
+        .then((result)=>{
+            res.send(result);
+            console.log("saved na");
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+})
+*/
+/*
+app.get('/products', (req,res) =>{
+    const product = new Product({
+        productName:'HP Laser Printer',
+        unitCost: 10000,
+        unitPrice: 12000,
+        lowStockThreshold: 3,
+        startingInventory: 10,
+        status: 0
+    });
+
+    product.save()
+        .then((result)=>{
+            res.send(result);
+            console.log("saved na");
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
 })*/
-
-
-
 
 //INDEX
 app.get('/', (req, res)=>{
@@ -212,9 +294,16 @@ app.get('/home', (req, res)=>{
  //Products
  app.get('/products', (req, res)=>{
 
-  
-    res.render('Products(admin)', { title: 'Products' });
- 
+    Product.find()
+        .then((result)=>{
+            res.render('Products(admin)', { title: 'Products', products: result });
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    
+    
+    
  })
 
   //Reports

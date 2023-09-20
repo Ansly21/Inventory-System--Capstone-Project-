@@ -58,20 +58,63 @@
                     <th>STATUS</th>
                 </tr>
 
+                <!--
                 <tr>
-                    <td><input type="text" value="1"></td>
-                    <td><input type="text" value="HBW Ballpen"></td>
-                    <td><input type="number" value="4"></td>
-                    <td><input type="number" value="7"></td>
-                    <td><input type="number" value="20"></td>
-                    <td><input type="number" value="35"></td>
-                    <td><input type="range" min="0" max="1"></td>
+                    <td><input type="text" name ="code" value="1"></td>
+                    <td><input type="text" name = "productName" value="HBW Ballpen"></td>
+                    <td><input type="number" name = "unitCost" value="4"></td>
+                    <td><input type="number" name = "unitPrice"value="7"></td>
+                    <td><input type="number" name = "lowStockThreshold"value="20"></td>
+                    <td><input type="number" name = "startingInventory"value="35"></td>
+                    <td><input type="range" name = "status" min="0" max="1"></td>
+                </tr>
+                 -->
+                 <% if(products.length > 0) { %>
+                    <% products.forEach((product,index) => { %>
+                <tr>
+
+            
+
+                    <td><input type="text" name ="code[]" value="<%= product._id %>"></td>
+                    <td><input type="text" name = "productName[]" value="<%= product.productName %>"></td>
+                    <td><input type="number" name = "unitCost[]" value="<%= product.unitCost %>"></td>
+                    <td><input type="number" name = "unitPrice[]"value="<%= product.unitPrice %>"></td> 
+                    <td><input type="number" name = "lowStockThreshold[]"value="<%= product.lowStockThreshold %>"></td>
+                    <td><input type="number" name = "startingInventory[]"value="<%= product.startingInventory %>"></td>
+                    <td><input type="range" name = "status[]" min="0" max="1" value="<%= product.status %>"></td>
+
+                   
+                    
                 </tr>
                 
+                <% }) %>
 
+                <%} else { %>
+                    <p>There are no products yet...</p>
+                
+                <% } %>   
                 
             </table>
+            <!--
+            <% if(products.length > 0) { %>
+                <% products.forEach(product => { %>
 
+               <p><%= product._id %></p>
+               <p><%= product.productName %></p>
+                <p><%= product.unitCost %></p>
+                <p><%= product.unitPrice %></p>
+                <p><%= product.lowStockThreshold %></p>
+                <p><%= product.startingInventory %></p>
+                <p><%= product.status %></p>
+
+                <% }) %>
+
+                <%} else { %>
+                    <p>There are no products yet...</p>
+                
+                <% } %>    
+
+                -->
             <div class="save-addproduct">
                 <button class="saveBtn">SAVE</button>
                 <button class="addBtn">ADD NEW PRODUCT</button>
