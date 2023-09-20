@@ -47,7 +47,7 @@
                 </p> 
             </div>
 
-            <table>
+            <table id ="productTable">
                 <tr>
                     <th>CODE</th>
                     <th>PRODUCT NAME</th>
@@ -117,12 +117,47 @@
                 -->
             <div class="save-addproduct">
                 <button class="saveBtn">SAVE</button>
-                <button class="addBtn">ADD NEW PRODUCT</button>
+                <button class="addBtn" id = "addBtn">ADD NEW PRODUCT</button>
             </div>
         </div>
 
     </main> 
 
     <script src="/Products (Admin).js"></script>
+
+    <script>
+
+        console.log("hello");
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get a reference to the table and button
+            const table = document.getElementById('productTable');
+            const addRowButton = document.getElementById('addBtn');
+
+            // Function to add a new row to the table
+            function addRow() {
+                const newRow = table.insertRow();
+                const code = newRow.insertCell(0);
+                const productName = newRow.insertCell(1);
+                const unitCost = newRow.insertCell(2);
+                const unitPrice = newRow.insertCell(3);
+                const lowStockThreshold = newRow.insertCell(4);
+                const startingInventory = newRow.insertCell(5);
+                const status = newRow.insertCell(6);
+
+                // You can customize the content of the cells here
+                code.innerHTML = "<input type='text' placeholder='Code'>";
+                productName.innerHTML = "<input type='text' placeholder='Name'>";
+                unitCost.innerHTML = "<input type='text' placeholder='Unit Cost'>";
+                unitPrice.innerHTML = "<input type='text' placeholder='Unit Price'>";
+                lowStockThreshold.innerHTML = "<input type='text' placeholder='Low Stock Threshold'>";
+                startingInventory.innerHTML = "<input type='text' placeholder='Starting Inventory'>";
+                status.innerHTML = "<input type='range' min='0' max='1'>";
+                console.log("row is now added");
+            }
+
+            // Attach the addRow function to the button's click event
+            addRowButton.addEventListener("click", addRow);
+        });
+    </script>
 </body>
 </html>
