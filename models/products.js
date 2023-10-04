@@ -7,7 +7,12 @@ const SchemaTypes = mongoose.Schema.Types;
 const Schema = mongoose.Schema;
 
 const productsSchema = new Schema({
+    
+    code:{
+        type:String,
+        required: true
 
+    },
     productName:{
         type: String,
         required: true

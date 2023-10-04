@@ -39,6 +39,80 @@
             </a>
         </div>
 
+
+        <!-- testing ng form
+        
+
+
+            <div class="table-container">
+                <div class="search-date">
+                    <input type="search" placeholder="enter product name or id">
+                    <p id="date">
+                        
+                    </p> 
+                </div>
+                
+                <table id ="productTable">
+                    <tr>
+                        <th>CODE</th>
+                        <th>PRODUCT NAME</th>
+                        <th>UNIT COST</th>
+                        <th>UNIT PRICE</th>
+                        <th>LOW STOCK THRESHOLD</th>
+                        <th>STARTING INVENTORY</th>
+                        <th>STATUS</th>
+                    </tr>
+
+                    <tr>
+                        <form id ="editproduct" action="/products" method="post">
+                        <input type="hidden" name="action" value="saveEditedRow">
+                        
+                        
+                        <td><input type="text" name ="code" value="1"></td>
+                        <td><input type="text" name = "productName" value="HBW Ballpen"></td>
+                        <td><input type="number" name = "unitCost" value="4"></td>
+                        <td><input type="number" name = "unitPrice"value="7"></td>
+                        <td><input type="number" name = "lowStockThreshold"value="20"></td>
+                        <td><input type="number" name = "startingInventory"value="35"></td>
+                        <td><input type="range" name = "status" min="0" max="1"></td>
+                        <td><button type ="button" onclick="submitRow(this)">Save</button>
+                        
+                        </form>
+                    </tr>
+
+
+                    <tr>
+                        <form id ="editproduct" action="/products" method="post">
+                        <input type="hidden" name="action" value="saveEditedRow">
+
+
+                        <td><input type="text" name ="code" value="2"></td>
+                        <td><input type="text" name = "productName" value="Barong"></td>
+                        <td><input type="number" name = "unitCost" value="3"></td>
+                        <td><input type="number" name = "unitPrice"value="8"></td>
+                        <td><input type="number" name = "lowStockThreshold"value="10"></td>
+                        <td><input type="number" name = "startingInventory"value="25"></td>
+                        <td><input type="range" name = "status" min="0" max="1"></td>
+                        <td><button type="button" onclick="submitRow(this)" >Save</button>
+
+                        </form>
+                    </tr>-->
+
+    
+            <!--<button id="editSave" class="editSave" type="submit">SAVE</button>-->
+
+      <!--  </table>
+
+
+        </div>-->
+
+      
+      <!--<form id = "editProduct" action="/products" method = "post">-->
+
+        <input type="hidden" name="action" value="saveEditedRow">
+        
+
+
         <div class="table-container">
             <div class="search-date">
                 <input type="search" placeholder="enter product name or id">
@@ -46,7 +120,7 @@
                     <!-- Date is dynamically rendered from JS -->
                 </p> 
             </div>
-
+            
             <table id ="productTable">
                 <tr>
                     <th>CODE</th>
@@ -58,32 +132,26 @@
                     <th>STATUS</th>
                 </tr>
 
-                <!--
-                <tr>
-                    <td><input type="text" name ="code" value="1"></td>
-                    <td><input type="text" name = "productName" value="HBW Ballpen"></td>
-                    <td><input type="number" name = "unitCost" value="4"></td>
-                    <td><input type="number" name = "unitPrice"value="7"></td>
-                    <td><input type="number" name = "lowStockThreshold"value="20"></td>
-                    <td><input type="number" name = "startingInventory"value="35"></td>
-                    <td><input type="range" name = "status" min="0" max="1"></td>
-                </tr>
-                 -->
+              
                  <% if(products.length > 0) { %>
                     <% products.forEach((product,index) => { %>
-                <tr>
+                <tr class = "database-row">
 
-            
+                    <form id ="editproduct" action="/products" method="post">
+                    <input type="hidden" name="action" value="saveEditedRow">
 
-                    <td><input type="text" name ="code[]" value="<%= product._id %>"></td>
-                    <td><input type="text" name = "productName[]" value="<%= product.productName %>"></td>
-                    <td><input type="number" name = "unitCost[]" value="<%= product.unitCost %>"></td>
-                    <td><input type="number" name = "unitPrice[]"value="<%= product.unitPrice %>"></td> 
-                    <td><input type="number" name = "lowStockThreshold[]"value="<%= product.lowStockThreshold %>"></td>
-                    <td><input type="number" name = "startingInventory[]"value="<%= product.startingInventory %>"></td>
-                    <td><input type="range" name = "status[]" min="0" max="1" value="<%= product.status %>"></td>
+                    <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.code %>" ></td>
+                    <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>"></td>
+                    <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.unitCost %>"></td>
+                    <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.unitPrice %>"></td> 
+                    <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>"></td>
+                    <td><input type="number" contenteditable="true" name = "startingInventory[]"  value="<%= product.startingInventory %>"></td>
+                    <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"></td>
+                  
 
-                   
+                   <td><button type ="button" onclick="submitRow(this)" >Save</button>
+                    
+                   </form>
                     
                 </tr>
                 
@@ -95,6 +163,49 @@
                 <% } %>   
                 
             </table>
+            <div class="save-addproduct">
+                <!--<button id="editSave" class="editSave" type="submit">SAVE</button> -->
+                
+            </div>
+        <!--  </form> -->
+            
+
+        
+
+        <form id = "saveProduct" action="/products" method = "post">
+
+            <input type="hidden" name="action" value="addProduct">
+
+        <table id ="productTable2">
+
+            <tbody>
+
+
+            </tbody>
+        </table>
+
+        
+        
+        
+        <div class="save-addproduct">
+           <!-- <button id="saveproductbtn" class="saveBtn" type="submit" style="display: none;">SAVE PRODUCT</button>-->
+            
+        </div>
+
+
+
+
+        </form>
+
+     
+        <div class="save-addproduct">
+           
+            <button id="cancelProduct" class="addBtn" style="display: none;">CANCEL</button>
+            <button id="saveproductbtn" class="saveBtn" type="submit" style="display: none;">SAVE PRODUCT</button>
+            <button class="addBtn" id = "addRowButton">ADD NEW PRODUCT</button>
+        </div>
+
+      
             <!--
             <% if(products.length > 0) { %>
                 <% products.forEach(product => { %>
@@ -115,10 +226,7 @@
                 <% } %>    
 
                 -->
-            <div class="save-addproduct">
-                <button class="saveBtn">SAVE</button>
-                <button class="addBtn" id = "addBtn">ADD NEW PRODUCT</button>
-            </div>
+            
         </div>
 
     </main> 
@@ -128,9 +236,17 @@
     <script>
 
         console.log("hello");
+        
+        document.getElementById("saveproductbtn").addEventListener("click", 
+            
+            function() {
+            document.getElementById("saveProduct").submit();
+         });
+        
+        /*
         document.addEventListener("DOMContentLoaded", function () {
             // Get a reference to the table and button
-            const table = document.getElementById('productTable');
+            const table = document.getElementById('productTable2');
             const addRowButton = document.getElementById('addBtn');
 
             // Function to add a new row to the table
@@ -157,7 +273,127 @@
 
             // Attach the addRow function to the button's click event
             addRowButton.addEventListener("click", addRow);
-        });
-    </script>
-</body>
+        });*/
+
+        // Function to add a new row to the table
+        function addRow() {
+
+          
+
+
+            const tableBody = document.querySelector("#productTable2 tbody");
+            const newRow = tableBody.insertRow();
+
+            // Add cells (columns) to the new row
+                const code = newRow.insertCell(0);
+                const productName = newRow.insertCell(1);
+                const unitCost = newRow.insertCell(2);
+                const unitPrice = newRow.insertCell(3);
+                const lowStockThreshold = newRow.insertCell(4);
+                const startingInventory = newRow.insertCell(5);
+                const status = newRow.insertCell(6);
+
+            // Create input elements for each cell
+            const codeInput = document.createElement("input");
+            codeInput.type = "text";
+            codeInput.name = "code[]"; // Use an array to collect multiple names
+            code.appendChild(codeInput);
+
+            const productInput = document.createElement("input");
+            productInput.type = "text";
+            productInput.name = "productName[]"; // Use an array to collect multiple emails
+            productName.appendChild(productInput);
+
+            const costInput = document.createElement("input");
+            costInput.type = "number";
+            costInput.name = "unitCost[]"; // Use an array to collect multiple emails
+            unitCost.appendChild(costInput);
+
+            const priceInput = document.createElement("input");
+            priceInput.type = "number";
+            priceInput.name = "unitPrice[]"; // Use an array to collect multiple emails
+            unitPrice.appendChild(priceInput);
+
+            const lowStockInput = document.createElement("input");
+            lowStockInput.type = "number";
+            lowStockInput.name = "lowStockThreshold[]"; // Use an array to collect multiple emails
+            lowStockThreshold.appendChild(lowStockInput);
+
+            const startInvInput = document.createElement("input");
+            startInvInput.type = "number";
+            startInvInput.name = "startingInventory[]"; // Use an array to collect multiple emails
+            startingInventory.appendChild(startInvInput);
+
+            const statusInput = document.createElement("input");
+            statusInput.type = "range";
+            statusInput.max = "1";
+            statusInput.min = "0";
+            statusInput.name = "status[]"; // Use an array to collect multiple emails
+            status.appendChild(statusInput);
+
+            const saveproductbtn = document.getElementById("saveproductbtn");
+            saveproductbtn.style.display = "block";
+
+            const editSavebtn = document.getElementById("editSave");
+            editSavebtn.style.display = "none";
+
+            const cancelProduct= document.getElementById("cancelProduct");
+            cancelProduct.style.display = "block";
+
+
+
+        }
+
+        
+
+
+        function hideNewRow(){
+
+            var table = document.getElementById("productTable2");
+
+                    // Clear all rows by removing them one by one
+                    while (table.rows.length > 0) {
+                        table.deleteRow(0);
+                    }
+           
+
+
+            const editSavebtn = document.getElementById("editSave");
+            editSavebtn.style.display = "block";
+
+            const cancelProduct= document.getElementById("cancelProduct");
+            cancelProduct.style.display = "none";
+
+            const saveproductbtn = document.getElementById("saveproductbtn");
+            saveproductbtn.style.display = "none";
+
+            
+
+        }
+
+        
+
+        function submitRow(button){
+
+            // Traverse the DOM to find the row
+            var row = button.closest('tr');
+            
+            // Find the form in the row (assuming the form is in the same row)
+            var form = row.querySelector('form');
+            
+            // Submit the form
+            form.submit();
+
+
+        }
+
+        
+
+
+
+        // Event listener for the "Add Row" button
+        document.querySelector("#addRowButton").addEventListener("click", addRow);
+        document.querySelector("#cancelProduct").addEventListener("click", hideNewRow);
+        </script>
+    </body>
 </html>

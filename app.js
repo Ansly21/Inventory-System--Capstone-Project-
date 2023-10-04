@@ -12,7 +12,8 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const JWT_SECRET = 'asy7ejh09uads0uj'
 const Product = require('./models/products');
-const User = require('./models/user')
+const User = require('./models/user');
+const { MongoDBCollectionNamespace } = require('mongodb');
 
 //Set EJS as the View engine
 app.set('view engine', 'ejs');
@@ -55,6 +56,7 @@ db.once('open', () => {
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(express.json()); // Parse JSON request bodies
 // END OF ESTABLISHING MONGODB CONNECTION
 
 
@@ -304,7 +306,113 @@ app.get('/home', (req, res)=>{
     
     
     
- })
+ });
+
+ 
+ app.post('/products', async (req, res) =>{
+
+
+
+    if(req.body.action === 'addProduct'){
+
+
+            console.log("nasa save product ka");
+            console.log(req.body);
+            res.redirect('/products');
+            
+            try{
+                const code = req.body.code;
+                const productName = req.body.productName;
+                const unitCost = req.body.unitCost;
+                const unitPrice = req.body.unitPrice;
+                const lowStockThreshold = req.body.lowStockThreshold;
+                const startingInventory = req.body.startingInventory;
+                const status = req.body.status;
+
+
+                    for(let i = 0; i < code.length; i++){
+
+                        const newData = new Product({
+                            code: code[i],
+                            productName: productName[i],
+                            unitCost: unitCost[i],
+                            unitPrice: unitPrice[i],
+                            lowStockThreshold: lowStockThreshold[i],
+                            startingInventory: startingInventory[i],
+                            status: status[i]
+                        });
+
+                        await newData.save();
+                        
+
+                    }
+
+                    console.log("added na sa db");
+                  //  res.redirect('/products');
+
+                } catch(err){
+                    console.log(err);
+                }
+
+    }else if (req.body.action === 'saveEditedRow'){
+        console.log("nasa save edited row ka");
+        console.log(req.body);
+
+       
+        /*
+        const code = req.body.code;
+        const productName = req.body.productName;
+        const unitCost = req.body.unitCost;
+        const unitPrice = req.body.unitPrice;
+        const lowStockThreshold = req.body.lowStockThreshold;
+        const startingInventory = req.body.startingInventory;
+        const status = req.body.status;*/
+
+        const code = req.body.code[0]; // Get the first (and only) element of the array
+        const productName = req.body.productName[0];
+        const unitCost = parseFloat(req.body.unitCost[0]); // Convert to a number
+        const unitPrice = parseFloat(req.body.unitPrice[0]);
+        const lowStockThreshold = parseInt(req.body.lowStockThreshold[0]); // Convert to an integer
+        const startingInventory = parseInt(req.body.startingInventory[0]);
+        const status = req.body.status[0];
+
+
+        try{
+            const product = await Product.findOne({ code: code});
+               
+
+           
+
+            if (!product){
+                return res.status(404).json({message: 'product not found'});
+            }
+            
+           //product.code= code;
+            product.productName = productName;
+            product.unitCost = unitCost;
+            product.unitPrice = unitPrice;
+            product.lowStockThreshold = lowStockThreshold;
+            product.startingInventory = startingInventory;
+            product.status = status;
+
+        
+                            
+
+            const updatedProduct = await product.save();
+           // res.json(updatedProduct);
+
+
+        } catch(err){
+            console.error(err);
+            res.status(500).json({message: 'Server error'});
+        }
+
+
+
+        res.redirect('/products');
+       // console.log(req.body);
+    }
+ });
 
   //Reports
   app.get('/reports', (req, res)=>{
