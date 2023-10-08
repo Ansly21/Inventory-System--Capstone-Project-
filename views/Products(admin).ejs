@@ -115,7 +115,12 @@
 
         <div class="table-container">
             <div class="search-date">
-                <input type="search" placeholder="enter product name or id">
+
+                <form action="/products" method ="get">
+                <input type="search" name = "query" placeholder="enter product name or id">
+                <button type = "submit">Search</button>
+
+                </form>
                 <p id="date">
                     <!-- Date is dynamically rendered from JS -->
                 </p> 
@@ -133,6 +138,7 @@
                 </tr>
 
               
+         
                  <% if(products.length > 0) { %>
                     <% products.forEach((product,index) => { %>
                 <tr class = "database-row">
@@ -161,6 +167,10 @@
                     <p>There are no products yet...</p>
                 
                 <% } %>   
+
+      
+
+             
                 
             </table>
             <div class="save-addproduct">

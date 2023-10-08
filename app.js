@@ -91,89 +91,7 @@ app.get('/products', (req,res) =>{
         });
 })
 */
-/*
-app.get('/products', (req,res) =>{
-    const product = new Product({
-        productName:'Mongol Pencil#2',
-        unitCost: 3.00,
-        unitPrice: 8.00,
-        lowStockThreshold: 20,
-        startingInventory: 30,
-        status: 1
-    });
 
-    product.save()
-        .then((result)=>{
-            res.send(result);
-            console.log("saved na");
-        })
-        .catch((err)=>{
-            console.log(err);
-        });
-}) */
-
-/*
-app.get('/products', (req,res) =>{
-    const product = new Product({
-        productName:'Pasig Science Uniform',
-        unitCost: 150.00,
-        unitPrice: 450.00,
-        lowStockThreshold: 10,
-        startingInventory: 40,
-        status: 1
-    });
-
-    product.save()
-        .then((result)=>{
-            res.send(result);
-            console.log("saved na");
-        })
-        .catch((err)=>{
-            console.log(err);
-        });
-})
-*/
-/*
-app.get('/products', (req,res) =>{
-    const product = new Product({
-        productName:'Cattleya Math Notebook',
-        unitCost: 20.00,
-        unitPrice: 50.00,
-        lowStockThreshold: 20,
-        startingInventory: 50,
-        status: 1
-    });
-
-    product.save()
-        .then((result)=>{
-            res.send(result);
-            console.log("saved na");
-        })
-        .catch((err)=>{
-            console.log(err);
-        });
-})
-*/
-/*
-app.get('/products', (req,res) =>{
-    const product = new Product({
-        productName:'HP Laser Printer',
-        unitCost: 10000,
-        unitPrice: 12000,
-        lowStockThreshold: 3,
-        startingInventory: 10,
-        status: 0
-    });
-
-    product.save()
-        .then((result)=>{
-            res.send(result);
-            console.log("saved na");
-        })
-        .catch((err)=>{
-            console.log(err);
-        });
-})*/
 
 //INDEX
 app.get('/', (req, res)=>{
@@ -294,18 +212,66 @@ app.get('/home', (req, res)=>{
  })
 
  //Products
+
+
  app.get('/products', (req, res)=>{
 
+    const query = req.query.query;
+    console.log(query);
+
+    if(typeof query === 'undefined'){
+        console.log("walang laman");
+   
     Product.find()
         .then((result)=>{
-            res.render('Products(admin)', { title: 'Products', products: result });
+            res.render('Products(admin)', { title: 'Products', products: result});
         })
         .catch((err)=>{
             console.log(err);
         })
+
+    }else{
+
+        const searchTerm = query;
+        const regexPattern = new RegExp(searchTerm, "i"); // "i" for case-insensitive search
+
+        Product.find({ 
+            
+            $or:[
+            {productName: { $regex: regexPattern } },
+            {code: { $regex: regexPattern } },
+            ],
+            
+            })
+            
+
+          .then((result) => {
+
+            res.render('Products(admin)', { title: 'Products', products: result });
+            console.log("query result: ", result); // Use the results as needed
+            // Respond to the client or perform further actions here
+          })
+          .catch((error) => {
+            // Handle any errors that occurred during the query
+            console.error(error);
+            // Respond to the client with an error message or handle the error appropriately
+          })
+          
+          ;
+
+
+
+          
+       
+        
+
+        console.log("may laman");
+
+
+    }
     
     
-    
+        
  });
 
  
@@ -413,6 +379,9 @@ app.get('/home', (req, res)=>{
        // console.log(req.body);
     }
  });
+
+
+ 
 
   //Reports
   app.get('/reports', (req, res)=>{
