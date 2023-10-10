@@ -41,13 +41,19 @@
 
         <div class="table-container">
             <div class="search-date">
-                <input type="search" placeholder="enter product name or id">
+
+                <form action="/inventory" method ="get">
+                    <input type="search" name = "query" placeholder="enter product name or id">
+                    <button type = "submit">Search</button>
+                    </form>
+
+                <!--<input type="search" placeholder="enter product name or id">-->
                 <p id="date">
                     <!-- Date is dynamically rendered from JS -->
                 </p> 
             </div>
 
-            <table>
+            <table id = "inventoryTable">
                 <tr>
                     <th class="gray-bg">PRODUCT</th>
                     <th class="gray-bg">STARTING INVENTORY</th>
@@ -58,28 +64,299 @@
                     <th class="gray-bg">INVENTORY COST</th>
                 </tr>
 
-                <tr>
-                    <td><input type="text" value="HBW Ballpen"></td>
-                    <td><input type="number" value="35"></td>
-                    <td><input type="number" value="20"></td>
-                    <td><input type="number" value="15"></td>
-                    <td><input type="number" value="40"></td>
-                    <td><input type="number" value="280"></td>
-                    <td><input type="number" value="160"></td>
+
+             
+
+                <% if(products.length > 0) { %>
+                    <% products.forEach((product,index) => { %>
+                <tr class = "database-row">
+
+                    <form id ="saveProduct" action="/inventory" method="post">
+                    <input type="hidden" name="action" value="saveEditedRow">
+
+                    <input type="hidden" name="price" class = "price" value="<%= product.unitPrice %>">
+                    <input type="hidden" name="cost" class ="cost" value="<%= product.unitCost %>">
+
+
+                    <td><input type="text"   name = "productName[]"  value="<%= product.productName %>"></td>
+                    <td><input type="number" readonly name = "startingInventory[]"  class = "startingInv" value="<%= product.startingInventory %>"></td>
+                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter purchased" contenteditable="true" name = "qtyPurchased" class = "qtyPurchased"  ></td>
+                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter sold" contenteditable="true" name = "qtySold" class = "qtySold" ></td>
+                    <td><input type="number" readonly name = "closingInv" class = "closingInv" ></td>
+                    <td><input type="number" readonly name = "invValue" class = "invValue" ></td>
+                    <td><input type="number" readonly name = "invCost" class = "invCost" ></td>
+
+                   <!--<td><button type ="button" onclick="submitRow(this)" >Save</button>-->
+                    
+                   </form>
+                    
                 </tr>
                 
+                <% }) %>
+
+                <%} else { %>
+                    <p>There are no products yet...</p>
+                
+                <% } %>   
+
 
                 
             </table>
 
             <div class="save-addproduct">
-                <button class="saveBtn">SAVE</button>
-                <button class="addBtn">ADD NEW PRODUCT</button>
+                <button class="saveBtn" id="saveproductbtn" >SAVE</button>
+                <!--<button class="addBtn">ADD NEW PRODUCT</button>-->
             </div>
         </div>
 
     </main> 
 
-    <script src="/JS/Products (Admin).js"></script>
+   
+    <script src="/Products (Admin).js"></script>
+
+    <script>
+
+        document.getElementById("saveproductbtn").addEventListener("click", 
+            
+                        function() {
+                        document.getElementById("saveProduct").submit();
+                    });
+
+/*
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document.querySelector('#inventoryTable').addEventListener('input', function (e) {
+                // Check if the changed input field has the class you want to target
+                if (e.target.classList.contains('qtyPurchased') || e.target.classList.contains('qtySold')) {
+                    // Find the parent form element of the changed input
+                    const form = e.target.closest('form');
+
+                    const startingInvInput = form.querySelector('.startingInv');
+                    const qtyPurchasedInput = form.querySelector('.qtyPurchased');
+                    const qtySoldInput = form.querySelector('.qtySold');
+                    const priceInput = form.querySelector('.price');
+                    const costInput = form.querySelector('.cost');
+
+                    const closingInvInput = form.querySelector('.closingInv');
+                    const invValueInput = form.querySelector('.invValue');
+                    const invCostInput = form.querySelector('.invCost');
+
+
+
+                    console.log(startingInvInput);
+                    // Compute the value for the target input based on the source input
+                    const purchasedValue = parseInt(qtyPurchasedInput.value);
+                    const soldValue = parseInt(qtySoldInput.value);
+                    const startingInvValue = parseInt(startingInvInput.value);
+
+                    const computedValue1 = startingInvValue + purchasedValue - soldValue;
+                    closingInvInput.value = computedValue1;
+
+                    const closeInvValue = parseInt(closingInvInput.value);
+                    const priceValue = parseInt(priceInput.value);
+                    const costValue = parseInt(costInput.value);
+
+
+                    const computedValue2 = closeInvValue * priceValue;
+                    const computedValue3 = closeInvValue * costValue;
+
+                    invValueInput.value = computedValue2;
+                    invCostInput.value = computedValue3;
+
+
+                }});
+
+
+
+
+    });
+
+        */
+
+
+
+
+
+
+
+
+
+/*
+        const startingInv = document.getElementById("startingInv");
+        const qtyPurchased = document.getElementById("qtyPurchased");
+        const qtySold = document.getElementById("qtySold");
+        const price = document.getElementById("price");
+        const cost = document.getElementById("cost");
+
+        const closingInv = document.getElementById("closingInv");
+        const invValue = document.getElementById("invValue");
+        const invCost = document.getElementById("invCost");
+
+                // Add an event listener to the source input
+        qtyPurchased.addEventListener("input", updateInv);
+        qtySold.addEventListener("input", updateInv);
+        
+        
+        function updateInv() {
+        // Compute the value for the target input based on the source input
+            const purchasedValue = parseInt(qtyPurchased.value);
+            const soldValue = parseInt(qtySold.value);
+            const startingInvValue = parseInt(startingInv.value);
+
+            const computedValue1 = startingInvValue + purchasedValue - soldValue;
+            closingInv.value = computedValue1;
+
+            const closeInvValue = parseInt(closingInv.value);
+            const priceValue = parseInt(price.value);
+            const costValue = parseInt(cost.value);
+
+
+            const computedValue2 = closeInvValue * priceValue;
+            const computedValue3 = closeInvValue * costValue;
+
+            invValue.value = computedValue2;
+            invCost.value = computedValue3;
+
+
+          //  const computedValue2 = closingInv.value
+            
+
+        // Update the value of the target input
+        
+       
+        } */
+
+       /* 
+        document.addEventListener("DOMContentLoaded", function() {
+        // Select all elements with class names
+            const startingInvInputs = document.querySelectorAll(".startingInv");
+            const qtyPurchasedInputs = document.querySelectorAll(".qtyPurchased");
+            const qtySoldInputs = document.querySelectorAll(".qtySold");
+            const priceInputs = document.querySelectorAll(".price");
+            const costInputs = document.querySelectorAll(".cost");
+
+            const closingInvInputs = document.querySelectorAll(".closingInv");
+            const invValueInputs = document.querySelectorAll(".invValue");
+            const invCostInputs = document.querySelectorAll(".invCost");
+
+            // Loop through all rows (assuming the number of rows matches)
+            for (let i = 0; i < startingInvInputs.length; i++) {
+            // Add event listeners to the source inputs in each row
+
+            qtySoldInputs[i].addEventListener("input", updateInv);
+            qtyPurchasedInputs[i].addEventListener("input", updateInv);
+            
+            }
+
+            function updateInv(e) {
+            // Get the index of the row where the change occurred
+           // const rowIndex = Array.from(qtyPurchasedInputs).indexOf(e.target);
+           
+          // const rowIndex = Array.from(qtyPurchasedInputs).concat(Array.from(qtySoldInputs)).indexOf(e.target);
+
+          //const rowIndex = Array.from(qtySoldInputs).concat(Array.from(qtyPurchasedInputs)).indexOf(e.target);
+
+             // Find the parent row of the input that triggered the event
+            // const row = e.target.closest("tr");
+
+            // Get the index of the row where the change occurred
+           // const rowIndex = Array.from(row.parentElement.children).indexOf(row);
+
+           const rowIndex = Array.from(qtyPurchasedInputs).indexOf(e.target);
+
+            // Retrieve the elements in the same row based on the index
+            const startingInvInput = startingInvInputs[rowIndex];
+            const qtyPurchasedInput = qtyPurchasedInputs[rowIndex];
+            const qtySoldInput = qtySoldInputs[rowIndex];
+            const priceInput = priceInputs[rowIndex];
+            const costInput = costInputs[rowIndex];
+
+            const closingInvInput = closingInvInputs[rowIndex];
+            const invValueInput = invValueInputs[rowIndex];
+            const invCostInput = invCostInputs[rowIndex];
+            
+
+            console.log("Starting Inv Input:", startingInvInput);
+            console.log("Qty Purchased Input:", qtyPurchasedInput);
+            console.log("Qty Sold Input:", qtySoldInput);
+
+
+              // Parse the input values as numbers
+                const startingInvValue = parseFloat(startingInvInput.value) || 0;
+                const qtyPurchasedValue = parseFloat(qtyPurchasedInput.value) || 0;
+                const qtySoldValue = parseFloat(qtySoldInput.value) || 0;
+                const priceValue = parseFloat(priceInput.value) || 0;
+                const costValue = parseFloat(costInput.value) || 0;
+
+            // Perform calculations using parsed values
+
+            
+            const computedValue1 = startingInvValue + qtyPurchasedValue - qtySoldValue;
+            closingInvInput.value = computedValue1;
+
+            const computedValue2 = computedValue1 * priceValue;
+            const computedValue3 = computedValue1 * costValue;
+
+            invValueInput.value = computedValue2;
+            invCostInput.value = computedValue3;
+
+            
+            }
+        });
+*/
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all elements with class names
+    const startingInvInputs = document.querySelectorAll(".startingInv");
+    const qtyPurchasedInputs = document.querySelectorAll(".qtyPurchased");
+    const qtySoldInputs = document.querySelectorAll(".qtySold");
+    const priceInputs = document.querySelectorAll(".price");
+    const costInputs = document.querySelectorAll(".cost");
+
+    const closingInvInputs = document.querySelectorAll(".closingInv");
+    const invValueInputs = document.querySelectorAll(".invValue");
+    const invCostInputs = document.querySelectorAll(".invCost");
+
+    // Function to update inventory values
+    function updateInvForRow(rowIndex) {
+        // Retrieve the elements in the same row based on the index
+        const startingInvInput = startingInvInputs[rowIndex];
+        const qtyPurchasedInput = qtyPurchasedInputs[rowIndex];
+        const qtySoldInput = qtySoldInputs[rowIndex];
+        const priceInput = priceInputs[rowIndex];
+        const costInput = costInputs[rowIndex];
+
+        const closingInvInput = closingInvInputs[rowIndex];
+        const invValueInput = invValueInputs[rowIndex];
+        const invCostInput = invCostInputs[rowIndex];
+
+        // Parse the input values as numbers
+        const startingInvValue = parseFloat(startingInvInput.value) || 0;
+        const qtyPurchasedValue = parseFloat(qtyPurchasedInput.value) || 0;
+        const qtySoldValue = parseFloat(qtySoldInput.value) || 0;
+        const priceValue = parseFloat(priceInput.value) || 0;
+        const costValue = parseFloat(costInput.value) || 0;
+
+        // Perform calculations using parsed values
+        const computedValue1 = startingInvValue + qtyPurchasedValue - qtySoldValue;
+        closingInvInput.value = computedValue1;
+
+        const computedValue2 = computedValue1 * priceValue;
+        const computedValue3 = computedValue1 * costValue;
+
+        invValueInput.value = computedValue2;
+        invCostInput.value = computedValue3;
+    }
+
+    // Loop through all rows (assuming the number of rows matches)
+    for (let i = 0; i < startingInvInputs.length; i++) {
+        // Add event listeners to both qtyPurchased and qtySold inputs in each row
+        qtyPurchasedInputs[i].addEventListener("input", () => updateInvForRow(i));
+        qtySoldInputs[i].addEventListener("input", () => updateInvForRow(i));
+    }
+});
+        
+
+    </script>
 </body>
 </html>

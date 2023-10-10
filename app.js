@@ -207,9 +207,63 @@ app.get('/home', (req, res)=>{
  app.get('/inventory', (req, res)=>{
 
   
-     res.render('Inventory(admin)', { title: 'Inventory' });
+    // res.render('Inventory(admin)', { title: 'Inventory' });
+
+     const query = req.query.query;
+     console.log(query);
  
- })
+     if(typeof query === 'undefined'){
+         console.log("walang laman");
+    
+     Product.find()
+         .then((result)=>{
+             res.render('Inventory(admin)', { title: 'Inventory', products: result});
+         })
+         .catch((err)=>{
+             console.log(err);
+         })
+ 
+     }else{
+ 
+         const searchTerm = query;
+         const regexPattern = new RegExp(searchTerm, "i"); // "i" for case-insensitive search
+ 
+         Product.find({ 
+             
+             $or:[
+             {productName: { $regex: regexPattern } },
+             {code: { $regex: regexPattern } },
+             ],
+             
+             })
+             
+ 
+           .then((result) => {
+ 
+             res.render('Inventory(admin)', { title: 'Inventory', products: result });
+            // console.log("query result: ", result); // Use the results as needed
+             // Respond to the client or perform further actions here
+           })
+           .catch((error) => {
+             // Handle any errors that occurred during the query
+             console.error(error);
+             // Respond to the client with an error message or handle the error appropriately
+           })
+           
+           ;
+ 
+ 
+ 
+           
+        
+         
+ 
+         console.log("may laman");
+ 
+ 
+ 
+ }
+})
 
  //Products
 
