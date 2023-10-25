@@ -12,6 +12,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const JWT_SECRET = 'asy7ejh09uads0uj'
 const Product = require('./models/products');
+const Inventory = require('./models/inventory');
 const User = require('./models/user');
 const { MongoDBCollectionNamespace } = require('mongodb');
 
@@ -206,15 +207,20 @@ app.get('/home', (req, res)=>{
  //Inventory
  app.get('/inventory', (req, res)=>{
 
+   // res.render('Inventory(admin)');
+        
+      
+
   
     // res.render('Inventory(admin)', { title: 'Inventory' });
 
-     const query = req.query.query;
-     console.log(query);
+    // const query = req.query.query;
+    // console.log(query);
  
-     if(typeof query === 'undefined'){
-         console.log("walang laman");
+     //if(typeof query === 'undefined'){
+        // console.log("walang laman");
     
+
      Product.find()
          .then((result)=>{
              res.render('Inventory(admin)', { title: 'Inventory', products: result});
@@ -223,7 +229,9 @@ app.get('/home', (req, res)=>{
              console.log(err);
          })
  
-     }else{
+    // }
+     
+     /*else{
  
          const searchTerm = query;
          const regexPattern = new RegExp(searchTerm, "i"); // "i" for case-insensitive search
@@ -258,12 +266,198 @@ app.get('/home', (req, res)=>{
         
          
  
-         console.log("may laman");
+         console.log("may laman");*/
  
  
  
- }
+         const targetDate = req.query.date; // Get the selected date from the query parameter
+           
+         console.log(targetDate)
+         //res.json({ startingInventory: targetDate });
+/*
+         Product.find({ dateField: targetDate })
+            .then((result) => {
+                if (result.length === 0) {
+                // Handle the case where no matching documents were found
+                res.render('NoResultView', { title: 'No Results' });
+                } else {
+                // Render the view with the found document
+                res.render('Inventory(admin)', { title: 'Inventory', inventory: result });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });*/
+
 })
+
+
+app.get('/inventoryData', (req, res)=>{
+
+           const targetDate = req.query.date; // Get the selected date from the query parameter
+           
+           // Convert the targetDate to a Date object
+            const targetDateObject = new Date(targetDate);
+
+            // Subtract one day from the targetDate
+            targetDateObject.setDate(targetDateObject.getDate() - 1);
+
+            // Format the new date as 'YYYY-MM-DD' and store it in a new variable
+            const oneDayBefore = targetDateObject.toISOString().split('T')[0];
+            
+
+           //const targetDate = [1,2,3,4]
+           
+           console.log(oneDayBefore)
+            var resClosingInv;
+            var docuTodayExists;
+            var docuYesterdayExists;
+
+/*
+           Inventory.find({ date: oneDayBefore })
+            .then((result) => {
+                if (result.length === 0) {
+                // Handle the case where no matching documents were found
+                //res.json('NoResultView', { title: 'No Results' });
+                docuYesterdayExists = false;
+                console.log("walang ganyang docu");
+                } else {
+                // Render the view with the found document and use "inventory" as the key
+                
+                resClosingInv = result[0].closingInventory;
+                docuYesterdayExists = true;
+               // res.json({ startingInventory: result[0].closingInventory});
+            
+               // console.log(result[0].startingInventory);
+                //console.log(resClosingInv);
+                console.log("tama ka jan");
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+
+            Inventory.find({ date: targetDate })
+            .then((result) => {
+                if (result.length === 0) {
+                // Handle the case where no matching documents were found
+                //res.json('NoResultView', { title: 'No Results' });
+                docuTodayExists = false;
+                console.log("walang ganyang docu");
+                } else {
+                // Render the view with the found document and use "inventory" as the key
+                
+                docuTodayExists = true;
+                
+                
+               // res.json({ startingInventory: result[0].closingInventory});
+            
+               // console.log(result[0].startingInventory);
+               
+                }
+                res.json({ startingInventory: resClosingInv, docuTodayExists: docuTodayExists, docuYesterdayExists : docuYesterdayExists});
+                console.log(resClosingInv);
+
+                console.log(docuExists);
+                console.log("tama ka jan");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+*/
+
+Inventory.find({ date: oneDayBefore })
+  .then((result) => {
+    if (result.length === 0) {
+      docuYesterdayExists = false;
+      console.log("walang ganyang docu");
+    } else {
+      resClosingInv = result[0].closingInventory;
+      docuYesterdayExists = true;
+      console.log("tama ka jan");
+    }
+
+    // Chain the second find operation here
+    return Inventory.find({ date: targetDate });
+  })
+  .then((result) => {
+    if (result.length === 0) {
+      docuTodayExists = false;
+      console.log("walang ganyang docu");
+    } else {
+      docuTodayExists = true;
+    }
+    
+    // Now you have both resClosingInv and docuTodayExists available
+    res.json({
+      startingInventory: resClosingInv,
+      docuTodayExists: docuTodayExists,
+      docuYesterdayExists: docuYesterdayExists
+    });
+    console.log(resClosingInv);
+    console.log("tama ka jan");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+            
+});
+
+
+app.post('/inventory', async (req, res) =>{
+
+
+    
+
+        console.log("nasa save inventory ka");
+        console.log(req.body);
+
+        const invData = req.body;
+
+        // Selectively extract the attributes you want to save
+        const { productName, 
+                startingInventory,
+                numOfPurchased,
+                numOfSold,
+                closingInventory,
+                inventoryValue,
+                inventoryCost,
+                date } = invData;
+      
+        // Create a new Product instance with the selected attributes and save it to the database
+        const inventory = new Inventory({  productName, 
+                                           startingInventory, 
+                                           numOfPurchased, 
+                                           numOfSold,
+                                           closingInventory,
+                                           inventoryValue,
+                                           inventoryCost,
+                                           date});
+                    console.log(inventory);
+        
+                                           try {
+                                            // Save the document and handle the result with Promises
+                                            await inventory.save();
+                                            res.redirect("/inventory");
+                                          } catch (error) {
+                                            console.error('Error saving product data:', error);
+                                            res.status(500).send('Error saving data');
+                                          }
+      });
+
+            
+        /*
+            const productName = req.body.productName;
+            const startingInventory = req.body.startingInventory;
+            const qtyPurchased = req.body.qtyPurchased;
+            const qtySold = req.body.qtySold;
+            const closingInv = req.body.closingInv;
+            const invValue = req.body.invValue;
+            const invCost = req.body.invCost;
+            const selectedDate = req.body.selectedDate;
+        */
+
 
  //Products
 

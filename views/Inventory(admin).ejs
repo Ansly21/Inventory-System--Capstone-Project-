@@ -39,21 +39,45 @@
             </a>
         </div>
 
-        <div class="table-container">
-            <div class="search-date">
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        <div class="table-container" >
+            <div class="search-date">
+                <!--
                 <form action="/inventory" method ="get">
                     <input type="search" name = "query" placeholder="enter product name or id">
-                    <button type = "submit">Search</button>
-                    </form>
+                    <button id = "searchProd" type = "submit" style="display: none;">Search</button>
+                    </form>-->
 
                 <!--<input type="search" placeholder="enter product name or id">-->
-                <p id="date">
-                    <!-- Date is dynamically rendered from JS -->
-                </p> 
+                <!--<p id="date">
+                     Date is dynamically rendered from JS 
+                </p> -->
+
+              
+                     
             </div>
 
-            <table id = "inventoryTable">
+
+
+            <!--INVIS TABLE-->
+            <!--
+            <table id = "inventoryTableClone" style="display: none;">
                 <tr>
                     <th class="gray-bg">PRODUCT</th>
                     <th class="gray-bg">STARTING INVENTORY</th>
@@ -64,15 +88,19 @@
                     <th class="gray-bg">INVENTORY COST</th>
                 </tr>
 
+                <form id ="createDoc" action="/inventory" method="post">
 
-             
+                   
+
+                    <button type ="submit" style="display: block;" id="createDocButton" disabled>update</button>
+                        
+                    <input type="hidden" name="action" value="createDoc">
 
                 <% if(products.length > 0) { %>
                     <% products.forEach((product,index) => { %>
                 <tr class = "database-row">
 
-                    <form id ="saveProduct" action="/inventory" method="post">
-                    <input type="hidden" name="action" value="saveEditedRow">
+                    
 
                     <input type="hidden" name="price" class = "price" value="<%= product.unitPrice %>">
                     <input type="hidden" name="cost" class ="cost" value="<%= product.unitCost %>">
@@ -80,16 +108,19 @@
 
                     <td><input type="text"   name = "productName[]"  value="<%= product.productName %>"></td>
                     <td><input type="number" readonly name = "startingInventory[]"  class = "startingInv" value="<%= product.startingInventory %>"></td>
-                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter purchased" contenteditable="true" name = "qtyPurchased" class = "qtyPurchased"  ></td>
-                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter sold" contenteditable="true" name = "qtySold" class = "qtySold" ></td>
+                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter purchased" contenteditable="true" name = "qtyPurchased" class = "qtyPurchased" value="0" ></td>
+                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter sold" contenteditable="true" name = "qtySold" class = "qtySold" value="0"></td>
                     <td><input type="number" readonly name = "closingInv" class = "closingInv" ></td>
                     <td><input type="number" readonly name = "invValue" class = "invValue" ></td>
                     <td><input type="number" readonly name = "invCost" class = "invCost" ></td>
 
-                   <!--<td><button type ="button" onclick="submitRow(this)" >Save</button>-->
                     
-                   </form>
+
+                  
                     
+                   
+                    
+         
                 </tr>
                 
                 <% }) %>
@@ -99,15 +130,101 @@
                 
                 <% } %>   
 
+            </form>
+               
+            </table>
+        -->
+
+
+
+
+
+
+
+
+
+             <!--VISUAL TABLE-->
+
+            <form action="">
+
+
+            </form>
+
+
+
+            <table id = "inventoryTable" >
+
+
+                <tr>
+                    <th class="gray-bg">PRODUCT</th>
+                    <th class="gray-bg">STARTING INVENTORY</th>
+                    <th>QTY PURCHASED</th>
+                    <th>QTY SOLD</th>
+                    <th class="gray-bg">CLOSING INVENTORY</th>
+                    <th class="gray-bg">INVENTORY VALUE</th>
+                    <th class="gray-bg">INVENTORY COST</th>
+                </tr>
+
+                <form id ="saveProduct" action="/inventory" method="post">
+
+                    <input type="date" id="datePicker" name="date" min="2023-01-01" max="" >  
+
+                    <input type="hidden" name="action" value="saveEditedRow">
+
+                <% if(products.length > 0) { %>
+                    <% products.forEach((product,index) => { %>
+                
+                
+                        <tr class = "database-row">
+
+                  
+
+                        
+                    
+
+                    <input type="hidden" name="price" class = "price" value="<%= product.unitPrice %>">
+                    <input type="hidden" name="cost" class ="cost" value="<%= product.unitCost %>">
+
+
+                    <td><input type="text"   name = "productName[]"  value="<%= product.productName %>"></td>
+                    <td><input type="number" readonly name = "startingInventory[]"  class = "startingInv" value="<%= product.startingInventory %>"></td>
+                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter purchased" contenteditable="true" name = "numOfPurchased" class = "qtyPurchased" value="0" ></td>
+                    <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter sold" contenteditable="true" name = "numOfSold" class = "qtySold" value="0"></td>
+                    <td><input type="number" readonly name = "closingInventory" class = "closingInv" ></td>
+                    <td><input type="number" readonly name = "inventoryValue" class = "invValue" ></td>
+                    <td><input type="number" readonly name = "inventoryCost" class = "invCost" ></td>
+
+                   <!--<td><button type ="button" onclick="submitRow(this)" >Save</button>-->
+                    
+                  
+                    
+                  <!-- </form> -->
+                </tr>
+                
+                <% }) %>
+
+                <%} else { %>
+                    <p>There are no products yet...</p>
+                
+                <% } %>   
+            </form>
 
                 
             </table>
 
             <div class="save-addproduct">
-                <button class="saveBtn" id="saveproductbtn" >SAVE</button>
-                <!--<button class="addBtn">ADD NEW PRODUCT</button>-->
+              
+                <button class="saveBtn" id="saveproductbtn" type="submit" >SAVE</button>
+               
             </div>
+
+
+
+           
+            
         </div>
+
+       
 
     </main> 
 
@@ -116,13 +233,206 @@
 
     <script>
 
+/*
+const datePicker = document.getElementById("datePicker");
+const submitButton = document.getElementById("createDocButton");
+
+datePicker.addEventListener("input", function() {
+    if (datePicker.value) {
+        submitButton.removeAttribute("disabled");
+    } else {
+        submitButton.setAttribute("disabled", "true");
+    }
+});*/
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var saveButton = document.getElementById("saveproductbtn");
+  var form = document.getElementById("saveProduct");
+
+  saveButton.addEventListener("click", function() {
+    form.submit(); // Trigger the form submission when the button is clicked
+  });
+});
+
+/*
+const datePicker = document.getElementById("datePicker");
+datePicker.addEventListener("change", handleDateChange);
+
+
+function handleDateChange() {
+  const selectedDate = datePicker.value;
+  
+  // Make an AJAX request to your Node.js server to fetch the updated startingInventory
+  fetch(`/inventoryData?date=${selectedDate}`)
+    .then(response => response.json())
+    .then(data => {
+
+        
+        console.log(data.startingInventory);
+     // Assuming the response contains the updated startingInventory value
+      const updatedStartingInventory = data.startingInventory;
+      
+      // Update the startingInventory input field in your table
+      const startingInventoryInput = document.querySelector(".startingInv");
+      startingInventoryInput.value = updatedStartingInventory;
+    })
+    .catch(error => {
+      console.error("Error fetching startingInventory:", error);
+    });
+}*/
+
+/*
+const datePicker = document.getElementById("datePicker");
+datePicker.addEventListener("change", handleDateChange);
+
+function handleDateChange() {
+  const selectedDate = datePicker.value;
+
+  // Make an AJAX request to your Node.js server to fetch the updated startingInventory
+  fetch(`/inventoryData?date=${selectedDate}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.startingInventory);
+
+      // Assuming the response contains the updated startingInventory value
+      const updatedStartingInventory = data.startingInventory;
+
+      // Update all startingInventory input fields in your table
+      const startingInventoryInputs = document.querySelectorAll(".startingInv");
+      startingInventoryInputs.forEach((input) => {
+        input.value = updatedStartingInventory;
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching startingInventory:", error);
+    });
+}*/
+
+const datePicker = document.getElementById("datePicker");
+datePicker.addEventListener("change", handleDateChange);
+/*
+function handleDateChange() {
+  const selectedDate = datePicker.value;
+
+  // Make an AJAX request to your Node.js server to fetch the updated startingInventory
+  fetch(`/inventoryData?date=${selectedDate}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.startingInventory);
+      console.log(data.docuExists);
+        
+      // Assuming the response contains the updated startingInventory as an array
+      const updatedStartingInventoryArray = data.startingInventory;
+
+      // Update all startingInventory input fields in your table
+      const startingInventoryInputs = document.querySelectorAll(".startingInv");
+
+      // Check if updatedStartingInventoryArray is an array
+      if (Array.isArray(updatedStartingInventoryArray)) {
+        startingInventoryInputs.forEach((input, index) => {
+          if (index < updatedStartingInventoryArray.length) {
+            input.value = updatedStartingInventoryArray[index];
+          } else {
+            input.value = ''; // Clear input if no corresponding value in the array
+          }
+        });
+      } else {
+        console.error("Starting inventory is not an array");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching startingInventory:", error);
+    });
+}*/ 
+function handleDateChange() {
+  const selectedDate = datePicker.value;
+
+  // Make an AJAX request to your Node.js server to fetch the updated startingInventory
+  fetch(`/inventoryData?date=${selectedDate}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+
+        console.log(data.startingInventory);
+      console.log(data.docuTodayExists);
+      console.log(data.docuYesterdayExists);
+
+      if(data.docuTodayExists){
+
+        alert("Inventory from this date already exists.");
+     
+    }else if (!data.docuTodayExists && data.docuYesterdayExists){
+
+        if (Array.isArray(data.startingInventory)) {
+        const updatedStartingInventoryArray = data.startingInventory;
+
+        // Update all startingInventory input fields in your table
+        const startingInventoryInputs = document.querySelectorAll(".startingInv");
+
+        startingInventoryInputs.forEach((input, index) => {
+          if (index < updatedStartingInventoryArray.length) {
+            input.value = updatedStartingInventoryArray[index];
+          } else {
+            input.value = ''; // Clear input if no corresponding value in the array
+          }
+        });
+      } else {
+        console.error("Starting inventory is not an array");
+      }
+        
+    }else if(!data.docuTodayExists && !data.docuYesterdayExists){
+
+        alert("This date doesnt have an existing Starting Inventory");
+
+    }
+
+
+
+    })
+    .catch((error) => {
+      console.error("Error fetching or processing startingInventory data:", error);
+    });
+}
+
+
+/*
+const submitButton2 = document.getElementById("createDocButton");
+const table2 = document.getElementById("inventoryTable");
+
+submitButton2.addEventListener("click", function(event) {
+
+    table2.style.display = "block"; 
+    
+});
+
+
+const search = document.getElementById("searchProd");
+
+search.addEventListener("click", function(event) {
+
+table2.style.display = "block"; 
+
+});*/
+/*
         document.getElementById("saveproductbtn").addEventListener("click", 
             
                         function() {
                         document.getElementById("saveProduct").submit();
-                    });
+                    });*/
 
-/*
+
+
+
+ 
+
+/*      
+        
     document.addEventListener('DOMContentLoaded', function() {
 
         document.querySelector('#inventoryTable').addEventListener('input', function (e) {
@@ -304,6 +614,21 @@
             }
         });
 */
+    
+
+function submitRow(button){
+
+// Traverse the DOM to find the row
+var row = button.closest('tr');
+
+// Find the form in the row (assuming the form is in the same row)
+var form = row.querySelector('form');
+
+// Submit the form
+form.submit();
+
+
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     // Select all elements with class names
@@ -316,6 +641,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const closingInvInputs = document.querySelectorAll(".closingInv");
     const invValueInputs = document.querySelectorAll(".invValue");
     const invCostInputs = document.querySelectorAll(".invCost");
+
+    //pre-computations 0 values
+       
+
 
     // Function to update inventory values
     function updateInvForRow(rowIndex) {
@@ -348,15 +677,93 @@ document.addEventListener("DOMContentLoaded", function() {
         invCostInput.value = computedValue3;
     }
 
+    //gumagana to, pero after choosing the date twice lang
+/*
     // Loop through all rows (assuming the number of rows matches)
     for (let i = 0; i < startingInvInputs.length; i++) {
+
+        updateInvForRow(i);
+
         // Add event listeners to both qtyPurchased and qtySold inputs in each row
         qtyPurchasedInputs[i].addEventListener("input", () => updateInvForRow(i));
         qtySoldInputs[i].addEventListener("input", () => updateInvForRow(i));
     }
+    datePicker.addEventListener("select", () => {
+        // Call the updateInvForRow function for all rows
+        for (let i = 0; i < startingInvInputs.length; i++) {
+            updateInvForRow(i);
+        }
+    });*/
+
+    //gumagana to, pero after choosing the date twice lang, pinagkaiba lang walang nakadisplay sa simula hahaha
+
+    for (let i = 0; i < startingInvInputs.length; i++) {
+        // Add event listeners to both qtyPurchased and qtySold inputs in each row
+        qtyPurchasedInputs[i].addEventListener("input", () => {
+            setTimeout(() => updateInvForRow(i), 0); // Add a small delay
+        });
+        qtySoldInputs[i].addEventListener("input", () => {
+            setTimeout(() => updateInvForRow(i), 0); // Add a small delay
+        });
+    }
+
+    // Add an event listener to the datePicker
+    const datePicker = document.getElementById("datePicker");
+    datePicker.addEventListener("change", () => {
+        // Call the updateInvForRow function for all rows
+        for (let i = 0; i < startingInvInputs.length; i++) {
+            setTimeout(() => updateInvForRow(i), 0); // Add a small delay
+        }
+    });
+
+     
 });
         
 
+
+
+ 
+/*
+
+function submitAllRows() {
+    // Select the form and table
+    const form = document.getElementById("createDoc"); // Change this to match your form's ID
+    const table = document.getElementById("inventoryTable");
+
+    // Collect data from each row
+    const rows = table.querySelectorAll("tr.database-row");
+    const formData = new FormData();
+
+    rows.forEach((row, index) => {
+        const productName = row.querySelector("input[name='productName[]']").value;
+        const startingInventory = row.querySelector("input[name='startingInventory[]']").value;
+        const qtyPurchased = row.querySelector("input[name='qtyPurchased']").value;
+        const qtySold = row.querySelector("input[name='qtySold']").value;
+        const closingInv = row.querySelector("input[name='closingInv']").value;
+        const invValue = row.querySelector("input[name='invValue']").value;
+        const invCost = row.querySelector("input[name='invCost']").value;
+
+        // Append row data to the FormData object
+        formData.append(`products[${index}].productName`, productName);
+        formData.append(`products[${index}].startingInventory`, startingInventory);
+        formData.append(`products[${index}].qtyPurchased`, qtyPurchased);
+        formData.append(`products[${index}].qtySold`, qtySold);
+        formData.append(`products[${index}].closingInv`, closingInv);
+        formData.append(`products[${index}].invValue`, invValue);
+        formData.append(`products[${index}].invCost`, invCost);
+    });
+
+    // Use the FormData object to send data to the server
+    fetch(form.action, {
+        method: "POST",
+        body: formData,
+    })
+}
+
+// Attach the submitAllRows function to the button's click event
+const saveButton = document.getElementById("saveProductButton");
+saveButton.addEventListener("click", submitAllRows);
+*/
     </script>
 </body>
 </html>

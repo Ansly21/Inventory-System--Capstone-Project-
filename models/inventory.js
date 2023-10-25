@@ -9,38 +9,38 @@ const Schema = mongoose.Schema;
 const inventorySchema = new Schema({
 
     productName:{
-        type: String,
+        type: [String],
         required: true
     },
 
     startingInventory:{
-        type: Number,
+        type: [Number],
         required: true
 
     },
 
     numOfPurchased:{
-        type: Number,
-        required: true
+        type: [Number],
+        required: false
     },
 
     numOfSold:{
-        type: Number,
-        required: true
+        type: [Number],
+        required: false
     },
 
     closingInventory:{
-        type: Number,
+        type: [Number],
         required: true
     },
 
     inventoryValue:{
-        type: Number,
+        type: [Number],
         required:true
     },
 
     inventoryCost:{
-        type: Number,
+        type: [Number],
         required: true
     },
 
