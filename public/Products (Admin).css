@@ -141,12 +141,14 @@ table th {
 }
 
 .saveBtn {
-    background-color: #92d36d;
+    display: block;
+    margin: auto;
 }
 
 .addBtn {
     background-color: #ebeaeb;
 }
+
 
 
 @media (max-width:800px) {

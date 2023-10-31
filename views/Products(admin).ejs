@@ -23,7 +23,7 @@
 
         <div class="nav">
             <a href="/products">
-                <button>Products</button>
+                <button  class="page-btn">Products</button>
             </a>
 
             <a href="/inventory">
@@ -35,7 +35,7 @@
             </a>
 
             <a href="account">
-                <button class="page-btn">Accounts</button>
+                <button>Accounts</button>
             </a>
         </div>
 
@@ -135,6 +135,7 @@
                     <th>LOW STOCK THRESHOLD</th>
                     <th>STARTING INVENTORY</th>
                     <th>STATUS</th>
+                    <th>ACTION</th>
                 </tr>
 
               
@@ -155,7 +156,7 @@
                     <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"></td>
                   
 
-                   <td><button type ="button" onclick="submitRow(this)" >Save</button>
+                   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button>
                     
                    </form>
                     
