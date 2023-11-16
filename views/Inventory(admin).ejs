@@ -629,6 +629,7 @@ form.submit();
 
 
 }
+/*
 
 document.addEventListener("DOMContentLoaded", function() {
     // Select all elements with class names
@@ -678,22 +679,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //gumagana to, pero after choosing the date twice lang
-/*
-    // Loop through all rows (assuming the number of rows matches)
-    for (let i = 0; i < startingInvInputs.length; i++) {
-
-        updateInvForRow(i);
-
-        // Add event listeners to both qtyPurchased and qtySold inputs in each row
-        qtyPurchasedInputs[i].addEventListener("input", () => updateInvForRow(i));
-        qtySoldInputs[i].addEventListener("input", () => updateInvForRow(i));
-    }
-    datePicker.addEventListener("select", () => {
-        // Call the updateInvForRow function for all rows
-        for (let i = 0; i < startingInvInputs.length; i++) {
-            updateInvForRow(i);
-        }
-    });*/
 
     //gumagana to, pero after choosing the date twice lang, pinagkaiba lang walang nakadisplay sa simula hahaha
 
@@ -717,7 +702,72 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
      
+});*/
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all elements with class names
+    const startingInvInputs = document.querySelectorAll(".startingInv");
+    const qtyPurchasedInputs = document.querySelectorAll(".qtyPurchased");
+    const qtySoldInputs = document.querySelectorAll(".qtySold");
+    const priceInputs = document.querySelectorAll(".price");
+    const costInputs = document.querySelectorAll(".cost");
+
+    const closingInvInputs = document.querySelectorAll(".closingInv");
+    const invValueInputs = document.querySelectorAll(".invValue");
+    const invCostInputs = document.querySelectorAll(".invCost");
+
+    // Function to update inventory values
+    function updateInvForRow(rowIndex) {
+        // Retrieve the elements in the same row based on the index
+        const startingInvInput = startingInvInputs[rowIndex];
+        const qtyPurchasedInput = qtyPurchasedInputs[rowIndex];
+        const qtySoldInput = qtySoldInputs[rowIndex];
+        const priceInput = priceInputs[rowIndex];
+        const costInput = costInputs[rowIndex];
+
+        const closingInvInput = closingInvInputs[rowIndex];
+        const invValueInput = invValueInputs[rowIndex];
+        const invCostInput = invCostInputs[rowIndex];
+
+        // Parse the input values as numbers
+        const startingInvValue = parseFloat(startingInvInput.value) || 0;
+        const qtyPurchasedValue = parseFloat(qtyPurchasedInput.value) || 0;
+        const qtySoldValue = parseFloat(qtySoldInput.value) || 0;
+        const priceValue = parseFloat(priceInput.value) || 0;
+        const costValue = parseFloat(costInput.value) || 0;
+
+        // Perform calculations using parsed values
+        const computedValue1 = startingInvValue + qtyPurchasedValue - qtySoldValue;
+        closingInvInput.value = computedValue1;
+
+        const computedValue2 = computedValue1 * priceValue;
+        const computedValue3 = computedValue1 * costValue;
+
+        invValueInput.value = computedValue2;
+        invCostInput.value = computedValue3;
+    }
+
+    // Add event listeners to all inputs and the datePicker
+    const allInputs = document.querySelectorAll(".startingInv, .qtyPurchased, .qtySold, .price, .cost");
+    const datePicker = document.getElementById("datePicker");
+
+    allInputs.forEach(input => {
+        input.addEventListener("input", () => {
+            // Call the updateInvForRow function for all rows
+            for (let i = 0; i < startingInvInputs.length; i++) {
+                updateInvForRow(i);
+            }
+        });
+    });
+
+    datePicker.addEventListener("change", () => {
+        // Call the updateInvForRow function for all rows
+        for (let i = 0; i < startingInvInputs.length; i++) {
+            updateInvForRow(i);
+        }
+    });
 });
+
         
 
 
