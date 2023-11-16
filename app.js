@@ -653,10 +653,17 @@ app.post('/inventory', async (req, res) =>{
  
  });*/
  app.get('/reports', async (req, res) => {
+
+  //Try block na nagcocontain ng lahat ng ipapasa sa reports page through res.render
   try {
+
+    //TotalProducts
     const totalProducts = await getProductCount();
     console.log(`Number of documents in the collection: ${totalProducts}`);
 
+
+
+    //LowStock
     const mostRecentAttributeValue = await getMostRecentAttributeValue('closingInventory');
     console.log('Array of closingInv of the recent date',mostRecentAttributeValue);
 
@@ -672,11 +679,13 @@ app.post('/inventory', async (req, res) =>{
           count++;
         }
       }
-
-      
     }
+
     console.log(count);
 
+
+
+    //StockValue
     const allstockValue = await getMostRecentAttributeValue('inventoryValue');
     console.log('Array of their inventoryValue', allstockValue);
       let sumVariable;
@@ -696,6 +705,10 @@ app.post('/inventory', async (req, res) =>{
         console.log('Value of sumVariable:', sumVariable);
 
 
+
+
+
+    //StockCost
     const allstockCost = await getMostRecentAttributeValue('inventoryCost');
     console.log('Array of their inventoryValue', allstockCost);
       let totalStockCost;
@@ -717,9 +730,6 @@ app.post('/inventory', async (req, res) =>{
 
 
 
-
-
-
     // Add other logic or operations here
 
     // Now, render the view with the required values
@@ -732,12 +742,16 @@ app.post('/inventory', async (req, res) =>{
     //  mostRecentDocument: mostRecentDocument,
       // Add other values here
     });
+
+
   } catch (error) {
     console.error(error);
     // Handle errors appropriately
     return res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 // Function to get product count
 async function getProductCount() {
@@ -750,7 +764,7 @@ async function getProductCount() {
   }
 }
 
-// Function to get the most recent document
+// Function to get the most recent document for Inv Table
 async function getMostRecentAttributeValue(attributeName) {
   try {
     const mostRecentDocument = await Inventory.findOne({})
@@ -770,6 +784,8 @@ async function getMostRecentAttributeValue(attributeName) {
   }
 }
 
+
+//Function to get all values of an attribute for productTable
 async function getAllAttributeValues(attributeName) {
   try {
     const documents = await Product.find({}); // Retrieve all documents
@@ -784,6 +800,8 @@ async function getAllAttributeValues(attributeName) {
   }
 }
 
+
+/*
 async function getAllAttributeValues2(attributeName) {
   try {
     const documents = await Inventory.find({}); // Retrieve all documents
@@ -796,7 +814,7 @@ async function getAllAttributeValues2(attributeName) {
     console.error(error);
     throw error; // Propagate the error to the caller
   }
-}
+}*/
 
 
 
