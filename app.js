@@ -632,12 +632,173 @@ app.post('/inventory', async (req, res) =>{
  
 
   //Reports
+  /*
   app.get('/reports', (req, res)=>{
 
+   
+    Product.countDocuments({})
+  .then(count => {
+    console.log(`Number of documents in the collection: ${count}`);
+    res.render('Reports(admin)', { title: 'Reports' , totalProducts: count});
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+
+    
+
+
+  
  
-    res.render('Reports(admin)', { title: 'Reports' });
- 
- })
+ });*/
+ app.get('/reports', async (req, res) => {
+  try {
+    const totalProducts = await getProductCount();
+    console.log(`Number of documents in the collection: ${totalProducts}`);
+
+    const mostRecentAttributeValue = await getMostRecentAttributeValue('closingInventory');
+    console.log('Array of closingInv of the recent date',mostRecentAttributeValue);
+
+    const allAttributeValues = await getAllAttributeValues('lowStockThreshold');
+    console.log('Array of their low stock threshold', allAttributeValues);
+
+    let count = 0;
+    if (mostRecentAttributeValue.length === allAttributeValues.length) {
+      
+    
+      for (let i = 0; i < mostRecentAttributeValue.length; i++) {
+        if (mostRecentAttributeValue[i] < allAttributeValues[i]) {
+          count++;
+        }
+      }
+
+      
+    }
+    console.log(count);
+
+    const allstockValue = await getMostRecentAttributeValue('inventoryValue');
+    console.log('Array of their inventoryValue', allstockValue);
+      let sumVariable;
+            // Ensure allstockValue is an array of numbers
+        if (Array.isArray(allstockValue) && allstockValue.every(value => typeof value === 'number')) {
+          const sum = allstockValue.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+          console.log(`Sum of all values in allstockValue: ${sum}`);
+
+          // Assign the sum to a variable if needed
+          sumVariable = sum;
+         // console.log('Value of sumVariable:', sumVariable);
+        } else {
+          console.log('allstockValue is not a valid array of numbers');
+        }
+
+        console.log('Value of sumVariable:', sumVariable);
+
+
+    const allstockCost = await getMostRecentAttributeValue('inventoryCost');
+    console.log('Array of their inventoryValue', allstockCost);
+      let totalStockCost;
+            // Ensure allstockValue is an array of numbers
+        if (Array.isArray(allstockCost) && allstockCost.every(value => typeof value === 'number')) {
+          const sum = allstockCost.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+          console.log(`Sum of all values in allstockCost: ${sum}`);
+
+          // Assign the sum to a variable if needed
+          totalStockCost = sum;
+         // console.log('Value of sumVariable:', sumVariable);
+        } else {
+          console.log('allstockCost is not a valid array of numbers');
+        }
+
+        console.log('Value of allstockCost:', totalStockCost);
+
+
+
+
+
+
+
+    // Add other logic or operations here
+
+    // Now, render the view with the required values
+    res.render('Reports(admin)', {
+      title: 'Reports',
+      totalProducts: totalProducts,
+      lowStock : count,
+      stockValue: sumVariable,
+      stockCost: totalStockCost
+    //  mostRecentDocument: mostRecentDocument,
+      // Add other values here
+    });
+  } catch (error) {
+    console.error(error);
+    // Handle errors appropriately
+    return res.status(500).send('Internal Server Error');
+  }
+});
+
+// Function to get product count
+async function getProductCount() {
+  try {
+    const count = await Product.countDocuments({});
+    return count;
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
+// Function to get the most recent document
+async function getMostRecentAttributeValue(attributeName) {
+  try {
+    const mostRecentDocument = await Inventory.findOne({})
+      .sort({ date: -1 })
+      .exec();
+
+    if (mostRecentDocument) {
+      const attributeValue = mostRecentDocument[attributeName];
+      return attributeValue;
+    } else {
+      // Handle the case where no documents are found
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
+async function getAllAttributeValues(attributeName) {
+  try {
+    const documents = await Product.find({}); // Retrieve all documents
+
+    // Extract the values of the specified attribute from each document
+    const attributeArray = documents.map(document => document[attributeName]);
+
+    return attributeArray;
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
+async function getAllAttributeValues2(attributeName) {
+  try {
+    const documents = await Inventory.find({}); // Retrieve all documents
+
+    // Extract the values of the specified attribute from each document
+    const attributeArray = documents.map(document => document[attributeName]);
+
+    return attributeArray;
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
+
 
  /*
  app.use((req,res) =>{
