@@ -87,6 +87,10 @@
             <select name="" id="selectOptions" class="selectOptions">
                 <option value="sample">Choose</option>
                 <option value="lowstock">Low Stock</option>
+                <option value="bestSeller">Best Seller</option>
+                <option value="leastSeller">Least Seller</option>
+                <option value="topRevenue">Top Revenue</option>
+                <option value="leastRevenue">Least Revenue</option>
             </select>
 
             <div class="table-container" id="table-container">
@@ -107,6 +111,7 @@
 
     <script>
 
+var option;
 
     //TABLE CODE
 
@@ -120,6 +125,9 @@
         
         document.getElementById("selectOptions").addEventListener("change", () => {
     console.log("Dropdown selection changed"); // Check if this log appears in the console
+    // option = document.getElementById("selectOptions").value
+    //console.log(option);
+    
 
     // Rest of your code for generating the table...
 });
@@ -197,6 +205,10 @@
         //GRAPHS CODE BELOOW
 
         // Best Seller Chart
+
+        var canvas = document.getElementById("myChart");
+
+        
         var topSellerString = '<%= topSellerName%>';
         console.log(topSellerString);
 
@@ -233,16 +245,16 @@
                 
 
         // Variables for the first bar chart
-
-        var option = "Least Seller";
+       
+        var option = "bestSeller";
         var labels1;
         var data1;
         var LabelOfChart;
         var color;
         var lineColor;
 
-        if(option === "Bestseller"){
-
+        if(option === "bestSeller"){
+            
                 LabelOfChart = "Bestseller";
 
                 labels1 = topSellerArrayName;
@@ -251,7 +263,7 @@
                 lineColor = 'rgba(75, 192, 192, 1)';
                 
 
-        }else if(option === "Top Revenue"){
+        }else if(option === "topRevenue"){
 
                 LabelOfChart = "Top Revenue";
                 
@@ -262,7 +274,7 @@
                 lineColor = 'rgba(75, 192, 192, 1)';
     
        
-        }else if(option === "Least Seller"){
+        }else if(option === "leastSeller"){
 
             LabelOfChart = "Least Seller";
                 
@@ -273,7 +285,7 @@
                 lineColor = 'rgba(255, 99, 132, 1)';
 
 
-        }else if(option ==="Least Revenue"){
+        }else if(option ==="leastRevenue"){
 
             LabelOfChart = "Least Revenue";
                 
@@ -282,6 +294,10 @@
                 color = 'rgba(255, 99, 132, 0.2)';
                 lineColor = 'rgba(255, 99, 132, 1)';
 
+        }else if(option ==="lowstock"){
+
+
+            canvas.style.display = "none";
         }
         /*
         // Variables for the second bar chart
