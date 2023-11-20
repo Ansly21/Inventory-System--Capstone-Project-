@@ -190,7 +190,7 @@
                     <td><input type="number" readonly name = "startingInventory[]"  class = "startingInv" value="<%= product.startingInventory %>"></td>
                     <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter purchased" contenteditable="true" name = "numOfPurchased" class = "qtyPurchased" value="0" ></td>
                     <td><input type="number" style="background-color: #EBDEC6;" placeholder="enter sold" contenteditable="true" name = "numOfSold" class = "qtySold" value="0"></td>
-                    <td><input type="number" readonly name = "closingInventory" class = "closingInv" ></td>
+                    <td><input type="number" readonly name = "closingInventory" class = "closingInv" value="pro"></td>
                     <td><input type="number" readonly name = "inventoryValue" class = "invValue" ></td>
                     <td><input type="number" readonly name = "inventoryCost" class = "invCost" ></td>
 
@@ -247,6 +247,7 @@ datePicker.addEventListener("input", function() {
 
 
 
+
 document.addEventListener("DOMContentLoaded", function() {
   var saveButton = document.getElementById("saveproductbtn");
   var form = document.getElementById("saveProduct");
@@ -278,7 +279,7 @@ function handleDateChange() {
       const startingInventoryInput = document.querySelector(".startingInv");
       startingInventoryInput.value = updatedStartingInventory;
     })
-    .catch(error => {
+    .catch(z`=> {
       console.error("Error fetching startingInventory:", error);
     });
 }*/

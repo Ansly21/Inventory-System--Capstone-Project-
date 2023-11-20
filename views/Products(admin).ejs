@@ -40,74 +40,6 @@
         </div>
 
 
-        <!-- testing ng form
-        
-
-
-            <div class="table-container">
-                <div class="search-date">
-                    <input type="search" placeholder="enter product name or id">
-                    <p id="date">
-                        
-                    </p> 
-                </div>
-                
-                <table id ="productTable">
-                    <tr>
-                        <th>CODE</th>
-                        <th>PRODUCT NAME</th>
-                        <th>UNIT COST</th>
-                        <th>UNIT PRICE</th>
-                        <th>LOW STOCK THRESHOLD</th>
-                        <th>STARTING INVENTORY</th>
-                        <th>STATUS</th>
-                    </tr>
-
-                    <tr>
-                        <form id ="editproduct" action="/products" method="post">
-                        <input type="hidden" name="action" value="saveEditedRow">
-                        
-                        
-                        <td><input type="text" name ="code" value="1"></td>
-                        <td><input type="text" name = "productName" value="HBW Ballpen"></td>
-                        <td><input type="number" name = "unitCost" value="4"></td>
-                        <td><input type="number" name = "unitPrice"value="7"></td>
-                        <td><input type="number" name = "lowStockThreshold"value="20"></td>
-                        <td><input type="number" name = "startingInventory"value="35"></td>
-                        <td><input type="range" name = "status" min="0" max="1"></td>
-                        <td><button type ="button" onclick="submitRow(this)">Save</button>
-                        
-                        </form>
-                    </tr>
-
-
-                    <tr>
-                        <form id ="editproduct" action="/products" method="post">
-                        <input type="hidden" name="action" value="saveEditedRow">
-
-
-                        <td><input type="text" name ="code" value="2"></td>
-                        <td><input type="text" name = "productName" value="Barong"></td>
-                        <td><input type="number" name = "unitCost" value="3"></td>
-                        <td><input type="number" name = "unitPrice"value="8"></td>
-                        <td><input type="number" name = "lowStockThreshold"value="10"></td>
-                        <td><input type="number" name = "startingInventory"value="25"></td>
-                        <td><input type="range" name = "status" min="0" max="1"></td>
-                        <td><button type="button" onclick="submitRow(this)" >Save</button>
-
-                        </form>
-                    </tr>-->
-
-    
-            <!--<button id="editSave" class="editSave" type="submit">SAVE</button>-->
-
-      <!--  </table>
-
-
-        </div>-->
-
-      
-      <!--<form id = "editProduct" action="/products" method = "post">-->
 
         <input type="hidden" name="action" value="saveEditedRow">
         
@@ -155,8 +87,9 @@
                     <td><input type="number" contenteditable="true" name = "startingInventory[]"  value="<%= product.startingInventory %>"></td>
                     <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"></td>
                   
-
-                   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button>
+            
+                   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td>
+                   
                     
                    </form>
                     
@@ -169,7 +102,7 @@
                 
                 <% } %>   
 
-      
+                
 
              
                 
@@ -245,6 +178,9 @@
     <script src="/Products (Admin).js"></script>
 
     <script>
+
+
+
 
         console.log("hello");
         
@@ -398,7 +334,8 @@
 
         }
 
-        
+       
+
 
 
 

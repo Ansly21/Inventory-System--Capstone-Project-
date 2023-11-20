@@ -299,7 +299,7 @@ app.get('/inventoryData', (req, res)=>{
            // Convert the targetDate to a Date object
             const targetDateObject = new Date(targetDate);
 
-            // Subtract one day from the targetDate
+            // ADD one day from the targetDate
             targetDateObject.setDate(targetDateObject.getDate() - 1);
 
             // Format the new date as 'YYYY-MM-DD' and store it in a new variable
@@ -629,6 +629,11 @@ app.post('/inventory', async (req, res) =>{
  });
 
 
+
+
+
+
+
  
 
   //Reports
@@ -694,7 +699,7 @@ app.post('/inventory', async (req, res) =>{
     console.log(selectedNameStock);
     console.log(selectedLowStock);
     console.log(selectedClosingInv);
-    
+
 
 
 
@@ -804,6 +809,7 @@ app.post('/inventory', async (req, res) =>{
       topSellerName: selectedValuesName,
       topSellerValue: selectedValuesSold,
 
+      
       //LowStockChart
       lowStockName: selectedNameStock,
       closingInv: selectedClosingInv,
