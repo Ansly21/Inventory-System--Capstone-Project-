@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/Reports (Admin).css">
     <title>Reports (Admin)</title>
+     <!-- Include Chart.js from CDN -->
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -111,8 +113,53 @@
 
        
 
-
+        
     </main>
     <script src="https://kit.fontawesome.com/b0d1390b7c.js" crossorigin="anonymous"></script>
+
+    <canvas id="myChart" width="60" height="15"></canvas>
+
+    <script>
+        // Variables for the first bar chart
+        var labels1 = ['Pencil', 'Category 2', 'Category 3', 'Category 4', 'Category 5'];
+        var data1 = [20, 50, 20, 40, 60];
+    
+        // Variables for the second bar chart
+        var labels2 = ['Ballpen', 'Category B', 'Category C', 'Category D', 'Category E'];
+        var data2 = [15, 30, 45, 25, 55];
+    
+        // Get the canvas element and its context
+        var canvas = document.getElementById('myChart');
+        var ctx = canvas.getContext('2d');
+    
+        // Create a bar chart with two datasets
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels1,
+                datasets: [{
+                    label: 'Low Stock Threshold',
+                    data: data1,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Current Stock',
+                    data: data2,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    
 </body>
 </html>

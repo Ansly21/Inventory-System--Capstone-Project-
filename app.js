@@ -670,18 +670,33 @@ app.post('/inventory', async (req, res) =>{
     const allAttributeValues = await getAllAttributeValues('lowStockThreshold');
     console.log('Array of their low stock threshold', allAttributeValues);
 
+    const lowStockProductNames = await getMostRecentAttributeValue('productName');
+
     let count = 0;
+    let indexesArray = []; // Array to store indexes when the condition is true
+
     if (mostRecentAttributeValue.length === allAttributeValues.length) {
-      
-    
       for (let i = 0; i < mostRecentAttributeValue.length; i++) {
         if (mostRecentAttributeValue[i] < allAttributeValues[i]) {
           count++;
+          indexesArray.push(i); // Add the index to the array
         }
       }
     }
+    
+    console.log('Count of values where closingInv < low stock threshold:', count);
+    console.log('Indexes where closingInv < low stock threshold:', indexesArray);
 
-    console.log(count);
+    const selectedLowStock = getValuesAtIndices(allAttributeValues, indexesArray);
+    const selectedClosingInv = getValuesAtIndices(mostRecentAttributeValue, indexesArray);
+    const selectedNameStock = getValuesAtIndices(lowStockProductNames, indexesArray);
+
+    console.log(selectedNameStock);
+    console.log(selectedLowStock);
+    console.log(selectedClosingInv);
+    
+
+
 
 
 
@@ -728,6 +743,51 @@ app.post('/inventory', async (req, res) =>{
         console.log('Value of allstockCost:', totalStockCost);
 
 
+  //BEST SELLER (BAR CHART)
+        const totalArrayValues = await getTotalArrayValues('numOfSold');
+        console.log('Total sum of array values at the same index across all documents:', totalArrayValues); 
+
+
+      
+        // Find the indices with the top 5 highest values
+        
+        const topIndices = getTopIndices(totalArrayValues, 5);
+
+        console.log('Top 5 indices with the highest values:', topIndices);
+
+        function getTopIndices(array, count) {
+          const indicesWithValues = array.map((value, index) => ({ value, index }));
+          indicesWithValues.sort((a, b) => b.value - a.value); // Sort in descending order
+          const topIndices = indicesWithValues.slice(0, count).map(item => item.index);
+          return topIndices;
+        }
+
+
+        const allProductNames = await getMostRecentAttributeValue('productName');
+        console.log('array of productNames', allProductNames);
+        
+
+                // Get values from totalArrayValues at the specified indices
+        const selectedValuesSold = getValuesAtIndices(totalArrayValues, topIndices);
+        const selectedValuesName = getValuesAtIndices(allProductNames, topIndices);
+
+
+        // Output the selected values
+        console.log(selectedValuesName);
+        console.log(selectedValuesSold);
+
+        function getValuesAtIndices(array, indices) {
+          return indices.map(index => array[index]);
+}
+
+
+//LowStockThreshold
+
+
+
+        
+
+
 
 
     // Add other logic or operations here
@@ -738,10 +798,22 @@ app.post('/inventory', async (req, res) =>{
       totalProducts: totalProducts,
       lowStock : count,
       stockValue: sumVariable,
-      stockCost: totalStockCost
+      stockCost: totalStockCost,
+
+      //TopSellerBarChart
+      topSellerName: selectedValuesName,
+      topSellerValue: selectedValuesSold,
+
+      //LowStockChart
+      lowStockName: selectedNameStock,
+      closingInv: selectedClosingInv,
+      lowStockThreshold : selectedLowStock
+      
     //  mostRecentDocument: mostRecentDocument,
       // Add other values here
     });
+
+  
 
 
   } catch (error) {
@@ -794,6 +866,32 @@ async function getAllAttributeValues(attributeName) {
     const attributeArray = documents.map(document => document[attributeName]);
 
     return attributeArray;
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
+
+
+async function getTotalArrayValues(arrayAttributeName) {
+  try {
+    const documents = await Inventory.find({}); // Replace 'YourModel' with the actual name of your Mongoose model
+
+    if (documents.length > 0) {
+      const totalArray = Array.from({ length: documents[0][arrayAttributeName].length }, () => 0);
+
+      documents.forEach(doc => {
+        doc[arrayAttributeName].forEach((value, index) => {
+          totalArray[index] += value;
+        });
+      });
+
+      return totalArray;
+    } else {
+      // Handle the case where no documents are found
+      return null;
+    }
   } catch (error) {
     console.error(error);
     throw error; // Propagate the error to the caller
