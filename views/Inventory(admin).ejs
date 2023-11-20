@@ -233,6 +233,7 @@
 
     <script>
 
+
 /*
 const datePicker = document.getElementById("datePicker");
 const submitButton = document.getElementById("createDocButton");
@@ -347,6 +348,18 @@ function handleDateChange() {
       console.error("Error fetching startingInventory:", error);
     });
 }*/ 
+
+
+var products = '<%= products.startingInventory %>';
+console.log(products);
+
+
+/*products.forEach(function(product) {
+    console.log(product.startingInventory);
+    // You can use product.startingInventory or other attributes as needed
+  });*/
+
+
 function handleDateChange() {
   const selectedDate = datePicker.value;
 
@@ -363,6 +376,9 @@ function handleDateChange() {
         console.log(data.startingInventory);
       console.log(data.docuTodayExists);
       console.log(data.docuYesterdayExists);
+      console.log(data.productStartingInventory);
+
+     //console.log(inv);
 
       if(data.docuTodayExists){
 
@@ -380,7 +396,7 @@ function handleDateChange() {
           if (index < updatedStartingInventoryArray.length) {
             input.value = updatedStartingInventoryArray[index];
           } else {
-            input.value = ''; // Clear input if no corresponding value in the array
+            input.value = data.productStartingInventory[index]; // Clear input if no corresponding value in the array
           }
         });
       } else {

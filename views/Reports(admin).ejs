@@ -195,13 +195,98 @@
 
 
         //GRAPHS CODE BELOOW
+
+        // Best Seller Chart
+        var topSellerString = '<%= topSellerName%>';
+        console.log(topSellerString);
+
+        const topSellerArrayName = topSellerString.split(',');
+        console.log(topSellerArrayName);
+
+        var topSellerStringValues = '<%= topSellerValue%>';
+        console.log(topSellerString);
+
+        const topSellerArrayValue = topSellerStringValues.split(',');
+        console.log(topSellerArrayValue);
+
+         // Top Revenue Chart
+        var topRevenueName = '<%= revenueProductName%>';
+        const topRevenueNameArray = topRevenueName.split(',');
+        
+
+        var topRevenueValue = '<%= revenueValue%>';
+        const topRevenueValueArray = topRevenueValue.split(',');
+
+         // Least Seller Chart
+        var leastSellerValuesString = '<%= leastSelectedValuesSold %>';
+        const leastSellerValuesArray = leastSellerValuesString.split(',');
+
+        var leastSellerNameString = '<%= leastSelectedValuesName %>';
+        const leastSellerNameArray = leastSellerNameString.split(',');
+
+        // Least Revenue Chart
+        var leastRevenueNameString = '<%= leastRevenueProductName %>';
+        const leastRevenueNameArray = leastRevenueNameString.split(',');
+
+        var leastRevenueValueString = '<%= leastRevenueValue %>';
+        const leastRevenueValueArray = leastRevenueValueString.split(',');
+                
+
         // Variables for the first bar chart
-        var labels1 = ['<%= lowStockName %>', 'Category 2', 'Category 3', 'Category 4', 'Category 5'];
-        var data1 = [20, 50, 20, 40, 60];
+
+        var option = "Least Seller";
+        var labels1;
+        var data1;
+        var LabelOfChart;
+        var color;
+        var lineColor;
+
+        if(option === "Bestseller"){
+
+                LabelOfChart = "Bestseller";
+
+                labels1 = topSellerArrayName;
+                data1 = topSellerArrayValue;
+                color = 'rgba(75, 192, 192, 0.2)';
+                lineColor = 'rgba(75, 192, 192, 1)';
+                
+
+        }else if(option === "Top Revenue"){
+
+                LabelOfChart = "Top Revenue";
+                
+                labels1 = topRevenueNameArray;
+                data1 = topRevenueValueArray;
+        
+                color = 'rgba(75, 192, 192, 0.2)';
+                lineColor = 'rgba(75, 192, 192, 1)';
     
+       
+        }else if(option === "Least Seller"){
+
+            LabelOfChart = "Least Seller";
+                
+                labels1 = leastSellerNameArray;
+                data1 = leastSellerValuesArray;
+
+                color = 'rgba(255, 99, 132, 0.2)';
+                lineColor = 'rgba(255, 99, 132, 1)';
+
+
+        }else if(option ==="Least Revenue"){
+
+            LabelOfChart = "Least Revenue";
+                
+                labels1 = leastRevenueNameArray;
+                data1 = leastRevenueValueArray;
+                color = 'rgba(255, 99, 132, 0.2)';
+                lineColor = 'rgba(255, 99, 132, 1)';
+
+        }
+        /*
         // Variables for the second bar chart
         var labels2 = ['Ballpen', 'Category B', 'Category C', 'Category D', 'Category E'];
-        var data2 = [15, 30, 45, 25, 55];
+        var data2 = [15, 30, 45, 25, 55];*/
     
         // Get the canvas element and its context
         var canvas = document.getElementById('myChart');
@@ -213,18 +298,20 @@
             data: {
                 labels: labels1,
                 datasets: [{
-                    label: '<%= lowStockName %>',
+                    label: LabelOfChart,
                     data: data1,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: color,
+                    borderColor: lineColor,
                     borderWidth: 1
-                }, {
+                }
+                
+                /*, {
                     label: 'Current Stock',
                     data: data2,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
-                }]
+                }*/]
             },
             options: {
                 scales: {

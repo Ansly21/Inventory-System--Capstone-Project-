@@ -367,6 +367,11 @@ app.get('/inventoryData', (req, res)=>{
             });
 */
 
+
+
+//working na pero may ttry lang 
+
+/*
 Inventory.find({ date: oneDayBefore })
   .then((result) => {
     if (result.length === 0) {
@@ -401,7 +406,53 @@ Inventory.find({ date: oneDayBefore })
   .catch((err) => {
     console.log(err);
   });
-            
+      
+  */
+
+
+  Inventory.find({ date: oneDayBefore })
+  .then((result) => {
+    if (result.length === 0) {
+      docuYesterdayExists = false;
+      console.log("walang ganyang docu");
+    } else {
+      resClosingInv = result[0].closingInventory;
+      docuYesterdayExists = true;
+      console.log("tama ka jan");
+    }
+
+    // Chain the second find operation here
+    return Inventory.find({ date: targetDate });
+  })
+  .then((result) => {
+    if (result.length === 0) {
+      docuTodayExists = false;
+      console.log("walang ganyang docu");
+    } else {
+      docuTodayExists = true;
+    }
+
+    // Now, add a Product.find operation here
+    return Product.find(); // You can add conditions if needed
+  })
+  .then((products) => {
+    // Assuming products is an array of Product documents
+    // Extract the startingInventory from the products as needed
+    const productStartingInventory = products.map(product => product.startingInventory);
+
+    // Now you have both resClosingInv, docuTodayExists, and productStartingInventory available
+    res.json({
+      startingInventory: resClosingInv,
+      docuTodayExists: docuTodayExists,
+      docuYesterdayExists: docuYesterdayExists,
+      productStartingInventory: productStartingInventory
+    });
+    console.log(resClosingInv);
+    console.log("tama ka jan");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 });
 
 
@@ -749,7 +800,7 @@ app.post('/inventory', async (req, res) =>{
 
 
   //BEST SELLER (BAR CHART)
-        const totalArrayValues = await getTotalArrayValues('numOfSold');
+        const totalArrayValues = await getTotalArrayValues1('numOfSold');
         console.log('Total sum of array values at the same index across all documents:', totalArrayValues); 
 
 
@@ -789,7 +840,125 @@ app.post('/inventory', async (req, res) =>{
 //LowStockThreshold
 
 
+//Top Revenue
 
+const allUnitPrices = await getAllAttributeValues('unitPrice');
+console.log('Array of their unit prices', allUnitPrices);
+
+
+console.log(totalArrayValues);
+
+const revenue = multiplyArrays(allUnitPrices, totalArrayValues );
+
+console.log('unit price * numOfSold (revenue)', revenue);
+
+// Create an array of objects with value and index
+const indexedArray = revenue.map((value, index) => ({ value, index }));
+
+// Sort the array based on values in descending order
+indexedArray.sort((a, b) => b.value - a.value);
+
+// Extract the indices of the top 5 highest values
+const top5Indices = indexedArray.slice(0, 5).map(item => item.index);
+
+console.log('index of top 5 revenue', top5Indices);
+
+
+const revenueProductName = getValuesAtIndices(allProductNames, top5Indices);
+const revenueValue = getValuesAtIndices(revenue, top5Indices);
+
+
+console.log("Total Revenue composes of:");
+console.log(revenueProductName);
+console.log(revenueValue);
+
+
+
+function multiplyArrays(arr1, arr2) {
+  // Check if the arrays have the same length
+  if (arr1.length !== arr2.length) {
+    throw new Error('Arrays must have the same length for element-wise multiplication');
+  }
+
+  // Perform element-wise multiplication
+  const resultArray = arr1.map((value, index) => value * arr2[index]);
+
+  return resultArray;
+
+}
+
+
+// LEAST SELLER (BAR CHART)
+const leastTotalArrayValues = await getTotalArrayValues1('numOfSold');
+console.log('Total sum of array values at the same index across all documents:', leastTotalArrayValues);
+
+// Find the indices with the bottom 5 values
+const leastBottomIndices = getLeastBottomIndices(leastTotalArrayValues, 5);
+console.log('Bottom 5 indices with the lowest values:', leastBottomIndices);
+
+function getLeastBottomIndices(array, count) {
+  const indicesWithValues = array.map((value, index) => ({ value, index }));
+  indicesWithValues.sort((a, b) => a.value - b.value); // Sort in ascending order
+  const leastBottomIndices = indicesWithValues.slice(0, count).map(item => item.index);
+  return leastBottomIndices;
+}
+
+const leastProductNames = await getMostRecentAttributeValue('productName');
+console.log('Array of productNames', leastProductNames);
+
+// Get values from leastTotalArrayValues at the specified indices
+const leastSelectedValuesSold = getValuesAtIndices(leastTotalArrayValues, leastBottomIndices);
+const leastSelectedValuesName = getValuesAtIndices(leastProductNames, leastBottomIndices);
+
+// Output the selected values
+console.log(leastSelectedValuesName);
+console.log(leastSelectedValuesSold);
+
+function getValuesAtIndices(array, indices) {
+  return indices.map(index => array[index]);
+}
+
+
+// LEAST Revenue
+
+const leastAllUnitPrices = await getAllAttributeValues('unitPrice');
+console.log('Array of their unit prices', leastAllUnitPrices);
+
+console.log(leastTotalArrayValues);
+
+const leastRevenue = multiplyArrays(leastAllUnitPrices, leastTotalArrayValues);
+
+console.log('unit price * numOfSold (revenue)', leastRevenue);
+
+// Create an array of objects with value and index
+const leastIndexedArray = leastRevenue.map((value, index) => ({ value, index }));
+
+// Sort the array based on values in ascending order
+leastIndexedArray.sort((a, b) => a.value - b.value);
+
+// Extract the indices of the bottom 5 lowest values
+const leastBottom5Indices = leastIndexedArray.slice(0, 5).map(item => item.index);
+
+console.log('index of bottom 5 revenue', leastBottom5Indices);
+
+const leastRevenueProductName = getValuesAtIndices(leastProductNames, leastBottom5Indices);
+const leastRevenueValue = getValuesAtIndices(leastRevenue, leastBottom5Indices);
+
+console.log("Least Revenue composes of:");
+console.log(leastRevenueProductName);
+console.log(leastRevenueValue);
+
+function multiplyArrays(arr1, arr2) {
+  // Check if the arrays have the same length
+  if (arr1.length !== arr2.length) {
+    throw new Error('Arrays must have the same length for element-wise multiplication');
+  }
+
+  // Perform element-wise multiplication
+  const resultArray = arr1.map((value, index) => value * arr2[index]);
+
+  return resultArray;
+}
         
 
 
@@ -813,7 +982,21 @@ app.post('/inventory', async (req, res) =>{
       //LowStockChart
       lowStockName: selectedNameStock,
       closingInv: selectedClosingInv,
-      lowStockThreshold : selectedLowStock
+      lowStockThreshold : selectedLowStock,
+
+      //RevenueChart
+      revenueProductName: revenueProductName,
+      revenueValue: revenueValue,
+
+      //LeastSellerChart
+      leastSelectedValuesSold: leastSelectedValuesSold,
+      leastSelectedValuesName: leastSelectedValuesName,
+
+      //LeastRevenueChart
+      leastRevenueProductName: leastRevenueProductName,
+      leastRevenueValue: leastRevenueValue
+
+
       
     //  mostRecentDocument: mostRecentDocument,
       // Add other values here
@@ -889,6 +1072,37 @@ async function getTotalArrayValues(arrayAttributeName) {
 
       documents.forEach(doc => {
         doc[arrayAttributeName].forEach((value, index) => {
+          totalArray[index] += value;
+        });
+      });
+
+      return totalArray;
+    } else {
+      // Handle the case where no documents are found
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
+async function getTotalArrayValues1(arrayAttributeName) {
+  try {
+    const documents = await Inventory.find({}); // Replace 'YourModel' with the actual name of your Mongoose model
+
+    if (documents.length > 0) {
+      // Find the maximum length among all arrays
+      const maxLength = Math.max(...documents.map(doc => doc[arrayAttributeName].length));
+
+      // Initialize totalArray with zeros
+      const totalArray = Array.from({ length: maxLength }, () => 0);
+
+      documents.forEach(doc => {
+        const docArray = doc[arrayAttributeName];
+
+        // Add the corresponding elements, padded with zeros if necessary
+        docArray.forEach((value, index) => {
           totalArray[index] += value;
         });
       });
