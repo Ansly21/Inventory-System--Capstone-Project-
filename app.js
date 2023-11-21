@@ -984,6 +984,18 @@ function multiplyArrays(arr1, arr2) {
       .select('code -_id');
       const leastSellerCodes = leastSellerProductCode.map(obj => obj.code);
 
+      //CODE OF PRODUCT IN TOP REVENUE
+      let topRevenueString = revenueProductName;
+      const topRevenueProductCode = await Product.find({ productName: { $in: topRevenueString } })
+      .select('code -_id');
+      const topRevenueCodes = topRevenueProductCode.map(obj => obj.code);
+
+      //CODE OF PRODUCT IN LEAST REVENUE
+      let leastRevenueString = leastRevenueProductName;
+      const leastRevenueProductCode = await Product.find({ productName: { $in: leastRevenueString } })
+      .select('code -_id');
+      const leastRevenueCodes = leastRevenueProductCode.map(obj => obj.code);
+
 
     // Now, render the view with the required values
     res.render('Reports(admin)', {
@@ -1009,6 +1021,7 @@ function multiplyArrays(arr1, arr2) {
       //RevenueChart
       revenueProductName: revenueProductName,
       revenueValue: revenueValue,
+      topRevenueCodes: [topRevenueCodes],
 
       //LeastSellerChart
       leastSelectedValuesSold: leastSelectedValuesSold,
@@ -1016,7 +1029,8 @@ function multiplyArrays(arr1, arr2) {
 
       //LeastRevenueChart
       leastRevenueProductName: leastRevenueProductName,
-      leastRevenueValue: leastRevenueValue
+      leastRevenueValue: leastRevenueValue,
+      leastRevenueCodes: [leastRevenueCodes],
 
 
       

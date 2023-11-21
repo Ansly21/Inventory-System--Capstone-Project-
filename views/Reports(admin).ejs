@@ -82,9 +82,7 @@
                     </div>
                 </div>
             </section>
-
            
-
             <select name="" id="selectOptions" class="selectOptions">
                 <option value="sample">Choose</option>
                 <option value="lowstock">Low Stock</option>
@@ -161,6 +159,17 @@ var option;
    let bestSellerCodeArray = '<%= bestSellerCodes %>'.split(',')
    
    let leastSellerCodeArray = '<%= leastSellerCodes %>'.split(',')
+
+   //TOP REVENUE
+    let topRevenueCode = '<%= topRevenueCodes %>'.split(',')
+    let topRevenueNames =  '<%= revenueProductName %>'.split(',')
+    let topRevenueValues =  '<%= revenueValue %>'.split(',')
+
+    //LEAST REVENUE
+    let leastRevenueCode = '<%= leastRevenueCodes %>'.split(',')
+    let leastRevenueNames =  '<%= leastRevenueProductName %>'.split(',')
+    let leastRevenueValues =  '<%= leastRevenueValue %>'.split(',')
+
         
     document.getElementById("selectOptions").addEventListener("change", () => {
     console.log("Dropdown selection changed"); // Check if this log appears in the console
@@ -220,16 +229,35 @@ var option;
         // Append the download button after the table
         tableContainer.appendChild(downloadContainer);
 
-        window.jsPDF = window.jspdf.jsPDF;
-        document.getElementById("downloadBtn").addEventListener("click", () => {
-        const doc = new jsPDF();
+window.jsPDF = window.jspdf.jsPDF;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const doc = new jsPDF();
 
-        // Convert table to PDF format
-        doc.autoTable({ html: '#report-table' });
+    // Set font size for the table content and caption
+    const fontSize = 20; // Change this value to adjust the font size for the table
+    const captionFontSize = 30; // Change this value to adjust the caption font size
 
-        // Save the PDF file
-        doc.save('table.pdf');
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    // Convert table to PDF format with adjusted font size
+    doc.autoTable({ html: '#report-table', styles: styles });
+
+    // Add caption to the PDF and center it horizontally
+    const captionText = "LOW STOCK TABLE";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize); // Set the caption font size
+    doc.text(captionText, textOffset, 10); // Centered caption position
+
+    // Save the PDF file
+    doc.save('table.pdf');
 });
+
 
 
     } else if (document.getElementById("selectOptions").value === "leastSeller") {
@@ -277,16 +305,36 @@ var option;
         // Append the download button after the table
         tableContainer.appendChild(downloadContainer);
 
-        window.jsPDF = window.jspdf.jsPDF;
-        document.getElementById("downloadBtn").addEventListener("click", () => {
-        const doc = new jsPDF();
 
-        // Convert table to PDF format
-        doc.autoTable({ html: '#report-table' });
+window.jsPDF = window.jspdf.jsPDF;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const doc = new jsPDF();
 
-        // Save the PDF file
-        doc.save('table.pdf');
+    // Set font size for the table content and caption
+    const fontSize = 20; // Change this value to adjust the font size for the table
+    const captionFontSize = 30; // Change this value to adjust the caption font size
+
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    // Convert table to PDF format with adjusted font size
+    doc.autoTable({ html: '#report-table', styles: styles });
+
+    // Add caption to the PDF and center it horizontally
+    const captionText = "LEAST SELLER TABLE";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize); // Set the caption font size
+    doc.text(captionText, textOffset, 10); // Centered caption position
+
+    // Save the PDF file
+    doc.save('table.pdf');
 });
+
     } else if (document.getElementById("selectOptions").value === "bestSeller") {
         const bestSellerName = topSellerArrayName;
         const bestSellerValue = topSellerArrayValue;
@@ -332,17 +380,189 @@ var option;
         // Append the download button after the table
         tableContainer.appendChild(downloadContainer);
 
-        window.jsPDF = window.jspdf.jsPDF;
-        document.getElementById("downloadBtn").addEventListener("click", () => {
-        const doc = new jsPDF();
 
-        // Convert table to PDF format
-        doc.autoTable({ html: '#report-table' });
+window.jsPDF = window.jspdf.jsPDF;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const doc = new jsPDF();
 
-        // Save the PDF file
-        doc.save('table.pdf');
+    // Set font size for the table content and caption
+    const fontSize = 20; // Change this value to adjust the font size for the table
+    const captionFontSize = 30; // Change this value to adjust the caption font size
+
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    // Convert table to PDF format with adjusted font size
+    doc.autoTable({ html: '#report-table', styles: styles });
+
+    // Add caption to the PDF and center it horizontally
+    const captionText = "BEST SELLER TABLE";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize); // Set the caption font size
+    doc.text(captionText, textOffset, 10); // Centered caption position
+
+    // Save the PDF file
+    doc.save('table.pdf');
 });
-    }
+
+    } else if (document.getElementById("selectOptions").value === "topRevenue") {
+        const topRC = topRevenueCode;
+        const topRN = topRevenueNames;
+        const topRV = topRevenueValues;
+
+            const tableContainer = document.getElementById('table-container');
+            const table = document.createElement('table');
+            table.id = "report-table"
+            table.innerHTML = `
+                <caption>Top Revenue Table</caption>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Value</th>
+                </tr>
+            `;
+
+            topRC.forEach((item, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+                <td>${topRC[index]}</td>
+                    <td>${topRN[index]}</td>
+                    <td>${topRV[index]}</td>
+                `;
+                
+                table.appendChild(row);
+
+            });
+
+            // Clear previous table, if any, and append the new table
+            tableContainer.innerHTML = '';
+            tableContainer.appendChild(table);
+
+
+            // ... your previous code for displaying the table
+
+        // Create the download button
+        const downloadContainer = document.createElement('div');
+        downloadContainer.classList.add('download-container');
+        downloadContainer.innerHTML = `
+            <button id="downloadBtn">Download as PDF</button>
+        `;
+
+        // Append the download button after the table
+        tableContainer.appendChild(downloadContainer);
+
+
+    window.jsPDF = window.jspdf.jsPDF;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const doc = new jsPDF();
+
+    // Set font size for the table content and caption
+    const fontSize = 20; // Change this value to adjust the font size for the table
+    const captionFontSize = 30; // Change this value to adjust the caption font size
+
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    // Convert table to PDF format with adjusted font size
+    doc.autoTable({ html: '#report-table', styles: styles });
+
+    // Add caption to the PDF and center it horizontally
+    const captionText = "TOP REVENUE TABLE";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize); // Set the caption font size
+    doc.text(captionText, textOffset, 10); // Centered caption position
+
+    // Save the PDF file
+    doc.save('table.pdf');
+});
+
+        } else if (document.getElementById("selectOptions").value === "leastRevenue") {
+          //LEAST REVENUE
+        let LRC = leastRevenueCode
+        let LRN =  leastRevenueNames
+        let LRV =  leastRevenueValues
+
+
+            const tableContainer = document.getElementById('table-container');
+            const table = document.createElement('table');
+            table.id = "report-table"
+            table.innerHTML = `
+                <caption>Least Revenue Table</caption>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Value</th>
+                </tr>
+            `;
+
+            LRN.forEach((item, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+                <td>${LRC[index]}</td>
+                    <td>${LRN[index]}</td>
+                    <td>${LRV[index]}</td>
+                `;
+                
+                table.appendChild(row);
+
+            });
+
+            // Clear previous table, if any, and append the new table
+            tableContainer.innerHTML = '';
+            tableContainer.appendChild(table);
+
+
+            // ... your previous code for displaying the table
+
+        // Create the download button
+        const downloadContainer = document.createElement('div');
+        downloadContainer.classList.add('download-container');
+        downloadContainer.innerHTML = `
+            <button id="downloadBtn">Download as PDF</button>
+        `;
+
+        // Append the download button after the table
+        tableContainer.appendChild(downloadContainer);
+        window.jsPDF = window.jspdf.jsPDF;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const doc = new jsPDF();
+
+    // Set font size for the table content and caption
+    const fontSize = 20; // Change this value to adjust the font size for the table
+    const captionFontSize = 30; // Change this value to adjust the caption font size
+
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    // Convert table to PDF format with adjusted font size
+    doc.autoTable({ html: '#report-table', styles: styles });
+
+    // Add caption to the PDF and center it horizontally
+    const captionText = "LEAST REVENUE TABLE";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize); // Set the caption font size
+    doc.text(captionText, textOffset, 10); // Centered caption position
+
+    // Save the PDF file
+    doc.save('table.pdf');
+});
+
+     }
 });
 
 
