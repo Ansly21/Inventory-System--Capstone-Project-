@@ -125,7 +125,7 @@ function parseJwt (token) {
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
-            accBtn.style.display = "flex"
+            accBtn.style.display = "block"
         } else {
             console.log("Employee")
             accBtn.style.display = "none"
@@ -653,7 +653,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
                     data: data1,
                     backgroundColor: color,
                     borderColor: lineColor,
-                    borderWidth: 1
+                    borderWidth: 1,
                 }]
             },
             options: {

@@ -194,7 +194,7 @@ function parseJwt (token) {
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
-            accBtn.style.display = "flex"
+            accBtn.style.display = "block"
         } else {
             console.log("Employee")
             accBtn.style.display = "none"
