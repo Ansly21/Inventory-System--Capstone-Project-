@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <header>
+    <header id="header">
         <div class="image">
             <a href="/">
                 <img src="/Six7TwoLogo.png" alt="">
@@ -21,7 +21,7 @@
 
   
 
-    <main>
+    <main id="main">
 
         <div class="nav">
             <a href="/products">
@@ -114,6 +114,34 @@
 </form>
 
     <script>
+
+        //FOR DECODING JWT TOKEN AFTER LOGGING IN
+function parseJwt (token) { 
+        var base64Url = token.split('.')[1];
+        var base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(base64);
+}
+
+
+    let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    console.log(accType)
+    if (localStorage.getItem("TOKEN")) {
+        if (accType === "Admin") {
+
+        } else {
+            alert("You don't have permission to access this page.");
+            document.getElementById("header").style.display = "none"
+            document.getElementById("main").style.display = "none"
+            window.history.back();
+
+        }
+    }
+
+
+
         const form = document.getElementById('reg-form')
         form.addEventListener('submit', registerUser)
      
@@ -163,5 +191,7 @@
         }
   }
     </script>
+
+    
 </body>
 </html>
