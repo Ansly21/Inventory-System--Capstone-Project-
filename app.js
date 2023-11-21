@@ -16,6 +16,7 @@ const Inventory = require('./models/inventory');
 const User = require('./models/user');
 const { MongoDBCollectionNamespace } = require('mongodb');
 
+
 //Set EJS as the View engine
 app.set('view engine', 'ejs');
 
@@ -130,11 +131,13 @@ app.post('/', async(req, res)=>{
 app.get('/account', async(req, res)=>{
     try {
         const users = await User.find({})
+
         res.render('AccManagement(admin)', {users, title: 'Account Management'});
     } catch (err) {
         console.error(err)
         res.status(500).send('Internal server error')
     }
+
  })
 
 
@@ -717,6 +720,8 @@ app.post('/inventory', async (req, res) =>{
     const totalProducts = await getProductCount();
     console.log(`Number of documents in the collection: ${totalProducts}`);
 
+  
+    
 
 
     //LowStock
@@ -959,12 +964,26 @@ function multiplyArrays(arr1, arr2) {
 
   return resultArray;
 }
-        
 
+  //CODE OF PRODUCT IN LOW STOCK
+  let productNamesString = selectedNameStock;
+  const lowstockProductCode = await Product.find({ productName: { $in: productNamesString } })
+  .select('code -_id');
+  const lowStockCodes = lowstockProductCode.map(obj => obj.code);
+  
 
+    //CODE OF PRODUCT IN BEST SELLER
+    let bestSellerString = selectedValuesName;
+    const bestSellerProductCode = await Product.find({ productName: { $in: bestSellerString } })
+    .select('code -_id');
+    const bestSellerCodes = bestSellerProductCode.map(obj => obj.code);
 
+      //CODE OF PRODUCT IN LEAST SELLER
+      let leastSellerString = leastSelectedValuesName;
+      const leastSellerProductCode = await Product.find({ productName: { $in: leastSellerString } })
+      .select('code -_id');
+      const leastSellerCodes = leastSellerProductCode.map(obj => obj.code);
 
-    // Add other logic or operations here
 
     // Now, render the view with the required values
     res.render('Reports(admin)', {
@@ -983,6 +1002,9 @@ function multiplyArrays(arr1, arr2) {
       lowStockName: selectedNameStock,
       closingInv: selectedClosingInv,
       lowStockThreshold : selectedLowStock,
+      lowStockCodes: [lowStockCodes],
+      bestSellerCodes: bestSellerCodes,
+      leastSellerCodes: leastSellerCodes,
 
       //RevenueChart
       revenueProductName: revenueProductName,

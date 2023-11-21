@@ -83,6 +83,7 @@
                 </div>
             </section>
 
+           
 
             <select name="" id="selectOptions" class="selectOptions">
                 <option value="sample">Choose</option>
@@ -100,7 +101,8 @@
             </div>
         </div>
 
-    
+        <div id="productCodeElement"><%= lowStockCodes[0].code %></div>
+
     </main>
 
 
@@ -108,6 +110,12 @@
     <canvas id="myChart" width="60" height="15"></canvas>
 
     <script>
+
+
+
+let productCodeValue =document.getElementById('productCodeElement').innerText;
+
+
 
 var option;
 
@@ -126,6 +134,11 @@ var option;
     let topSellerValueArray = '<%= topSellerValue %>'.split(',')
 
 
+   let productCode = '<%= lowStockCodes %>'.split(',')
+
+   let bestSellerCodeArray = '<%= bestSellerCodes %>'.split(',')
+   
+   let leastSellerCodeArray = '<%= leastSellerCodes %>'.split(',')
         
     document.getElementById("selectOptions").addEventListener("change", () => {
     console.log("Dropdown selection changed"); // Check if this log appears in the console
@@ -135,8 +148,6 @@ var option;
 
     // Rest of your code for generating the table...
 });
-
- 
 
     document.getElementById("selectOptions").addEventListener("change", () => {
         if (document.getElementById("selectOptions").value === "lowstock") {
@@ -158,18 +169,17 @@ var option;
                 </tr>
             `;
 
-            lowStockName.forEach((item, index) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${item}</td>
-                    <td>${closingInv[index]}</td>
-                    <td>${lowStockThreshold[index]}</td>
-                `;
-                
-                table.appendChild(row);
+          for (let index = 0; index < lowStockName.length; index++) {
+    const row = table.insertRow();
+    row.innerHTML = `
+        <td>${productCode[index]}</td>
+        <td>${lowStockName[index]}</td>
+        <td>${closingInv[index]}</td>
+        <td>${lowStockThreshold[index]}</td>
+    `;
 
-            });
+    table.appendChild(row);
+}
 
             // Clear previous table, if any, and append the new table
             tableContainer.innerHTML = '';
@@ -219,7 +229,7 @@ var option;
             leastSellerName.forEach((item, index) => {
                 const row = table.insertRow();
                 row.innerHTML = `
-                    <td>${index + 1}</td>
+                <td>${leastSellerCodeArray[index]}</td>
                     <td>${item}</td>
                     <td>${leastSellerValue[index]}</td>
                 `;
@@ -263,7 +273,7 @@ var option;
             const table = document.createElement('table');
             table.id = "report-table"
             table.innerHTML = `
-                <caption>Least Seller Table</caption>
+                <caption>Best Seller Table</caption>
                 <tr>
                     <th>Code</th>
                     <th>Product Name</th>
@@ -274,7 +284,7 @@ var option;
             bestSellerName.forEach((item, index) => {
                 const row = table.insertRow();
                 row.innerHTML = `
-                    <td>${index + 1}</td>
+                    <td>${bestSellerCodeArray[index]}</td>
                     <td>${item}</td>
                     <td>${bestSellerValue[index]}</td>
                 `;
