@@ -100,8 +100,7 @@
             </div>
         </div>
 
-       
-        
+    
     </main>
 
 
@@ -113,16 +112,22 @@
 var option;
 
     //TABLE CODE
-
-
-
+    //CONVERT LOW STOCK DATA TO ARRAYS    
     let lowStockNameArray = '<%= lowStockName %>'.split(',');
     let closingInvArray = '<%= closingInv %>'.split(',');
     let lowStockThresholdArray = '<%= lowStockThreshold %>'.split(',');
     
-      
+    //CONVERT LEAST SELLER DATA TO ARRAYS
+    let leastSelectedSoldArray = '<%= leastSelectedValuesSold %>'.split(',')
+    let leastSelectedNameArray = '<%= leastSelectedValuesName %>'.split(',')
+
+    //CONVERT TOP SELLER DATA TO ARRAYS
+    let topSellerNameArray = '<%= topSellerName %>'.split(',')
+    let topSellerValueArray = '<%= topSellerValue %>'.split(',')
+
+
         
-        document.getElementById("selectOptions").addEventListener("change", () => {
+    document.getElementById("selectOptions").addEventListener("change", () => {
     console.log("Dropdown selection changed"); // Check if this log appears in the console
     // option = document.getElementById("selectOptions").value
     //console.log(option);
@@ -185,17 +190,128 @@ var option;
 
         window.jsPDF = window.jspdf.jsPDF;
         document.getElementById("downloadBtn").addEventListener("click", () => {
-  const doc = new jsPDF();
+        const doc = new jsPDF();
 
-  // Convert table to PDF format
-  doc.autoTable({ html: '#report-table' });
+        // Convert table to PDF format
+        doc.autoTable({ html: '#report-table' });
 
-  // Save the PDF file
-  doc.save('table.pdf');
+        // Save the PDF file
+        doc.save('table.pdf');
 });
 
 
-    }});
+    } else if (document.getElementById("selectOptions").value === "leastSeller") {
+        const leastSellerName = leastSelectedNameArray;
+        const leastSellerValue = leastSelectedSoldArray;
+
+            const tableContainer = document.getElementById('table-container');
+            const table = document.createElement('table');
+            table.id = "report-table"
+            table.innerHTML = `
+                <caption>Least Seller Table</caption>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Value</th>
+                </tr>
+            `;
+
+            leastSellerName.forEach((item, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item}</td>
+                    <td>${leastSellerValue[index]}</td>
+                `;
+                
+                table.appendChild(row);
+
+            });
+
+            // Clear previous table, if any, and append the new table
+            tableContainer.innerHTML = '';
+            tableContainer.appendChild(table);
+
+
+            // ... your previous code for displaying the table
+
+        // Create the download button
+        const downloadContainer = document.createElement('div');
+        downloadContainer.classList.add('download-container');
+        downloadContainer.innerHTML = `
+            <button id="downloadBtn">Download as PDF</button>
+        `;
+
+        // Append the download button after the table
+        tableContainer.appendChild(downloadContainer);
+
+        window.jsPDF = window.jspdf.jsPDF;
+        document.getElementById("downloadBtn").addEventListener("click", () => {
+        const doc = new jsPDF();
+
+        // Convert table to PDF format
+        doc.autoTable({ html: '#report-table' });
+
+        // Save the PDF file
+        doc.save('table.pdf');
+});
+    } else if (document.getElementById("selectOptions").value === "bestSeller") {
+        const bestSellerName = topSellerArrayName;
+        const bestSellerValue = topSellerArrayValue;
+
+            const tableContainer = document.getElementById('table-container');
+            const table = document.createElement('table');
+            table.id = "report-table"
+            table.innerHTML = `
+                <caption>Least Seller Table</caption>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>QTY Sold</th>
+                </tr>
+            `;
+
+            bestSellerName.forEach((item, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item}</td>
+                    <td>${bestSellerValue[index]}</td>
+                `;
+                
+                table.appendChild(row);
+
+            });
+
+            // Clear previous table, if any, and append the new table
+            tableContainer.innerHTML = '';
+            tableContainer.appendChild(table);
+
+
+            // ... your previous code for displaying the table
+
+        // Create the download button
+        const downloadContainer = document.createElement('div');
+        downloadContainer.classList.add('download-container');
+        downloadContainer.innerHTML = `
+            <button id="downloadBtn">Download as PDF</button>
+        `;
+
+        // Append the download button after the table
+        tableContainer.appendChild(downloadContainer);
+
+        window.jsPDF = window.jspdf.jsPDF;
+        document.getElementById("downloadBtn").addEventListener("click", () => {
+        const doc = new jsPDF();
+
+        // Convert table to PDF format
+        doc.autoTable({ html: '#report-table' });
+
+        // Save the PDF file
+        doc.save('table.pdf');
+});
+    }
+});
 
 
 
