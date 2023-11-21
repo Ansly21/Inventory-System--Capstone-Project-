@@ -1017,7 +1017,7 @@ function multiplyArrays(arr1, arr2) {
 // Function to get product count
 async function getProductCount() {
   try {
-    const count = await Product.countDocuments({});
+    const count = await Product.countDocuments({ status: 1 });
     return count;
   } catch (error) {
     console.error(error);
