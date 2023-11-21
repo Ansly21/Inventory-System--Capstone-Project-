@@ -85,7 +85,7 @@
                     <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.unitPrice %>"></td> 
                     <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>"></td>
                     <td><input type="number" contenteditable="true" name = "startingInventory[]"  value="<%= product.startingInventory %>"></td>
-                    <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"></td>
+                    <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"  onchange="handleStatusChange(this)"></td>
                   
             
                    <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td>
@@ -333,6 +333,25 @@
 
 
         }
+
+        function handleStatusChange(input) {
+        // Get the row of the changed input
+        var row = input.parentNode.parentNode;
+
+        // Get the value of the status input
+        var statusValue = input.value;
+
+        // If the status is changed to 0, set other columns (except code and productName) to 0
+        if (statusValue === '0') {
+            // Get all the input elements in the row
+            var inputs = row.querySelectorAll('input[name^="unitCost"], input[name^="unitPrice"], input[name^="lowStockThreshold"], input[name^="startingInventory"]');
+            
+            // Set the value of each input to 0
+            inputs.forEach(function (input) {
+                input.value = '0';
+            });
+        }
+    }
 
        
 
