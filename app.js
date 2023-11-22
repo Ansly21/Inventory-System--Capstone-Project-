@@ -37,7 +37,7 @@ app.use(express.static(path.join('public'))) //USE files in 'public' folder
 //ESTABLISHING MONGODB NODESERVER CONNECTION(CHECK .env file). Enter "npm start" or "node app" to run app.js
 //mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
 //connect to mongodb
- const dburi = 'mongodb+srv://dababies:letsgo123@six7twoinventorysystem.lij0pnd.mongodb.net/Six7TwoInventorySystem?retryWrites=true&w=majority';
+ const dburi = 'mongodb+srv://serverhost:serverhosttest@cluster0.psc0scx.mongodb.net/InventorySystem?retryWrites=true&w=majority  ';
 mongoose.connect(dburi, {useNewUrlParser: true, useUnifiedTopology: true} )
     .then((result)=> console.log ('connected na sa db'))
     .catch((err) => console.log(err));
@@ -735,14 +735,19 @@ app.post('/inventory', async (req, res) =>{
 
     let count = 0;
     let indexesArray = []; // Array to store indexes when the condition is true
-
-    if (mostRecentAttributeValue.length === allAttributeValues.length) {
-      for (let i = 0; i < mostRecentAttributeValue.length; i++) {
-        if (mostRecentAttributeValue[i] < allAttributeValues[i]) {
-          count++;
-          indexesArray.push(i); // Add the index to the array
+    
+    if (allAttributeValues & mostRecentAttributeValue) {
+      if (mostRecentAttributeValue.length === allAttributeValues.length) {
+        for (let i = 0; i < mostRecentAttributeValue.length; i++) {
+          if (mostRecentAttributeValue[i] < allAttributeValues[i]) {
+            count++;
+            indexesArray.push(i); // Add the index to the array
+          }
         }
       }
+    } else {
+      // Handle the case where allAttributeValues is not available
+      console.log('allAttributeValues is not available');
     }
     
     console.log('Count of values where closingInv < low stock threshold:', count);
@@ -815,14 +820,18 @@ app.post('/inventory', async (req, res) =>{
         const topIndices = getTopIndices(totalArrayValues, 5);
 
         console.log('Top 5 indices with the highest values:', topIndices);
-
         function getTopIndices(array, count) {
+          if (!Array.isArray(array)) {
+            console.log('Array is not available or invalid');
+            return []; // Return an empty array or handle the situation accordingly
+          }
+        
           const indicesWithValues = array.map((value, index) => ({ value, index }));
           indicesWithValues.sort((a, b) => b.value - a.value); // Sort in descending order
           const topIndices = indicesWithValues.slice(0, count).map(item => item.index);
           return topIndices;
         }
-
+        
 
         const allProductNames = await getMostRecentAttributeValue('productName');
         console.log('array of productNames', allProductNames);
@@ -902,11 +911,17 @@ const leastBottomIndices = getLeastBottomIndices(leastTotalArrayValues, 5);
 console.log('Bottom 5 indices with the lowest values:', leastBottomIndices);
 
 function getLeastBottomIndices(array, count) {
+  if (!Array.isArray(array)) {
+    console.log('Array is not available or invalid');
+    return []; // Return an empty array or handle the situation accordingly
+  }
+
   const indicesWithValues = array.map((value, index) => ({ value, index }));
   indicesWithValues.sort((a, b) => a.value - b.value); // Sort in ascending order
   const leastBottomIndices = indicesWithValues.slice(0, count).map(item => item.index);
   return leastBottomIndices;
 }
+
 
 const leastProductNames = await getMostRecentAttributeValue('productName');
 console.log('Array of productNames', leastProductNames);
@@ -954,6 +969,11 @@ console.log(leastRevenueProductName);
 console.log(leastRevenueValue);
 
 function multiplyArrays(arr1, arr2) {
+  if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
+    console.log('Arrays are not available or invalid');
+    return []; // Return an empty array or handle the situation accordingly
+  }
+
   // Check if the arrays have the same length
   if (arr1.length !== arr2.length) {
     throw new Error('Arrays must have the same length for element-wise multiplication');
@@ -964,6 +984,7 @@ function multiplyArrays(arr1, arr2) {
 
   return resultArray;
 }
+
 
   //CODE OF PRODUCT IN LOW STOCK
   let productNamesString = selectedNameStock;
