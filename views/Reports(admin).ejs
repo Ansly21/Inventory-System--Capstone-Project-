@@ -6,6 +6,10 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/shopping-cart.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/danger.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/chart.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
@@ -31,21 +35,27 @@
     <main>
         <div class="nav">
             <a href="/products">
-                <button>Products</button>
+                <button>
+                    Products<i class="gg-pen"></i>
+                </button>
             </a>
 
             <a href="/inventory">
-                <button>Inventory</button>
+                <button>
+                        Inventory
+                        <i class="gg-copy"></i>
+                </button>
             </a>
 
             <a href="/reports">
-                <button class="page-btn">Reports</button>
+                <button class="page-btn">Reports<i class="gg-chart"></i></button>
             </a>
 
             <a href="account">
-                <button id="accBtn">Accounts</button>
+                <button id="accBtn">Accounts<i class="gg-smile"></i></button>
             </a>
         </div>
+
 
 
         <div class="right-side">
@@ -120,19 +130,10 @@ function parseJwt (token) {
     return JSON.parse(base64);
 }
 
-    let accBtn = document.getElementById("accBtn")
-    let accType = parseJwt(localStorage.getItem("TOKEN")).type
-    console.log(accType)
-    if (localStorage.getItem("TOKEN")) {
-        if (accType === "Admin") {
-            accBtn.style.display = "block"
-        } else {
-            console.log("Employee")
-            accBtn.style.display = "none"
-        }
-    }
 
+  
 
+    
 let productCodeValue =document.getElementById('productCodeElement').innerText;
 
 
@@ -773,6 +774,19 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     
         // Get the canvas element and its context
        
+        let accBtn = document.getElementById("accBtn")
+    let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    console.log(accType)
+    if (localStorage.getItem("TOKEN")) {
+        if (accType === "Admin") {
+            accBtn.style.display = "block"
+        } else {
+            console.log("Employee")
+            accBtn.style.display = "none"
+        }
+    }
+
+    
     </script>
     
 </body>

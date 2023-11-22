@@ -23,8 +23,7 @@ header {
 .test {
     background: white;
     display: flex;
-    width: 300px;
-    height: 200px;
+    padding: 3rem;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
@@ -46,7 +45,6 @@ header {
     gap: 1rem;
 
 }
-
 
 .test h2 {
     margin-right: 1.3rem;
@@ -148,7 +146,6 @@ button {
   transform: scale(1.05); /* Slightly scale up the element */
 }
 
-
 a {
     margin: 0 auto;
     text-decoration: none;
@@ -186,14 +183,14 @@ a {
 }
 
 #started{
-    font-size: 3rem;
+    font-size: 2.5rem;
 }
+
 
 @media (max-width: 800px) {
     :root {
         font-size: 0.6rem;
     }
-
 
     header {
         margin-bottom: 1rem;
@@ -210,5 +207,9 @@ a {
 
     .login h2 {
         margin-bottom: 2rem;
+    }
+
+    .ud {
+        justify-content: center;
     }
 }

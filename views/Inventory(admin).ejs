@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/chart.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
     <title>Inventory (Admin)</title>
     <link rel="stylesheet" href="/Inventory (Admin).css">
 </head>
@@ -23,21 +27,27 @@
 
         <div class="nav">
             <a href="/products">
-                <button>Products</button>
+                <button>
+                    Products<i class="gg-pen"></i>
+                </button>
             </a>
 
             <a href="/inventory">
-                <button class="page-btn">Inventory</button>
+                <button  class="page-btn">
+                        Inventory
+                        <i class="gg-copy"></i>
+                </button>
             </a>
 
             <a href="/reports">
-                <button>Reports</button>
+                <button>Reports<i class="gg-chart"></i></button>
             </a>
 
             <a href="account">
-                <button id="accBtn">Accounts</button>
+                <button id="accBtn">Accounts<i class="gg-smile"></i></button>
             </a>
         </div>
+
 
 
 
@@ -244,18 +254,7 @@ function parseJwt (token) {
     return JSON.parse(base64);
 }
 
-    let accBtn = document.getElementById("accBtn")
-    let accType = parseJwt(localStorage.getItem("TOKEN")).type
-    console.log(accType)
-    if (localStorage.getItem("TOKEN")) {
-        if (accType === "Admin") {
-            accBtn.style.display = "block"
-        } else {
-            console.log("Employee")
-            accBtn.style.display = "none"
-        }
-    }
-
+  
     
 /*
 const datePicker = document.getElementById("datePicker");
@@ -854,6 +853,20 @@ function submitAllRows() {
 const saveButton = document.getElementById("saveProductButton");
 saveButton.addEventListener("click", submitAllRows);
 */
+
+let accBtn = document.getElementById("accBtn")
+    let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    console.log(accType)
+    if (localStorage.getItem("TOKEN")) {
+        if (accType === "Admin") {
+            accBtn.style.display = "block"
+        } else {
+            console.log("Employee")
+            accBtn.style.display = "none"
+        }
+    }
+
+
     </script>
 </body>
 </html>

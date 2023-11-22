@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/chart.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
     <title><%= title %></title>
     <link rel="stylesheet" href="Account Management (Admin).css">
 </head>
@@ -25,19 +29,24 @@
 
         <div class="nav">
             <a href="/products">
-                <button>Products</button>
+                <button>
+                    Products<i class="gg-pen"></i>
+                </button>
             </a>
 
             <a href="/inventory">
-                <button>Inventory</button>
+                <button>
+                        Inventory
+                        <i class="gg-copy"></i>
+                </button>
             </a>
 
             <a href="/reports">
-                <button>Reports</button>
+                <button>Reports<i class="gg-chart"></i></button>
             </a>
 
             <a href="account">
-                <button class="page-btn">Accounts</button>
+                <button id="accBtn" class="page-btn">Accounts<i class="gg-smile"></i></button>
             </a>
         </div>
 
@@ -126,20 +135,7 @@ function parseJwt (token) {
 }
 
 
-    let accType = parseJwt(localStorage.getItem("TOKEN")).type
-    console.log(accType)
-    if (localStorage.getItem("TOKEN")) {
-        if (accType === "Admin") {
-
-        } else {
-            alert("You don't have permission to access this page.");
-            document.getElementById("header").style.display = "none"
-            document.getElementById("main").style.display = "none"
-            window.history.back();
-
-        }
-    }
-
+  
 
 
         const form = document.getElementById('reg-form')
@@ -190,6 +186,21 @@ function parseJwt (token) {
         alert(result.error);
         }
   }
+
+  let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    console.log(accType)
+    if (localStorage.getItem("TOKEN")) {
+        if (accType === "Admin") {
+
+        } else {
+            alert("You don't have permission to access this page.");
+            document.getElementById("header").style.display = "none"
+            document.getElementById("main").style.display = "none"
+            window.history.back();
+
+        }
+    }
+
     </script>
 
     

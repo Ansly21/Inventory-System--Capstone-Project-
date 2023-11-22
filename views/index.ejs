@@ -62,8 +62,8 @@
                             </div>
                             </a>
 
-                            <a href="/inventory">
-                                <div class="test">
+                            <a href="/inventory" class="invlink">
+                                <div class="test" id="invent">
                                     <h2>Inventory</h2>
                                     <i class="gg-copy"></i>
                                 </div>
@@ -72,7 +72,7 @@
                         </div>
 
 
-                    <div class="down">
+                    <div class="down" id="down">
                         <a href="/reports">
                             <div class="test">
                                 <h2>Reports</h2>
@@ -82,7 +82,7 @@
  -->                        </a>
 
                         <a href="/account">
-                            <div class="test">
+                            <div class="test" id="accBtn">
                                 <h2>Accounts</h2>
                                 <i class="gg-smile"></i>
                             </div>
@@ -105,6 +105,7 @@
 
 
 <script>
+
 const form = document.getElementById('form')
         form.addEventListener('submit', login)
         
@@ -146,6 +147,9 @@ function parseJwt (token) {
     return JSON.parse(base64);
 }
 
+let invent = document.getElementById('invent')
+let down =   document.getElementById('down')
+
 let accBtn = document.getElementById("accBtn")
 let accType = parseJwt(localStorage.getItem("TOKEN")).type
 console.log(accType)
@@ -154,10 +158,17 @@ if (localStorage.getItem("TOKEN")) {
     selectionBtns.style.display = "flex"
 
     if (accType === "Admin") {
-        accBtn.style.display = "block"
-    } else {
+        accBtn.style.display = "flex"
+        invent.style.width = "100%"
+        down.style.height = "100%"
+    } else if (accType === "Employee"){
         console.log("Employee")
         accBtn.style.display = "none"
+        invent.style.width = "197%"
+        down.style.height = "50%"
+        
+        
+
     }
 }
 
@@ -172,6 +183,8 @@ function logout() {
         showEmail.textContent = " "
     }
 }
+
+
 </script>
 </body>
 </html>
