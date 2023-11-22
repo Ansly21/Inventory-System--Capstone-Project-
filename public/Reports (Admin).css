@@ -11,6 +11,14 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+#title {
+    font-size: 3.5rem;
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-style:italic;
+}
+
 a {
     text-decoration: none;
     margin: 0 auto;
@@ -71,6 +79,9 @@ button {
     border: 1px solid gray;
 }
 
+.page-btn {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
 /* COPY ABOVE FOR CSS HEADERS AND NAV BTNS */
 .right-side {
     width: 80%;
@@ -89,6 +100,10 @@ section {
     border: 1px solid black;
     width: 20%;
     color: white;
+    font-size: 1.3rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    box-shadow: 5px 5px 5px gray
 }
 
 .info-title {
@@ -136,7 +151,7 @@ i {
 table {
     width: 100%;
     table-layout: fixed;
-    border-spacin   g: 0;
+    border-spacing: 0;
     margin-top: 2rem;
 }
 

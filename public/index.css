@@ -1,12 +1,12 @@
 * {
     box-sizing: border-box;
 }
-
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css");
 body {
     margin: 0;
     background-color: #ffe3ae;
     font-family: Arial, Helvetica, sans-serif;
-    padding: 3rem 0;
+    padding: 2rem 0;
 }
 
 img {
@@ -20,10 +20,47 @@ header {
 
 }
 
+.test {
+    background: white;
+    display: flex;
+    width: 300px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; /* Adding transition for smooth effect */
+  }
+  
+  .test:hover {
+    box-shadow: rgba(50, 50, 93, 0.5) 0px 50px 100px -20px, rgba(0, 0, 0, 0.7) 0px 30px 60px -30px, rgba(10, 37, 64, 0.8) 0px -2px 6px 0px inset;
+    transform: scale(1.05); /* Slightly scale up the element */
+  }
+  
+  
+
+.ud {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+}
+
+
+.test h2 {
+    margin-right: 1.3rem;
+}
+
 .title {
     margin-top: 0;
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-style:italic;
+    margin-bottom: 2rem;
+
 }
 
 .container {
@@ -34,7 +71,7 @@ header {
 }
 
 .about, .login, .selections {
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .about {
@@ -45,6 +82,7 @@ header {
     border: 2px solid gray;
     font-size: 1.5rem;
     align-self: center;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
 .about h2 {
@@ -95,8 +133,26 @@ button {
 
 }
 
+#logoutBtn {
+    margin-top: 1rem;
+    background-color: whitesmoke;
+    color: black;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; /* Adding transition for smooth effect */
+
+}
+
+#logoutBtn:hover {
+    background-color: rgb(59, 58, 58);
+    color: whitesmoke;  
+  box-shadow: rgba(50, 50, 93, 0.5) 0px 50px 100px -20px, rgba(0, 0, 0, 0.7) 0px 30px 60px -30px, rgba(10, 37, 64, 0.8) 0px -2px 6px 0px inset;
+  transform: scale(1.05); /* Slightly scale up the element */
+}
+
+
 a {
     margin: 0 auto;
+    text-decoration: none;
+    color: black;
 }
 
 .selections {
@@ -127,6 +183,10 @@ a {
 .gray-bg-white-color {
     background-color: #444444;
     color: white;
+}
+
+#started{
+    font-size: 3rem;
 }
 
 @media (max-width: 800px) {
