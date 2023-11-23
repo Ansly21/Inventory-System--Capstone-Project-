@@ -61,7 +61,7 @@
                     <!-- Date is dynamically rendered from JS -->
                <!--  </p> -->
 
-               
+
             </div>
             
             <table id ="productTable">
@@ -348,24 +348,32 @@ function parseJwt (token) {
 
         }
 
-        function handleStatusChange(input) {
-        // Get the row of the changed input
-        var row = input.parentNode.parentNode;
+       function handleStatusChange(input) {
+    // Get the row of the changed input
+    var row = input.parentNode.parentNode;
 
-        // Get the value of the status input
-        var statusValue = input.value;
+    // Get the value of the status input
+    var statusValue = input.value;
 
-        // If the status is changed to 0, set other columns (except code and productName) to 0
-        if (statusValue === '0') {
-            // Get all the input elements in the row
-            var inputs = row.querySelectorAll('input[name^="unitCost"], input[name^="unitPrice"], input[name^="lowStockThreshold"], input[name^="startingInventory"]');
-            
-            // Set the value of each input to 0
-            inputs.forEach(function (input) {
-                input.value = '0';
-            });
+    // If the status is changed to 0, set other columns (except code and productName) to -1
+    if (statusValue === '0') {
+        // Get the lowStockThreshold input in the row
+        var lowStockThresholdInput = row.querySelector('input[name^="lowStockThreshold"]');
+        
+        // Set the value of the lowStockThreshold input to -1
+        if (lowStockThresholdInput) {
+            lowStockThresholdInput.value = '-1';
         }
+
+        // Get all the input elements in the row, excluding lowStockThreshold
+        var otherInputs = row.querySelectorAll('input[name^="unitCost"], input[name^="unitPrice"], input[name^="startingInventory"]');
+        
+        // Set the value of each input to 0
+        otherInputs.forEach(function (input) {
+            input.value = '0';
+        });
     }
+}
 
     if (localStorage.getItem("TOKEN") === null) {
         document.getElementById("body").style.display = "none"

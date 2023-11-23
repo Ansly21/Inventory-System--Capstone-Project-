@@ -37,7 +37,7 @@ app.use(express.static(path.join('public'))) //USE files in 'public' folder
 //ESTABLISHING MONGODB NODESERVER CONNECTION(CHECK .env file). Enter "npm start" or "node app" to run app.js
 //mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
 //connect to mongodb
- const dburi = 'mongodb+srv://serverhost:serverhosttest@cluster0.psc0scx.mongodb.net/InventorySystem?retryWrites=true&w=majority  ';
+ const dburi = 'mongodb+srv://dababies:letsgo123@six7twoinventorysystem.lij0pnd.mongodb.net/Six7TwoInventorySystem?retryWrites=true&w=majority';
 mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
     .then((result)=> console.log ('connected na sa db'))
     .catch((err) => console.log(err));
