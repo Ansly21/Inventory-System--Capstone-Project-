@@ -738,7 +738,7 @@ app.post('/inventory', async (req, res) =>{
     if(mostRecentAttributeValue && allAttributeValues) {
       if (mostRecentAttributeValue.length === allAttributeValues.length) {
         for (let i = 0; i < mostRecentAttributeValue.length; i++) {
-          if (mostRecentAttributeValue[i] < allAttributeValues[i]) {
+          if (mostRecentAttributeValue[i] <= allAttributeValues[i]) {
             count++;
             indexesArray.push(i);
           }
