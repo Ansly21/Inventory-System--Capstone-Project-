@@ -161,7 +161,7 @@ function parseJwt (token) {
                 })
             }).then((res) => res.json())
             if(result.status === 'ok') {
-                alert('Success')
+                alert('Account created successfully')
                 location.reload() // Add this line to refresh the page
             }else {
                 alert(result.error)
@@ -186,8 +186,16 @@ function parseJwt (token) {
         alert(result.error);
         }
   }
+console.log(localStorage.getItem("TOKEN"))
+if (localStorage.getItem("TOKEN") === null) {
+        alert("You don't have permission to access this page.");
+            document.getElementById("header").style.display = "none"
+            document.getElementById("main").style.display = "none"
+            window.history.back();
+    }
 
   let accType = parseJwt(localStorage.getItem("TOKEN")).type
+
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
@@ -200,6 +208,8 @@ function parseJwt (token) {
 
         }
     }
+
+
 
     </script>
 

@@ -19,7 +19,7 @@
      <!-- Include Chart.js from CDN -->
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body id="body">
 
     <header>
         <div class="image">
@@ -774,6 +774,14 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     
         // Get the canvas element and its context
        
+        if (localStorage.getItem("TOKEN") === null) {
+        document.getElementById("body").style.display = "none"
+        alert("You don't have permission to access this page.");
+   
+            window.history.back();
+    }
+
+
         let accBtn = document.getElementById("accBtn")
     let accType = parseJwt(localStorage.getItem("TOKEN")).type
     console.log(accType)

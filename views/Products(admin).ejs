@@ -10,7 +10,7 @@
     <title>Products (Admin)</title>
     <link rel="stylesheet" href="/Products (Admin).css">
 </head>
-<body>
+<body id="body">
 
     <header>
         <div class="image">
@@ -365,7 +365,12 @@ function parseJwt (token) {
         }
     }
 
-       
+    if (localStorage.getItem("TOKEN") === null) {
+        document.getElementById("body").style.display = "none"
+        alert("You don't have permission to access this page.");
+            window.history.back();
+    }
+
 
 
 

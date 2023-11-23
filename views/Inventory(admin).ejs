@@ -10,7 +10,7 @@
     <title>Inventory (Admin)</title>
     <link rel="stylesheet" href="/Inventory (Admin).css">
 </head>
-<body>
+<body id="body">
 
     <header>
         <div class="image">
@@ -853,6 +853,12 @@ function submitAllRows() {
 const saveButton = document.getElementById("saveProductButton");
 saveButton.addEventListener("click", submitAllRows);
 */
+if (localStorage.getItem("TOKEN") === null) {
+    document.getElementById("body").style.display = "none"
+        alert("You don't have permission to access this page.");
+            window.history.back();
+    }
+
 
 let accBtn = document.getElementById("accBtn")
     let accType = parseJwt(localStorage.getItem("TOKEN")).type
