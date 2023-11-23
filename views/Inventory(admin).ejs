@@ -171,8 +171,8 @@
                     <th>QTY PURCHASED</th>
                     <th>QTY SOLD</th>
                     <th class="gray-bg">CLOSING INVENTORY</th>
-                    <th class="gray-bg">INVENTORY VALUE</th>
-                    <th class="gray-bg">INVENTORY COST</th>
+                    <th class="gray-bg">INVENTORY VALUE (₱)</th>
+                    <th class="gray-bg">INVENTORY COST (₱)</th>
                 </tr>
 
                 <form id ="saveProduct" action="/inventory" method="post">
@@ -755,6 +755,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const invValueInputs = document.querySelectorAll(".invValue");
     const invCostInputs = document.querySelectorAll(".invCost");
 
+
+    function formatNumberWithTwoDecimals(number) {
+        return parseFloat(number).toFixed(2);
+    }
+
     // Function to update inventory values
     function updateInvForRow(rowIndex) {
         // Retrieve the elements in the same row based on the index
@@ -782,8 +787,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const computedValue2 = computedValue1 * priceValue;
         const computedValue3 = computedValue1 * costValue;
 
-        invValueInput.value = computedValue2;
-        invCostInput.value = computedValue3;
+        invValueInput.value = formatNumberWithTwoDecimals(computedValue2);
+        invCostInput.value = formatNumberWithTwoDecimals(computedValue3);
     }
 
     // Add event listeners to all inputs and the datePicker
