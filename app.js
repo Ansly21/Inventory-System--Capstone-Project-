@@ -1018,7 +1018,6 @@ function multiplyArrays(arr1, arr2) {
       const leastRevenueCodes = leastRevenueProductCode.map(obj => obj.code);
 
 
-<<<<<<< HEAD
     // BEST SELLER (BAR CHART)
 
     const startDateValue = req.query.startDate;
@@ -1041,11 +1040,6 @@ function multiplyArrays(arr1, arr2) {
        endSalesDate = new Date('2023-1-1'); 
     }
 // Replace with your end date
-=======
-    // NEW REVENUE TABLE (Kasama ProdName, NumOfPurchased, UnitPrice, Revenue)
-const startSalesDate = new Date('2023-11-29'); // Replace with your start date
-const endSalesDate = new Date('2023-11-30'); // Replace with your end date
->>>>>>> 10419317074015f7882cc399c994bd65ae10cd92
 
 const totalSalesArray = await getTotalArrayValuesN('numOfSold', startSalesDate, endSalesDate);
 console.log('Total sum of array values at the same index across all documents:', totalSalesArray);
