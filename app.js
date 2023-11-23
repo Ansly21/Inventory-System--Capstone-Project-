@@ -1018,7 +1018,7 @@ function multiplyArrays(arr1, arr2) {
       const leastRevenueCodes = leastRevenueProductCode.map(obj => obj.code);
 
 
-    // BEST SELLER (BAR CHART)
+    // NEW REVENUE TABLE (Kasama ProdName, NumOfPurchased, UnitPrice, Revenue)
 const startSalesDate = new Date('2023-11-29'); // Replace with your start date
 const endSalesDate = new Date('2023-11-30'); // Replace with your end date
 
