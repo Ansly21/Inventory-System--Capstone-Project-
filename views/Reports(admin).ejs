@@ -99,13 +99,17 @@
                 <option value="leastSeller">Least Seller</option>
                 <option value="topRevenue">Top Revenue</option>
                 <option value="leastRevenue">Least Revenue</option>
+                <option value="allRevenue">All Revenue</option>
             </select>
 
-            <p>from: </p>
-            <input type="date" id="datePicker" name="date" min="2023-01-01" max="" >  
-
-            <p> to:  </p>
-            <input type="date" id="datePicker" name="date" min="2023-01-01" max="" >  
+           <form id="reportForm" action="/reports" method="GET"> <!-- Assuming GET method -->
+    <p>from:</p>
+    <input type="date" id="startDatePicker" name="startDate" min="2023-01-01" max="">
+    <p>to:</p>
+    <input type="date" id="endDatePicker" name="endDate" min="2023-01-01" max="">
+    
+    <button type="submit">Submit</button>
+</form>
 
             <div class="table-container" id="table-container">
                 <!-- DYNAMICALLY RENDER TABLE-->
@@ -143,6 +147,41 @@ console.log('<%= allSalesRevenues %>');
     
 let productCodeValue =document.getElementById('productCodeElement').innerText;
 
+// Get the form and date pickers
+const reportForm = document.getElementById('reportForm');
+const startDatePicker = document.getElementById('startDatePicker');
+const endDatePicker = document.getElementById('endDatePicker');
+
+// Function to save form values to localStorage
+function saveFormValues() {
+    localStorage.setItem('startDateValue', startDatePicker.value);
+    localStorage.setItem('endDateValue', endDatePicker.value);
+}
+
+// Event listener for form submission
+reportForm.addEventListener('submit', function(event) {
+    // Save the form values to localStorage when submitting
+    saveFormValues();
+});
+
+// Function to populate form fields with saved values
+function populateFormFields() {
+    const storedStartDate = localStorage.getItem('startDateValue');
+    const storedEndDate = localStorage.getItem('endDateValue');
+
+    if (storedStartDate) {
+        startDatePicker.value = storedStartDate;
+    }
+
+    if (storedEndDate) {
+        endDatePicker.value = storedEndDate;
+    }
+}
+
+// Call populateFormFields function when the page loads
+window.addEventListener('load', function() {
+    populateFormFields();
+});
 
 
 var option;
@@ -178,6 +217,19 @@ var option;
     let leastRevenueNames =  '<%= leastRevenueProductName %>'.split(',')
     let leastRevenueValues =  '<%= leastRevenueValue %>'.split(',')
 
+      
+        // All Revenue
+        let allSalesProdNameString = '<%= allSalesProdName %>';
+        let allSalesProdNameArray = allSalesProdNameString.split(',');
+
+        let allSalesNumOfPurchasedString = '<%= allSalesNumOfPurchased %>';
+        let allSalesNumOfPurchasedArray = allSalesNumOfPurchasedString.split(',');
+
+        let allSalesUnitPricesString = '<%= allSalesUnitPrices %>';
+        let allSalesUnitPricesArray = allSalesUnitPricesString.split(',');
+
+        let allSalesRevenuesString = '<%= allSalesRevenues %>';
+        let allSalesRevenuesArray = allSalesRevenuesString.split(',');
         
     document.getElementById("selectOptions").addEventListener("change", () => {
     console.log("Dropdown selection changed"); // Check if this log appears in the console
@@ -570,7 +622,84 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     doc.save('table.pdf');
 });
 
-     }
+     } else if (document.getElementById("selectOptions").value === "allRevenue") {
+
+        let ASP = allSalesProdNameArray
+        let ASN =  allSalesNumOfPurchasedArray
+        let ASU =  allSalesUnitPricesArray
+        let ASR = allSalesRevenuesArray
+
+            const tableContainer = document.getElementById('table-container');
+            const table = document.createElement('table');
+            table.id = "report-table"
+            table.innerHTML = `
+                <caption>All Revenue Table</caption>
+                <tr>
+                    <th>Product Name</th>
+                    <th>QTY Sold</th>
+                    <th>Unit Price</th>
+                    <th>Revenue</th>
+                </tr>
+            `;
+
+            ASP.forEach((item, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td>${ASP[index]}</td>
+                    <td>${ASN[index]}</td>
+                    <td>${ASU[index]}</td>
+                    <td>${ASR[index]}</td>
+                `;
+                
+                table.appendChild(row);
+
+            });
+
+            // Clear previous table, if any, and append the new table
+            tableContainer.innerHTML = '';
+            tableContainer.appendChild(table);
+
+
+            // ... your previous code for displaying the table
+
+        // Create the download button
+        const downloadContainer = document.createElement('div');
+        downloadContainer.classList.add('download-container');
+        downloadContainer.innerHTML = `
+            <button id="downloadBtn">Download as PDF</button>
+        `;
+
+        // Append the download button after the table
+        tableContainer.appendChild(downloadContainer);
+        window.jsPDF = window.jspdf.jsPDF;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const doc = new jsPDF();
+
+    // Set font size for the table content and caption
+    const fontSize = 20; // Change this value to adjust the font size for the table
+    const captionFontSize = 30; // Change this value to adjust the caption font size
+
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    // Convert table to PDF format with adjusted font size
+    doc.autoTable({ html: '#report-table', styles: styles });
+
+    // Add caption to the PDF and center it horizontally
+    const captionText = "LEAST REVENUE TABLE";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize); // Set the caption font size
+    doc.text(captionText, textOffset, 10); // Centered caption position
+
+    // Save the PDF file
+    doc.save('table.pdf');
+}); 
+    }
 });
 
 
@@ -617,7 +746,8 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
 
         var leastRevenueValueString = '<%= leastRevenueValue %>';
         const leastRevenueValueArray = leastRevenueValueString.split(',');
-                
+      
+
 
         // Variables for the first bar chart
        

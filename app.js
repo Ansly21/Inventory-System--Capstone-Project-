@@ -1019,8 +1019,27 @@ function multiplyArrays(arr1, arr2) {
 
 
     // BEST SELLER (BAR CHART)
-const startSalesDate = new Date('2023-11-29'); // Replace with your start date
-const endSalesDate = new Date('2023-11-30'); // Replace with your end date
+
+    const startDateValue = req.query.startDate;
+    const endDateValue = req.query.endDate;
+
+
+    let startSalesDate;
+    let endSalesDate;
+    if (startDateValue && endDateValue) {
+        // Convert received date strings to Date objects
+         startSalesDate = new Date(startDateValue);
+         endSalesDate = new Date(endDateValue);
+
+        // Use startSalesDate and endSalesDate in your logic
+        // For example:
+        console.log('Start Date:', startSalesDate);
+        console.log('End Date:', endSalesDate);
+    } else {
+       startSalesDate = new Date('2023-1-1'); // Replace with your start date
+       endSalesDate = new Date('2023-1-1'); 
+    }
+// Replace with your end date
 
 const totalSalesArray = await getTotalArrayValuesN('numOfSold', startSalesDate, endSalesDate);
 console.log('Total sum of array values at the same index across all documents:', totalSalesArray);
