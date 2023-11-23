@@ -1018,6 +1018,56 @@ function multiplyArrays(arr1, arr2) {
       const leastRevenueCodes = leastRevenueProductCode.map(obj => obj.code);
 
 
+    // BEST SELLER (BAR CHART)
+const startSalesDate = new Date('2023-11-29'); // Replace with your start date
+const endSalesDate = new Date('2023-11-30'); // Replace with your end date
+
+const totalSalesArray = await getTotalArrayValuesN('numOfSold', startSalesDate, endSalesDate);
+console.log('Total sum of array values at the same index across all documents:', totalSalesArray);
+
+// Find all indices in descending order
+const allSalesIndices = getAllIndices(totalSalesArray);
+
+console.log('All indices with values in descending order:', allSalesIndices);
+
+const allProductNamesSales = await getMostRecentAttributeValue('productName');
+console.log('Array of productNames', allProductNamesSales);
+
+const unitPricesSalesTable = await getAllAttributeValues('unitPrice');
+console.log('Array of their unit prices', unitPricesSalesTable);
+
+
+
+// Get values from totalSalesArray at the specified indices
+const selectedSalesValues = getValuesAtIndices(totalSalesArray, allSalesIndices);
+const selectedProductNames = getValuesAtIndices(allProductNamesSales, allSalesIndices);
+const selectedSalesUnitPrices = getValuesAtIndices(unitPricesSalesTable, allSalesIndices);
+
+const allRevenueSalesTable = multiplyArrays(selectedSalesValues, selectedSalesUnitPrices);
+
+// Output the selected values
+console.log( "Product names: ", selectedProductNames);
+console.log("NumOfSold: ",selectedSalesValues);
+console.log("UnitPrices:  ",selectedSalesUnitPrices);
+console.log("Revenues:  ",allRevenueSalesTable);
+
+
+function getAllIndices(array) {
+  if (!Array.isArray(array)) {
+    console.log('Array is not available or invalid');
+    return []; // Return an empty array or handle the situation accordingly
+  }
+
+  const indicesWithValues = array.map((value, index) => ({ value, index }));
+  indicesWithValues.sort((a, b) => b.value - a.value); // Sort in descending order
+  const allIndices = indicesWithValues.map(item => item.index);
+  return allIndices;
+}
+
+
+
+
+
     // Now, render the view with the required values
     res.render('Reports(admin)', {
       title: 'Reports',
@@ -1053,13 +1103,16 @@ function multiplyArrays(arr1, arr2) {
       leastRevenueValue: leastRevenueValue,
       leastRevenueCodes: [leastRevenueCodes],
 
-
+      //NewTable Revenue Table complete info
+      allSalesProdName: selectedProductNames,
+      allSalesNumOfPurchased: selectedSalesValues,
+      allSalesUnitPrices: selectedSalesUnitPrices,
+      allSalesRevenues: allRevenueSalesTable
       
     //  mostRecentDocument: mostRecentDocument,
       // Add other values here
     });
-
-  
+   
 
 
   } catch (error) {
@@ -1165,6 +1218,40 @@ async function getTotalArrayValues1(arrayAttributeName) {
       });
 
       return totalArray;
+    } else {
+      // Handle the case where no documents are found
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
+async function getTotalArrayValuesN(arrayAttributeName, startDate, endDate) {
+  try {
+    const salesDocuments = await Inventory.find({
+      // Add date range query here
+      date: { $gte: startDate, $lte: endDate },
+    });
+
+    if (salesDocuments.length > 0) {
+      // Find the maximum length among all arrays
+      const maxSalesLength = Math.max(...salesDocuments.map(doc => doc[arrayAttributeName].length));
+
+      // Initialize totalSalesArray with zeros
+      const totalSalesArray = Array.from({ length: maxSalesLength }, () => 0);
+
+      salesDocuments.forEach(doc => {
+        const docSalesArray = doc[arrayAttributeName];
+
+        // Add the corresponding elements, padded with zeros if necessary
+        docSalesArray.forEach((value, index) => {
+          totalSalesArray[index] += value;
+        });
+      });
+
+      return totalSalesArray;
     } else {
       // Handle the case where no documents are found
       return null;

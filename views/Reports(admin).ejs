@@ -101,6 +101,12 @@
                 <option value="leastRevenue">Least Revenue</option>
             </select>
 
+            <p>from: </p>
+            <input type="date" id="datePicker" name="date" min="2023-01-01" max="" >  
+
+            <p> to:  </p>
+            <input type="date" id="datePicker" name="date" min="2023-01-01" max="" >  
+
             <div class="table-container" id="table-container">
                 <!-- DYNAMICALLY RENDER TABLE-->
 
@@ -129,8 +135,10 @@ function parseJwt (token) {
     return JSON.parse(base64);
 }
 
-
-  
+console.log('<%= allSalesProdName %>');
+console.log('<%= allSalesNumOfPurchased %>');
+console.log('<%= allSalesUnitPrices %>');
+console.log('<%= allSalesRevenues %>');
 
     
 let productCodeValue =document.getElementById('productCodeElement').innerText;
@@ -793,7 +801,63 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
         }
     }
 
+/*
+    const datePicker = document.getElementById("datePicker");
+    datePicker.addEventListener("change", handleDateChange);
+
+    function handleDateChange() {
+  const selectedDate = datePicker.value;
+
+  // Make an AJAX request to your Node.js server to fetch the updated startingInventory
+  fetch(`/inventoryData?date=${selectedDate}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+
+        console.log(data.startingInventory);
+      console.log(data.docuTodayExists);
+      console.log(data.docuYesterdayExists);
+      console.log(data.productStartingInventory);
+
+     //console.log(inv);
+
+        if (Array.isArray(data.startingInventory)) {
+        const updatedStartingInventoryArray = data.startingInventory;
+
+        // Update all startingInventory input fields in your table
+        const startingInventoryInputs = document.querySelectorAll(".startingInv");
+
+        startingInventoryInputs.forEach((input, index) => {
+          if (index < updatedStartingInventoryArray.length) {
+            input.value = updatedStartingInventoryArray[index];
+          } else {
+            input.value = ''; // Clear input if no corresponding value in the array
+          }
+        });
+      } else {
+        console.error("Starting inventory is not an array");
+      }
+        
     
+
+
+
+    })
+    .catch((error) => {
+      console.error("Error fetching or processing startingInventory data:", error);
+    });
+}
+
+*/
+
+
+   
+
+   // '<%= leastSelectedValuesSold %>'
     </script>
     
 </body>
