@@ -135,15 +135,6 @@
         </table>
 
         
-        
-        
-        <div class="save-addproduct">
-           <!-- <button id="saveproductbtn" class="saveBtn" type="submit" style="display: none;">SAVE PRODUCT</button>-->
-            
-        </div>
-
-
-
 
         </form>
 
@@ -253,6 +244,7 @@ function parseJwt (token) {
                 const lowStockThreshold = newRow.insertCell(4);
                 const startingInventory = newRow.insertCell(5);
                 const status = newRow.insertCell(6);
+                const bt = newRow.insertCell(7);
 
             // Create input elements for each cell
             const codeInput = document.createElement("input");
@@ -291,6 +283,11 @@ function parseJwt (token) {
             statusInput.min = "0";
             statusInput.name = "status[]"; // Use an array to collect multiple emails
             status.appendChild(statusInput);
+
+            const button = document.createElement("button");
+            button.textContent = "Save"
+            button.classList.add("saveBtn")
+            bt.appendChild(button);
 
             const saveproductbtn = document.getElementById("saveproductbtn");
             saveproductbtn.style.display = "block";
