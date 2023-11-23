@@ -690,7 +690,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     doc.autoTable({ html: '#report-table', styles: styles });
 
     // Add caption to the PDF and center it horizontally
-    const captionText = "LEAST REVENUE TABLE";
+    const captionText = "ALL REVENUE TABLE";
     const pageWidth = doc.internal.pageSize.width;
     const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
     const textOffset = (pageWidth - textWidth) / 2;
