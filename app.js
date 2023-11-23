@@ -38,7 +38,7 @@ app.use(express.static(path.join('public'))) //USE files in 'public' folder
 //mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
 //connect to mongodb
  const dburi = 'mongodb+srv://serverhost:serverhosttest@cluster0.psc0scx.mongodb.net/InventorySystem?retryWrites=true&w=majority  ';
-mongoose.connect(dburi, {useNewUrlParser: true, useUnifiedTopology: true} )
+mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
     .then((result)=> console.log ('connected na sa db'))
     .catch((err) => console.log(err));
  
@@ -735,20 +735,20 @@ app.post('/inventory', async (req, res) =>{
 
     let count = 0;
     let indexesArray = []; // Array to store indexes when the condition is true
-    
-    if (allAttributeValues & mostRecentAttributeValue) {
+    if(mostRecentAttributeValue && allAttributeValues) {
       if (mostRecentAttributeValue.length === allAttributeValues.length) {
         for (let i = 0; i < mostRecentAttributeValue.length; i++) {
           if (mostRecentAttributeValue[i] < allAttributeValues[i]) {
             count++;
-            indexesArray.push(i); // Add the index to the array
+            indexesArray.push(i);
           }
         }
+      } else {
+        // Handle the case where allAttributeValues is not available
+        console.log('allAttributeValues is not available');
       }
-    } else {
-      // Handle the case where allAttributeValues is not available
-      console.log('allAttributeValues is not available');
     }
+   
     
     console.log('Count of values where closingInv < low stock threshold:', count);
     console.log('Indexes where closingInv < low stock threshold:', indexesArray);
