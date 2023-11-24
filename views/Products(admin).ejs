@@ -39,7 +39,7 @@
             </a>
 
             <a href="/account">
-                <button>Accounts<i class="gg-smile"></i></button>
+                <button id="accBtn">Accounts<i class="gg-smile"></i></button>
             </a>
         </div>
 
@@ -175,6 +175,7 @@
     <script src="/Products (Admin).js"></script>
 
     <script>
+    let accBtn = document.getElementById("accBtn")
 
 //FOR DECODING JWT TOKEN AFTER LOGGING IN
 function parseJwt (token) { 
@@ -378,22 +379,21 @@ function parseJwt (token) {
             window.history.back();
     }
 
-
-
+  
 
 
         // Event listener for the "Add Row" button
         document.querySelector("#addRowButton").addEventListener("click", addRow);
         document.querySelector("#cancelProduct").addEventListener("click", hideNewRow);
 
-        let accBtn = document.getElementById("accBtn")
-    let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    
+        let accType = parseJwt(localStorage.getItem("TOKEN")).type
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
-            accBtn.style.display = "block"
+            accBtn.style.display = "flex"
         } else {
-            console.log("Employee")
+            console.log("Should not")
             accBtn.style.display = "none"
         }
     }

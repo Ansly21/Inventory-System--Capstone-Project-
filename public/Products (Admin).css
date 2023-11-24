@@ -44,6 +44,7 @@ header h1 {
 main {
     padding: 3rem;
     display: flex;
+    flex-direction: row;
 }
 
 input[type="search"] {
@@ -191,7 +192,7 @@ table th {
 
 .addBtn:hover {
     background-color: rgb(80, 199, 80);
-
+}
 
 @media (max-width:800px) {
     :root {

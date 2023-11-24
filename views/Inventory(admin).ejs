@@ -44,7 +44,7 @@
             </a>
 
             <a href="account">
-                <button>Accounts<i class="gg-smile"></i></button>
+                <button id="accBtn">Accounts<i class="gg-smile"></i></button>
             </a>
         </div>
 
@@ -870,7 +870,7 @@ let accBtn = document.getElementById("accBtn")
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
-            accBtn.style.display = "block"
+            accBtn.style.display = "flex"
         } else {
             console.log("Employee")
             accBtn.style.display = "none"
