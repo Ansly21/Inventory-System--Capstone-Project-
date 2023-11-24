@@ -1056,19 +1056,31 @@ const unitPricesSalesTable = await getAllAttributeValues('unitPrice');
 console.log('Array of their unit prices', unitPricesSalesTable);
 
 
+const allRevenueSalesTable = multiplyArrays(totalSalesArray, unitPricesSalesTable);
+
+const sortedRevenueIndices = getAllIndices(allRevenueSalesTable);
+
+
+console.log("values of  rev",allRevenueSalesTable);
+console.log("indices of descending rev",sortedRevenueIndices);
 
 // Get values from totalSalesArray at the specified indices
-const selectedSalesValues = getValuesAtIndices(totalSalesArray, allSalesIndices);
-const selectedProductNames = getValuesAtIndices(allProductNamesSales, allSalesIndices);
-const selectedSalesUnitPrices = getValuesAtIndices(unitPricesSalesTable, allSalesIndices);
 
-const allRevenueSalesTable = multiplyArrays(selectedSalesValues, selectedSalesUnitPrices);
+const selectedSalesValues = getValuesAtIndices(totalSalesArray, sortedRevenueIndices);
+const selectedProductNames = getValuesAtIndices(allProductNamesSales,sortedRevenueIndices);
+const selectedSalesUnitPrices = getValuesAtIndices(unitPricesSalesTable, sortedRevenueIndices);
+const sortedRevenueSalesTable = getValuesAtIndices(allRevenueSalesTable, sortedRevenueIndices);
+
+
+
 
 // Output the selected values
 console.log( "Product names: ", selectedProductNames);
 console.log("NumOfSold: ",selectedSalesValues);
 console.log("UnitPrices:  ",selectedSalesUnitPrices);
-console.log("Revenues:  ",allRevenueSalesTable);
+console.log("Revenues:  ",sortedRevenueSalesTable);
+
+//console.log("Revenues:  ",allRevenueSalesTable);
 
 
 function getAllIndices(array) {
@@ -1126,7 +1138,7 @@ function getAllIndices(array) {
       allSalesProdName: selectedProductNames,
       allSalesNumOfPurchased: selectedSalesValues,
       allSalesUnitPrices: selectedSalesUnitPrices,
-      allSalesRevenues: allRevenueSalesTable
+      allSalesRevenues: sortedRevenueSalesTable
       
     //  mostRecentDocument: mostRecentDocument,
       // Add other values here
