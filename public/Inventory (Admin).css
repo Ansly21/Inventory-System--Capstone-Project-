@@ -173,7 +173,8 @@ tr input[type="range"] {
 }
 
 .save-addproduct button {
-    margin: 0 1rem;
+    margin: 2rem 1rem;
+    margin-bottom: 0rem;
     border: 0;
     padding: 0.6rem 5rem;
     font-weight: bold;
@@ -193,6 +194,16 @@ tr input[type="range"] {
     background-color: #ebeaeb;
 }
 
+.download-container {
+    display: flex;
+    justify-content: end;
+}
+
+#downloadBtn {
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
 
 @media (max-width:800px) {
     :root {
