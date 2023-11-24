@@ -967,7 +967,7 @@ const leastRevenueValue = getValuesAtIndices(leastRevenue, leastBottom5Indices);
 console.log("Least Revenue composes of:");
 console.log(leastRevenueProductName);
 console.log(leastRevenueValue);
-
+/*
 function multiplyArrays(arr1, arr2) {
   if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
     console.log('Arrays are not available or invalid');
@@ -983,8 +983,25 @@ function multiplyArrays(arr1, arr2) {
   const resultArray = arr1.map((value, index) => value * arr2[index]);
 
   return resultArray;
-}
+}*/
 
+function multiplyArrays(arr1, arr2) {
+  if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
+    console.log('Arrays are not available or invalid');
+    return []; // Return an empty array or handle the situation accordingly
+  }
+
+  const maxLength = Math.max(arr1.length, arr2.length);
+
+  // Perform element-wise multiplication
+  const resultArray = Array.from({ length: maxLength }, (_, index) => {
+    const value1 = arr1[index] || 0;
+    const value2 = arr2[index] || 0;
+    return value1 * value2;
+  });
+
+  return resultArray;
+}
 
   //CODE OF PRODUCT IN LOW STOCK
   let productNamesString = selectedNameStock;
@@ -1055,6 +1072,7 @@ console.log('Array of productNames', allProductNamesSales);
 const unitPricesSalesTable = await getAllAttributeValues('unitPrice');
 console.log('Array of their unit prices', unitPricesSalesTable);
 
+console.log('array of total Sales: ', totalSalesArray);
 
 const allRevenueSalesTable = multiplyArrays(totalSalesArray, unitPricesSalesTable);
 

@@ -255,10 +255,10 @@ var option;
             table.innerHTML = `
                 <caption>LOW STOCK TABLE</caption>
                 <tr>
-                    <th>Code</th>
-                    <th>Product Name</th>
-                    <th>Current Stock</th>
-                    <th>Low Stock Threshold</th>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>CURRENT STOCK</th>
+                    <th>LOW STOCK THRESHOLD</th>
                 </tr>
             `;
 
@@ -296,8 +296,8 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     const doc = new jsPDF();
 
     // Set font size for the table content and caption
-    const fontSize = 20; // Change this value to adjust the font size for the table
-    const captionFontSize = 30; // Change this value to adjust the caption font size
+    const fontSize = 15; // Change this value to adjust the font size for the table
+    const captionFontSize = 20; // Change this value to adjust the caption font size
 
     const styles = {
         fontSize: fontSize,
@@ -305,7 +305,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     };
 
     // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles });
+    doc.autoTable({ html: '#report-table', styles: styles, startY: 20,});
 
     // Add caption to the PDF and center it horizontally
     const captionText = "LOW STOCK TABLE";
@@ -332,9 +332,9 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
             table.innerHTML = `
                 <caption>Least Seller Table</caption>
                 <tr>
-                    <th>Code</th>
-                    <th>Product Name</th>
-                    <th>QTY Sold</th>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>QTY SOLD</th>
                 </tr>
             `;
 
@@ -373,8 +373,8 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     const doc = new jsPDF();
 
     // Set font size for the table content and caption
-    const fontSize = 20; // Change this value to adjust the font size for the table
-    const captionFontSize = 30; // Change this value to adjust the caption font size
+    const fontSize = 15; // Change this value to adjust the font size for the table
+    const captionFontSize = 20; // Change this value to adjust the caption font size
 
     const styles = {
         fontSize: fontSize,
@@ -382,7 +382,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     };
 
     // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles });
+    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
 
     // Add caption to the PDF and center it horizontally
     const captionText = "LEAST SELLER TABLE";
@@ -407,9 +407,9 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
             table.innerHTML = `
                 <caption>Best Seller Table</caption>
                 <tr>
-                    <th>Code</th>
-                    <th>Product Name</th>
-                    <th>QTY Sold</th>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>QTY SOLD</th>
                 </tr>
             `;
 
@@ -448,8 +448,8 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     const doc = new jsPDF();
 
     // Set font size for the table content and caption
-    const fontSize = 20; // Change this value to adjust the font size for the table
-    const captionFontSize = 30; // Change this value to adjust the caption font size
+    const fontSize = 15; // Change this value to adjust the font size for the table
+    const captionFontSize = 20; // Change this value to adjust the caption font size
 
     const styles = {
         fontSize: fontSize,
@@ -457,7 +457,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     };
 
     // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles });
+    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
 
     // Add caption to the PDF and center it horizontally
     const captionText = "BEST SELLER TABLE";
@@ -483,9 +483,9 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
             table.innerHTML = `
                 <caption>Top Revenue Table</caption>
                 <tr>
-                    <th>Code</th>
-                    <th>Product Name</th>
-                    <th>Value</th>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>VALUE</th>
                 </tr>
             `;
 
@@ -524,8 +524,8 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     const doc = new jsPDF();
 
     // Set font size for the table content and caption
-    const fontSize = 20; // Change this value to adjust the font size for the table
-    const captionFontSize = 30; // Change this value to adjust the caption font size
+    const fontSize = 15; // Change this value to adjust the font size for the table
+    const captionFontSize = 20  ; // Change this value to adjust the caption font size
 
     const styles = {
         fontSize: fontSize,
@@ -533,7 +533,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     };
 
     // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles });
+    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
 
     // Add caption to the PDF and center it horizontally
     const captionText = "TOP REVENUE TABLE";
@@ -561,9 +561,9 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
             table.innerHTML = `
                 <caption>Least Revenue Table</caption>
                 <tr>
-                    <th>Code</th>
-                    <th>Product Name</th>
-                    <th>Value</th>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>VALUE</th>
                 </tr>
             `;
 
@@ -600,8 +600,8 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     const doc = new jsPDF();
 
     // Set font size for the table content and caption
-    const fontSize = 20; // Change this value to adjust the font size for the table
-    const captionFontSize = 30; // Change this value to adjust the caption font size
+    const fontSize = 15; // Change this value to adjust the font size for the table
+    const captionFontSize = 20; // Change this value to adjust the caption font size
 
     const styles = {
         fontSize: fontSize,
@@ -609,7 +609,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     };
 
     // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles });
+    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
 
     // Add caption to the PDF and center it horizontally
     const captionText = "LEAST REVENUE TABLE";
@@ -637,11 +637,12 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
             table.innerHTML = `
                 <caption>All Revenue Table</caption>
                 <tr>
-                    <th>Product Name</th>
-                    <th>QTY Sold</th>
-                    <th>Unit Price</th>
-                    <th>Revenue</th>
+                    <th>PRODUCT NAME</th>
+                    <th>QTY SOLD</th>
+                    <th>UNIT PRICE</th>
+                    <th>REVENUE</th>
                 </tr>
+                
             `;
 
             ASP.forEach((item, index) => {
@@ -678,8 +679,8 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     const doc = new jsPDF();
 
     // Set font size for the table content and caption
-    const fontSize = 20; // Change this value to adjust the font size for the table
-    const captionFontSize = 30; // Change this value to adjust the caption font size
+    const fontSize = 8; // Change this value to adjust the font size for the table
+    const captionFontSize = 20; // Change this value to adjust the caption font size
 
     const styles = {
         fontSize: fontSize,
@@ -687,7 +688,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     };
 
     // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles });
+    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
 
     // Add caption to the PDF and center it horizontally
     const captionText = "ALL REVENUE TABLE";

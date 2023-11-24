@@ -7,6 +7,12 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+
     <title>Inventory (Admin)</title>
     <link rel="stylesheet" href="/Inventory (Admin).css">
 </head>
@@ -66,7 +72,7 @@
 
 
         
-        <div class="table-container" >
+        <div class="table-container" id = "table-container">
             <div class="search-date">
                 <!--
                 <form action="/inventory" method ="get">
@@ -161,7 +167,7 @@
             </form>
 
 
-
+            <form id ="saveProduct" action="/inventory" method="post">
             <table id = "inventoryTable" >
 
 
@@ -175,8 +181,8 @@
                     <th class="gray-bg">INVENTORY COST (₱)</th>
                 </tr>
 
-                <form id ="saveProduct" action="/inventory" method="post">
-
+              <!-- dito ung form--> 
+                    
                     <input type="date" id="datePicker" name="date" min="2023-01-01" max="" >  
 
                     <input type="hidden" name="action" value="saveEditedRow">
@@ -208,7 +214,7 @@
                     
                   
                     
-                  <!-- </form> -->
+                 
                 </tr>
                 
                 <% }) %>
@@ -217,10 +223,12 @@
                     <p>There are no products yet...</p>
                 
                 <% } %>   
-            </form>
+            
 
-                
+            <!--dito ung form-->
             </table>
+
+        </form>
 
             <div class="save-addproduct">
               
@@ -254,8 +262,251 @@ function parseJwt (token) {
     return JSON.parse(base64);
 }
 
+//copyingTable
+
+/*
+
+document.addEventListener('DOMContentLoaded', function() {
+    function updateCopiedTable() {
+        // Extract data from the original table
+        const originalTable = document.getElementById('inventoryTable');
+        const dataRows = originalTable.querySelectorAll('.database-row');
+
+        // Get or create the copied table
+        let copiedTable = document.getElementById('copiedTable');
+
+        if (!copiedTable) {
+            copiedTable = document.createElement('table');
+            copiedTable.id = 'copiedTable';
+            document.body.appendChild(copiedTable);
+        } else {
+            copiedTable.innerHTML = ''; // Clear existing content
+        }
+
+        // Add headers to the copied table
+        const headersRow = document.createElement('tr');
+        headersRow.innerHTML = `
+            <th class="gray-bg">PRODUCT</th>
+            <th class="gray-bg">STARTING INVENTORY</th>
+            <th>QTY PURCHASED</th>
+            <th>QTY SOLD</th>
+            <th class="gray-bg">CLOSING INVENTORY</th>
+            <th class="gray-bg">INVENTORY VALUE (₱)</th>
+            <th class="gray-bg">INVENTORY COST (₱)</th>
+        `;
+        copiedTable.appendChild(headersRow);
+
+        // Copy data to the copied table
+        dataRows.forEach((row) => {
+            const newRow = document.createElement('tr');
+            const inputElements = row.querySelectorAll('td input');
+
+            inputElements.forEach((input) => {
+                const cell = document.createElement('td');
+                cell.textContent = input.value;
+                newRow.appendChild(cell);
+            });
+
+            copiedTable.appendChild(newRow);
+        });
+    }
+
+    // Update the copied table when the page loads
+    updateCopiedTable();
+
+    // Add event listeners to update the copied table when input values change
+    const inputElements = document.querySelectorAll('#inventoryTable input');
+    inputElements.forEach((input) => {
+        input.addEventListener('input', updateCopiedTable);
+    });
+});*/
+
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    function updateCopiedTable() {
+        // Extract data from the original table
+        const originalTable = document.getElementById('inventoryTable');
+        const dataRows = originalTable.querySelectorAll('.database-row');
+
+        // Get or create the copied table
+        let copiedTable = document.getElementById('copiedTable');
+
+        if (!copiedTable) {
+            copiedTable = document.createElement('table');
+            copiedTable.id = 'copiedTable';
+            document.body.appendChild(copiedTable);
+        } else {
+            copiedTable.innerHTML = ''; // Clear existing content
+        }
+
+        // Add a row above the header for the picked date
+        const dateRow = document.createElement('tr');
+        const dateCell = document.createElement('td');
+        dateCell.colSpan = 8; // Set the colspan to match the number of columns
+        dateCell.textContent = 'Date: ' + document.getElementById('datePicker').value;
+        dateRow.appendChild(dateCell);
+        copiedTable.appendChild(dateRow);
+
+        // Add headers to the copied table
+        const headersRow = document.createElement('tr');
+        headersRow.innerHTML = `
+            <th class="gray-bg">PRODUCT</th>
+            <th class="gray-bg">STARTING INVENTORY</th>
+            <th>QTY PURCHASED</th>
+            <th>QTY SOLD</th>
+            <th class="gray-bg">CLOSING INVENTORY</th>
+            <th class="gray-bg">INVENTORY VALUE (₱)</th>
+            <th class="gray-bg">INVENTORY COST (₱)</th>
+        `;
+        copiedTable.appendChild(headersRow);
+
+        // Copy data to the copied table
+        dataRows.forEach((row) => {
+            const newRow = document.createElement('tr');
+            const inputElements = row.querySelectorAll('td input');
+
+            inputElements.forEach((input) => {
+                const cell = document.createElement('td');
+                cell.textContent = input.value;
+                newRow.appendChild(cell);
+            });
+
+            copiedTable.appendChild(newRow);
+        });
+    }
+
+    // Update the copied table when the page loads
+    updateCopiedTable();
+
+    // Add event listeners to update the copied table when input values change
+    const inputElements = document.querySelectorAll('#inventoryTable input');
+    inputElements.forEach((input) => {
+        input.addEventListener('input', updateCopiedTable);
+    });
+});
+*/
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Debounce function to limit the frequency of calls
+    function debounce(func, delay) {
+        let timeoutId;
+        return function () {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(func, delay);
+        };
+    }
+
+    function updateCopiedTable() {
+        // Extract data from the original table
+        const originalTable = document.getElementById('inventoryTable');
+        const dataRows = originalTable.querySelectorAll('.database-row');
+
+        // Get or create the copied table
+        let copiedTable = document.getElementById('copiedTable');
+
+        if (!copiedTable) {
+            copiedTable = document.createElement('table');
+            copiedTable.id = 'copiedTable';
+            document.body.appendChild(copiedTable);
+        } else {
+            copiedTable.innerHTML = ''; // Clear existing content
+        }
+
+        // Add a row above the header for the picked date
+        const dateRow = document.createElement('tr');
+        const dateCell = document.createElement('td');
+        dateCell.colSpan = 8; // Set the colspan to match the number of columns
+        dateCell.textContent = 'Date: ' + document.getElementById('datePicker').value;
+        dateRow.appendChild(dateCell);
+        copiedTable.appendChild(dateRow);
+
+        // Add headers to the copied table
+        const headersRow = document.createElement('tr');
+        headersRow.innerHTML = `
+            <th class="gray-bg">PRODUCT</th>
+            <th class="gray-bg">STARTING INVENTORY</th>
+            <th>QTY PURCHASED</th>
+            <th>QTY SOLD</th>
+            <th class="gray-bg">CLOSING INVENTORY</th>
+            <th class="gray-bg">INVENTORY VALUE (₱)</th>
+            <th class="gray-bg">INVENTORY COST (₱)</th>
+        `;
+        copiedTable.appendChild(headersRow);
+
+        // Copy data to the copied table
+        dataRows.forEach((row) => {
+            const newRow = document.createElement('tr');
+            const inputElements = row.querySelectorAll('td input');
+
+            inputElements.forEach((input) => {
+                const cell = document.createElement('td');
+                cell.textContent = input.value;
+                newRow.appendChild(cell);
+            });
+
+            copiedTable.appendChild(newRow);
+        });
+    }
+
+    // Update the copied table when the page loads
+    updateCopiedTable();
+
+    // Add event listeners to update the copied table when input values change, debounced for a short delay
+    const debouncedUpdate = debounce(updateCopiedTable, 200);
+    const inputElements = document.querySelectorAll('#inventoryTable input');
+    inputElements.forEach((input) => {
+        input.addEventListener('input', debouncedUpdate);
+    });
+});
+
+
+//PRINT PDF
+
+
+const tableContainer = document.getElementById("table-container");
+const table = document.getElementById("inventoryTable");
+
+// Create the download button
+const downloadContainer = document.createElement('div');
+        downloadContainer.classList.add('download-container');
+        downloadContainer.innerHTML = `
+            <button id="downloadBtn">Download as PDF</button>
+        `;
+
+        // Append the download button after the table
+        tableContainer.appendChild(downloadContainer);
   
-    
+        window.jsPDF = window.jspdf.jsPDF;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const doc = new jsPDF();
+
+    // Set font size for the table content and caption
+    const fontSize = 8; // Change this value to adjust the font size for the table
+    const captionFontSize = 25; // Change this value to adjust the caption font size
+
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    // Convert table to PDF format with adjusted font size
+    doc.autoTable({ html: '#copiedTable', styles: styles });
+
+    // Add caption to the PDF and center it horizontally
+    const captionText = "Inventory Table";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize); // Set the caption font size
+    doc.text(captionText, textOffset, 10); // Centered caption position
+
+    // Save the PDF file
+    doc.save('table.pdf');
+});
+
+
+
 /*
 const datePicker = document.getElementById("datePicker");
 const submitButton = document.getElementById("createDocButton");
@@ -815,7 +1066,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
 
 
-
  
 /*
 
@@ -879,5 +1129,12 @@ let accBtn = document.getElementById("accBtn")
 
 
     </script>
+
+<style>
+    #copiedTable {
+        display: none;
+    }
+</style>
+
 </body>
 </html>
