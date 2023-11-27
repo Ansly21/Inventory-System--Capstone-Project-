@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 //PRINT PDF
-
+/*
 
 const tableContainer = document.getElementById("table-container");
 const table = document.getElementById("inventoryTable");
@@ -511,7 +511,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     console.log(fileName);
 
     doc.save(fileName);
-});
+});*/
 
 
 
@@ -536,6 +536,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
   saveButton.addEventListener("click", function() {
     form.submit(); // Trigger the form submission when the button is clicked
+
+     // PRINT PDF LOGIC
+     window.jsPDF = window.jspdf.jsPDF;
+     const doc = new jsPDF();
+    const fontSize = 8;
+    const captionFontSize = 25;
+    const styles = {
+        fontSize: fontSize,
+        // Add more styling options as needed
+    };
+
+    doc.autoTable({ html: '#copiedTable', styles: styles });
+
+    const captionText = "Inventory Table";
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
+    const textOffset = (pageWidth - textWidth) / 2;
+
+    doc.setFontSize(captionFontSize);
+    doc.text(captionText, textOffset, 10);
+
+    const fileName = 'InventorySnapshot_'+datePicker.value+'.pdf';
+    console.log(fileName);
+
+    doc.save(fileName);
+
   });
 });
 
