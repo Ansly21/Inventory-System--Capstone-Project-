@@ -96,11 +96,11 @@
             <select name="" id="selectOptions" class="selectOptions">
                 <option value="sample">Choose</option>
                 <option value="lowstock">Low Stock</option>
-                <option value="bestSeller">Best Seller</option>
+               <!-- <option value="bestSeller">Best Seller</option>
                 <option value="leastSeller">Least Seller</option>
                 <option value="topRevenue">Top Revenue</option>
-                <option value="leastRevenue">Least Revenue</option>
-                <option value="allRevenue">All Revenue</option>
+                <option value="leastRevenue">Least Revenue</option>-->
+                <option value="allRevenue">Revenue</option>
             </select>
 
            <form id="reportForm" action="/reports" method="GET"> <!-- Assuming GET method -->
@@ -316,8 +316,22 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     doc.setFontSize(captionFontSize); // Set the caption font size
     doc.text(captionText, textOffset, 10); // Centered caption position
 
+    //generateDate File name
+    var currentDate = new Date();
+
+    // Get individual components of the date (year, month, day)
+    var year = currentDate.getFullYear();
+    var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-indexed
+    var day = ('0' + currentDate.getDate()).slice(-2);
+
+    // Concatenate the date components into a string in the format 'YYYYMMDD'
+    var dateVariable = year + month + day;
+
+
     // Save the PDF file
-    doc.save('table.pdf');
+    const fileName = 'LowStockTable_'+dateVariable+'.pdf';
+    console.log(fileName);
+    doc.save(fileName);
 });
 
 
@@ -635,7 +649,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
             const table = document.createElement('table');
             table.id = "report-table"
             table.innerHTML = `
-                <caption>All Revenue Table</caption>
+                <caption>Revenue Table</caption>
                 <tr>
                     <th>PRODUCT NAME</th>
                     <th>QTY SOLD</th>
@@ -691,7 +705,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
 
     // Add caption to the PDF and center it horizontally
-    const captionText = "ALL REVENUE TABLE";
+    const captionText = "REVENUE TABLE";
     const pageWidth = doc.internal.pageSize.width;
     const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
     const textOffset = (pageWidth - textWidth) / 2;
@@ -700,7 +714,11 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     doc.text(captionText, textOffset, 10); // Centered caption position
 
     // Save the PDF file
-    doc.save('table.pdf');
+
+    
+    const fileName = 'RevenueTable_'+ startDatePicker.value +' to '+ endDatePicker.value+'.pdf';
+    console.log(fileName);
+    doc.save(fileName);
 }); 
     }
 });
