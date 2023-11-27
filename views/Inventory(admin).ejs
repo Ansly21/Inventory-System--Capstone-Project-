@@ -502,7 +502,10 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     doc.text(captionText, textOffset, 10); // Centered caption position
 
     // Save the PDF file
-    doc.save('table.pdf');
+    const fileName = 'InventorySnapshot_'+datePicker.value+'.pdf';
+    console.log(fileName);
+
+    doc.save(fileName);
 });
 
 
