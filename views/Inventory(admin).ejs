@@ -166,11 +166,12 @@
 
             </form>
 
-
+<div id = "invTableContainer">
             <form id ="saveProduct" action="/inventory" method="post">
             <table id = "inventoryTable" >
 
 
+                <thead>
                 <tr>
                     <th class="gray-bg">PRODUCT</th>
                     <th class="gray-bg">STARTING INVENTORY</th>
@@ -180,7 +181,9 @@
                     <th class="gray-bg">INVENTORY VALUE (₱)</th>
                     <th class="gray-bg">INVENTORY COST (₱)</th>
                 </tr>
+            </thead>
 
+            <tbody>
               <!-- dito ung form--> 
                     
                     <input type="date" id="datePicker" name="date" min="2023-01-01" max="" >  
@@ -226,9 +229,11 @@
             
 
             <!--dito ung form-->
+        </tbody>
             </table>
 
         </form>
+    </div>
 
             <div class="save-addproduct">
               

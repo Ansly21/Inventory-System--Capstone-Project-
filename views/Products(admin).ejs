@@ -48,8 +48,11 @@
         <input type="hidden" name="action" value="saveEditedRow">
         
 
+        
 
         <div class="table-container">
+
+            <div id = "prodTableContainer">
             <div class="search-date">
 
                 <form action="/products" method ="get">
@@ -65,6 +68,8 @@
             </div>
             
             <table id ="productTable">
+
+                <thead>
                 <tr>
                     <th>CODE</th>
                     <th>PRODUCT NAME</th>
@@ -75,7 +80,7 @@
                     <th>STATUS</th>
                     <th>ACTION</th>
                 </tr>
-
+            </thead>
               
          
                  <% if(products.length > 0) { %>
@@ -113,6 +118,8 @@
              
                 
             </table>
+
+        </div>
             <div class="save-addproduct">
                 <!--<button id="editSave" class="editSave" type="submit">SAVE</button> -->
                 

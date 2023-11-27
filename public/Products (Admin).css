@@ -212,3 +212,16 @@ table th {
     }
 
 }
+
+#prodTableContainer{
+    max-height: 700px; /* Set the maximum height for the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#productTable thead th {
+    position: sticky;
+    top: 0;
+    
+    z-index: 2;
+    
+}
