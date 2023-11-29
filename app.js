@@ -146,10 +146,11 @@ app.get('/account', async(req, res)=>{
     const plainTextPassword = req.body.password;
     const type = req.body.type;
     
-    if(plainTextPassword.length < 5) {
-        return res.json({status: 'error', error:"Password too short"})
-    }
+    const hasSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
+    if (plainTextPassword.length < 5 || !hasSpecialCharacter.test(plainTextPassword)) {
+        return res.json({ status: 'error', error: 'Password too short or missing a special character' });
+    }
     const password = await bcrypt.hash(plainTextPassword, 3)
 
     try {
