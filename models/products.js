@@ -51,6 +51,7 @@ const productsSchema = new Schema({
 
     currentInv:{
         type: Number,
+        default: 0
        
     }
 
