@@ -11,35 +11,29 @@ const productsSchema = new Schema({
     code:{
         type:String,
         required: true
-
     },
+
+    brandName:{
+        type: String,
+        required: true
+    },
+
     productName:{
         type: String,
         required: true
     },
 
-    unitCost:{
+    wholesalePrice:{
         type: Number,
         required: true
-
     },
 
-    unitPrice:{
+    retailPrice:{
         type: Number,
         required: true
     },
 
     lowStockThreshold:{
-        type: Number,
-        required: true
-    },
-
-    startingInventory:{
-        type: Number,
-        required: true
-    },
-
-    status:{
         type: Number,
         required: true
     }

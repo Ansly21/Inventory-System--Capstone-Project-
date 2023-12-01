@@ -3,9 +3,8 @@
 }
 
 body {
-    width: 90%;
-    margin: 3rem auto 0 auto;
-    background-color: #ffe3ae;
+    margin: 0 auto 0 auto;
+    background-color: #f7f6f6;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -17,14 +16,52 @@ body {
     font-style:italic;
 }
 
+#main {
+    display: flex;
+
+}
+
+.bb {
+    width: 300px;
+    color: black;
+    
+}
+
+.we {
+    margin-top: 2rem;
+    width: 300px;
+}
+
+.test {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    padding: 1rem 0;
+
+}
+
+
+.te {
+    border-radius: 10px;
+    margin: 0 2rem;
+
+}
+
+.te:hover {
+    background-color: #f7af28;
+
+}
+
 a {
     text-decoration: none;
     margin: 0 auto;
 }
 
 img {
-    width: 15rem;
+    width: 20rem;
 }
+
 
 header {
     display: flex;
@@ -32,7 +69,7 @@ header {
 }
 
 .image {
-    width: 0%;
+    border-bottom: 2px solid black;
 }
 
 
@@ -41,18 +78,14 @@ header h1 {
     font-size: 3rem;
 }
 
-main {
-    padding: 3rem;
-    display: flex;
-}
 
 .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    margin-top: 2rem; 
+    position: fixed;
+    height: 100vh;
     margin-right: 2rem;  
+    background-color: #ffc760;
 }
+
 
 button {
     cursor: pointer;
@@ -98,15 +131,14 @@ button {
 }
 
 table {
-    max-width: 1000px;
     width: 100%;
+    max-width: 1200px;
     table-layout: fixed;
     margin-top: 1rem;
 }
 
 .table-container {
-    padding: 1rem;
-    margin: 0 auto;
+    margin-left: 30rem;
     display: flex;
     flex-direction: column;
 }

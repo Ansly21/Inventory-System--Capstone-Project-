@@ -7,13 +7,7 @@ const SchemaTypes = mongoose.Schema.Types;
 const Schema = mongoose.Schema;
 
 const supplierSchema = new Schema({
-
-    supplierCode:{
-        type:String,
-        required: true
-
-    },
-
+    
     supplierName:{
         type: String,
         required: true

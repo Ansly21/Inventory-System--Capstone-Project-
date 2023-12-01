@@ -45,6 +45,12 @@
                 <h5 class="test">Reports</h5>
             </div>
         </a>
+        
+        <a class="bb" href="/supplier">
+            <div class="te">
+                <h5 class="test">Supplier</h5>
+            </div>
+        </a>
 
         <a class="bb" href="/account">
             <div class="te">
@@ -85,16 +91,16 @@
                 <thead>
                 <tr>
                     <th>CODE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>UNIT COST (₱)</th>
-                    <th>UNIT PRICE (₱) </th>
+                    <th>BRAND</th>
+                    <th>NAME</th>
+                    <th>WHOLESALE PRICE (₱) </th>
+                    <th>RETAIL PRICE (₱)</th>
                     <th>LOW STOCK THRESHOLD</th>
-                    <th>STARTING INVENTORY</th>
-                    <th>STATUS</th>
                     <th>ACTION</th>
                 </tr>
             </thead>
               
+           
          
                  <% if(products.length > 0) { %>
                     <% products.forEach((product,index) => { %>
@@ -102,19 +108,16 @@
 
                     
                     <input type="hidden" name="action" value="saveEditedRow">
-
                     <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.code %>" disabled></td>
+                    <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.brandName %>" disabled></td>
                     <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>" disabled></td>
-                    <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.unitCost %>" disabled></td>
-                    <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.unitPrice %>" disabled></td> 
-                    <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>" disabled></td>
-                    <td><input type="number" contenteditable="true" name = "startingInventory[]"  value="<%= product.startingInventory %>" disabled></td>
-                    <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"  onchange="handleStatusChange(this)" disabled></td>
+                    <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.wholesalePrice %>" disabled></td>
+                    <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.retailPrice %>" disabled></td> 
+                    <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>" disabled></td> 
                   
             
                  <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
                  <td> <button class="editBtn" id="<%= product.id %>" data-target="#editModal_<%= product._id %>" type="button" onclick="openEditModal('<%= product._id %>')">Edit</button>
-
                  </td>
                    
                    
@@ -124,26 +127,30 @@
                         <span class="close" onclick="closeEditModal('<%= product._id%>')">X</span>
                         <h2>Edit Product</h2>
                         <form id="editForm" method="post" action="products/<%= product._id %>">
+                            <label for="brandName">Brand: </label>
+                            <select name="brandName" id="editBrandName_<%= product.id %>">
+                                <option value="<%= product.brandName %>" selected><%= product.brandName %></option>
+                                <% suppliers.forEach(function(brand) { %>
+                                    <option value="<%= brand.brandName %>"><%= brand.brandName %></option>
+                                <% }); %>
+                            </select>
+
+                            <br><br>
                             <label for="code">Code:</label>
                             <input type="text" id="editCodeID_<%= product.id %>" name="code" value="<%= product.code %>"><br><br>
             
                             <label for="productName">Product Name:</label>
                             <input type="text" id="editProductName_<%= product.id %>" name="productName" value="<%= product.productName%>"><br><br>
             
-                            <label for="unitCost">Unit Cost:</label>
-                            <input type="number" id="editUnitCost_<%= product.id %>" name="unitCost" value="<%= product.unitCost %>"><br><br>
+                            <label for="wholesalePrice">Wholesale Price:</label>
+                            <input type="number" id="wholesalePrice_<%= product.id %>" name="wholesalePrice" value="<%= product.wholesalePrice %>"><br><br>
             
-                            <label for="unitPrice">Unit Price:</label>
-                            <input type="number" id="editUnitPrice_<%= product.id %>" name="unitPrice" value="<%= product.unitPrice %>"><br><br>
+                            <label for="retailPrice">Retail Price:</label>
+                            <input type="number" id="retailPrice_<%= product.id %>" name="retailPrice" value="<%= product.retailPrice %>"><br><br>
             
                             <label for="lowStockThreshold">Low stock threshold:</label>
                             <input type="number" id="editLowStockThreshold_<%= product.id %>" name="lowStockThreshold"  value="<%= product.lowStockThreshold %>"><br><br>
             
-                            <label for="startingInventory">Startring Inv:</label>
-                            <input type="number" id="editStartingInventory_<%= product.id %>" name="startingInventory" value="<%= product.startingInventory %>"><br><br>
-            
-                            <label for="status">Product Status:</label>
-                            <input type="range" id="editStatus_<%= product.id %>" name="status" min="0" max="1" value="<%= product.status %>"><br><br>
                         
                             <button type="submit">Save</button>
                         </form>
@@ -210,26 +217,34 @@
               <h2>Add New Product</h2>
               <!-- Your form content for adding a new product -->
               <form id="productForm">
+                <label for="brandName">Brand: </label>
+                <select name="brandName" id="brandName" required>
+                    <option value="" ></option>
+                    <% if (suppliers.length === 0) { %>
+                        <option value="" disabled>No brands available</option>
+                    <% } else { %>
+                        <% suppliers.forEach(function(brand) { %>
+                            <option value="<%= brand.brandName %>"><%= brand.brandName %></option>
+                        <% }); %>
+                    <% } %>
+                </select>
+                
+                <br><br>
+
                 <label for="code">Code:</label>
                 <input type="text" id="code" name="code"><br><br>
 
                 <label for="productName">Product Name:</label>
                 <input type="text" id="productName" name="productName"><br><br>
 
-                <label for="unitCost">Unit Cost:</label>
-                <input type="number" id="unitCost" name="unitCost"><br><br>
+                <label for="wholesalePrice">Wholesale Price:</label>
+                <input type="number" id="wholesalePrice" name="wholesalePrice"><br><br>
 
-                <label for="unitPrice">Unit Price:</label>
-                <input type="number" id="unitPrice" name="unitPrice"><br><br>
+                <label for="retailPrice">Retail Price:</label>
+                <input type="number" id="retailPrice" name="retailPrice"><br><br>
 
                 <label for="lowStockThreshold">Low stock threshold:</label>
                 <input type="number" id="lowStockThreshold" name="lowStockThreshold"><br><br>
-
-                <label for="startingInventory">Startring Inv:</label>
-                <input type="number" id="startingInventory" name="startingInventory"><br><br>
-
-                <label for="status">Product Status:</label>
-                <input type="range" id="status" name="status" min="0" max="1"><br><br>
                 
                 <!-- Add other input fields as needed -->
         
@@ -272,26 +287,24 @@ editBtns.forEach(button => {
 
 
 let accBtn = document.getElementById("accBtn")
-    document.getElementById('modalSubmit').addEventListener('click', function () {
+document.getElementById('modalSubmit').addEventListener('click', function () {
+  const brandName = document.getElementById('brandName').value;
   const code = document.getElementById('code').value;
   const productName = document.getElementById('productName').value;
-  const unitCost = document.getElementById('unitCost').value;
-  const unitPrice = document.getElementById('unitPrice').value;
+  const wholesalePrice = document.getElementById('wholesalePrice').value;
+  const retailPrice = document.getElementById('retailPrice').value;
   const lowStockThreshold = document.getElementById('lowStockThreshold').value;
-  const startingInventory = document.getElementById('startingInventory').value;
-  const status = document.getElementById('status').value;
 
 
   // Prepare the data object to send to the server
   const data = {
     action: 'addProduct', // Indicate the action as 'addProduct'
+    brandName: brandName,
     code: code,
     productName: productName,
-    unitCost: unitCost,
-    unitPrice: unitPrice,
-    lowStockThreshold: lowStockThreshold,
-    startingInventory: startingInventory,
-    status: status
+    wholesalePrice: wholesalePrice,
+    retailPrice: retailPrice,
+    lowStockThreshold: lowStockThreshold
     // Add other fields as needed for the new product
   };
 
@@ -358,13 +371,13 @@ function openEditModal(productId) {
 
     const editForm = document.getElementById('editForm');
     let editCodeID = document.getElementById(`editCodeID_${productId}`);
+    let editBrandName = document.getElementById(`editBrandName_${productId}`);
     let editProductName = document.getElementById(`editProductName_${productId}`);
-    let editUnitCost = document.getElementById(`editUnitCost_${productId}`);
-    let editUnitPrice = document.getElementById(`editUnitPrice_${productId}`);
+    let editWholesalePrice = document.getElementById(`editWholesalePrice_${productId}`);
+    let editRetailPrice = document.getElementById(`editRetailPrice_${productId}`);
     let editLowStockThreshold = document.getElementById(`editLowStockThreshold_${productId}`);
-    let editStartingInventory = document.getElementById(`editStartingInventory_${productId}`);
-    let editStatus = document.getElementById(`editStatus_${productId}`);
-
+   
+    
 // Assuming this code runs after the creation or update of the form
 console.log("EDITCODE", editCodeID.value)
 
@@ -375,12 +388,11 @@ console.log("put sub")
     // Get the updated values from the form fields
     const updatedData = {
         code: editCodeID.value,
+        brandName: editBrandName.value,
         productName: editProductName.value,
-        unitCost: editUnitCost.value,
-        unitPrice: editUnitPrice.value,
+        wholesalePrice: editWholesalePrice.value,
+        retailPrice: editRetailPrice.value,
         lowStockThreshold: editLowStockThreshold.value,
-        startingInventory: editStartingInventory.value,
-        status: editStatus.value
     };
 
     fetch(`/products/${productId}`, {

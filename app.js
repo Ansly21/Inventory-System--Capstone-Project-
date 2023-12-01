@@ -11,9 +11,11 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const JWT_SECRET = 'asy7ejh09uads0uj'
+const User = require('./models/user');
 const Product = require('./models/products');
 const Inventory = require('./models/inventory');
-const User = require('./models/user');
+const Supplier = require('./models/supplier');
+
 const { MongoDBCollectionNamespace } = require('mongodb');
 
 
@@ -204,6 +206,88 @@ app.delete('/account/:userId', async (req, res) => {
 app.get('/home', (req, res)=>{ 
     res.render('Home(admin)', { title: 'Home' });
  })
+
+
+
+//SUPPLIER
+app.get('/supplier', async(req, res) => {
+ 
+
+    try {
+      const suppliers = await Supplier.find({})
+
+      res.render('Supplier', {title: 'Supplier', suppliers})
+  } catch (err) {
+      console.error(err)
+      res.status(500).send('Internal server error')
+  }
+})
+
+app.post('/supplier', async(req,res) => {
+  const supplierName = req.body.supplierName;
+  const brandName = req.body.brandName;
+  const supplierContact = req.body.supplierContact;
+  
+
+  try {
+      const response = await Supplier.create({
+        supplierName,
+        brandName,
+        supplierContact
+      })
+      console.log("Supplier added", response)
+  } catch(error) {
+      if(error.code === 11000) {
+          return res.json({status: 'error', error: "Supplier already exist"})
+      }
+      throw error
+  }
+
+  try {
+      const supplierData = await Supplier.find({});
+      
+      res.json({status: 'ok', supplierData: supplierData});
+    } catch (error) {
+      console.log(error);
+      res.json({status: 'error', error: error});
+    }
+})
+
+
+// Handle the PUT request for updating a product
+app.post('/supplier/:supplierId', async (req, res) => {
+  const supplierId = req.params.supplierId; // Get the product ID from the URL parameter
+
+  // Retrieve the updated data from the request body
+  const updatedData = req.body;
+
+  try {
+      // Find the product by ID in your database (assuming you're using a database like MongoDB)
+      const supplier = await Supplier.findById(supplierId);
+
+      if (!supplier) {
+          return res.status(404).json({ message: 'SupplierProduct not found PUT' });
+      }
+
+      // Update the product fields with the new values
+      // Modify these lines according to your schema and update logic
+      supplier.supplierName = updatedData.supplierName;
+      supplier.brandName = updatedData.brandName;
+      supplier.supplierContact = updatedData.supplierContact;
+
+      // Save the updated product in the database
+      await supplier.save();
+
+      // Respond with a success message or the updated product
+      res.redirect('/supplier');
+    } catch (err) {
+      console.error('Error updating supplier:', err);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
 
 
 
@@ -517,17 +601,21 @@ app.post('/inventory', async (req, res) =>{
  //Products
 
 
- app.get('/products', (req, res)=>{
+ app.get('/products', async(req, res)=>{
 
     const query = req.query.query;
     console.log(query);
 
+    
+
+    
+    
     if(typeof query === 'undefined'){
         console.log("walang laman");
-   
+     const suppliers = await Supplier.find({})
     Product.find()
         .then((result)=>{
-            res.render('Products(admin)', { title: 'Products', products: result});
+            res.render('Products(admin)', { title: 'Products', products: result, suppliers});
         })
         .catch((err)=>{
             console.log(err);
@@ -590,10 +678,11 @@ app.post('/inventory', async (req, res) =>{
             res.redirect('/products');
             
             try{
+                const brandName = req.body.brandName;
                 const code = req.body.code;
                 const productName = req.body.productName;
-                const unitCost = req.body.unitCost;
-                const unitPrice = req.body.unitPrice;
+                const wholesalePrice = req.body.wholesalePrice;
+                const retailPrice = req.body.retailPrice;
                 const lowStockThreshold = req.body.lowStockThreshold;
                 const startingInventory = req.body.startingInventory;
                 const status = req.body.status;
@@ -602,13 +691,12 @@ app.post('/inventory', async (req, res) =>{
                  
 
                         const newData = new Product({
+                            brandName: brandName,
                             code: code,
                             productName: productName,
-                            unitCost: unitCost,
-                            unitPrice: unitPrice,
-                            lowStockThreshold: lowStockThreshold,
-                            startingInventory: startingInventory,
-                            status: status
+                            wholesalePrice: wholesalePrice,
+                            retailPrice: retailPrice,
+                            lowStockThreshold: lowStockThreshold
                         });
 
                        newData.save();
@@ -636,13 +724,12 @@ app.post('/inventory', async (req, res) =>{
         const startingInventory = req.body.startingInventory;
         const status = req.body.status;*/
 
+        const brandName = req.body.brandName[0]; // Get the first (and only) element of the array
         const code = req.body.code[0]; // Get the first (and only) element of the array
         const productName = req.body.productName[0];
-        const unitCost = parseFloat(req.body.unitCost[0]); // Convert to a number
-        const unitPrice = parseFloat(req.body.unitPrice[0]);
+        const wholesalePrice = parseFloat(req.body.wholesalePrice[0]); // Convert to a number
+        const retailPrice = parseFloat(req.body.retailPrice[0]);
         const lowStockThreshold = parseInt(req.body.lowStockThreshold[0]); // Convert to an integer
-        const startingInventory = parseInt(req.body.startingInventory[0]);
-        const status = req.body.status[0];
 
 
         try{
@@ -656,12 +743,12 @@ app.post('/inventory', async (req, res) =>{
             }
             
            //product.code= code;
+            product.brandName = brandName;
             product.productName = productName;
-            product.unitCost = unitCost;
-            product.unitPrice = unitPrice;
+            product.wholesalePrice = wholesalePrice;
+            product.retailPrice = retailPrice;
             product.lowStockThreshold = lowStockThreshold;
-            product.startingInventory = startingInventory;
-            product.status = status;
+  
 
         
                             
@@ -713,12 +800,12 @@ app.post('/products/:productId', async (req, res) => {
       // Update the product fields with the new values
       // Modify these lines according to your schema and update logic
       product.code = updatedData.code;
+      product.brandName = updatedData.brandName;
       product.productName = updatedData.productName;
-      product.unitCost = updatedData.unitCost;
-      product.unitPrice = updatedData.unitPrice;
+      product.wholesalePrice = updatedData.wholesalePrice;
+      product.retailPrice = updatedData.retailPrice;
       product.lowStockThreshold = updatedData.lowStockThreshold;
-      product.startingInventory = updatedData.startingInventory;
-      product.status = updatedData.status;
+ 
 
       // Save the updated product in the database
       await product.save();

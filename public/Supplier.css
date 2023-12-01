@@ -20,7 +20,7 @@ body {
     text-align: center;
     font-family: 'Lato', sans-serif;
     font-weight: bold;
-    font-style:italic;
+ 
 }
 
 .flexx {
@@ -242,6 +242,9 @@ table th {
     background-color: rgb(80, 199, 80);
 }
 
+#addRowButton {
+    margin-top: 20rem;
+}
 
 input[type="text"], input[type="number"] {
 
@@ -281,7 +284,6 @@ span {
     cursor: pointer;
     /* Add additional styling as needed */
 }
-
 @media (max-width:800px) {
     :root {
         font-size: 0.5rem;

@@ -7,8 +7,8 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
-    <title>Inventory</title>
-    <link rel="stylesheet" href="/Inventory (Admin).css">
+    <title>Supplier</title>
+    <link rel="stylesheet" href="/Supplier.css">
 </head>
 <body id="body">
 
@@ -45,7 +45,7 @@
                 <h5 class="test">Reports</h5>
             </div>
         </a>
-        
+
         <a class="bb" href="/supplier">
             <div class="te">
                 <h5 class="test">Supplier</h5>
@@ -62,7 +62,7 @@
     
     <main>
         <div class="title-con">
-       <h1 id="title">INVENTORY</h1>
+       <h1 id="title">SUPPLIER</h1>
     </div>
         <input type="hidden" name="action" value="saveEditedRow">
         
@@ -90,66 +90,105 @@
 
                 <thead>
                 <tr>
-                    <th>CODE</th>
+                    <th>SUPPLIER</th>
                     <th>BRAND</th>
-                    <th>NAME</th>
-                    <th>CURRENT INVENTORY </th>
-                    <th>WHOLESALE PRICE (₱)</th>
-                    <th>RETAIL PRICE (₱)</th>
-                    <th>TOTAL RETAIL</th>
+                    <th>SUPPLIER CONTACT</th>
                     <th>ACTION</th>
                 </tr>
             </thead>
               
-           <td>test</td>
-         
-                   
-        
+            <% if(suppliers.length > 0) { %>
+                <% suppliers.forEach((supplier,index) => { %>
+            <tr class = "database-row">
 
-
-           
-
+                
+                <input type="hidden" name="action" value="saveEditedRow">
+                <td><input type="text" contenteditable="true" name ="supplierName"  value="<%= supplier.supplierName %>" disabled></td>
+                <td><input type="text" contenteditable="true" name = "brandName"  value="<%= supplier.brandName %>" disabled></td>
+                <td><input type="number" contenteditable="true" name = "supplierContact"  value="<%= supplier.supplierContact %>" disabled></td>
              
+        
+             <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
+             <td> <button class="editBtn" id="<%= supplier._id %>" data-target="#editModal_<%= supplier._id %>" type="button" onclick="openEditModal('<%= supplier._id %>')">Edit</button>
+             </td>
+               
+               
+                
+             <div id="editModal_<%= supplier._id %>" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeEditModal('<%= supplier._id%>')">X</span>
+                    <h2>Edit Product</h2>
+                    <form id="editForm" method="post" action="supplier/<%= supplier._id %>">
+                        <label for="supplierName">Code:</label>
+                        <input type="text" id="supplierName_<%= supplier._id %>" name="supplierName" value="<%= supplier.supplierName %>"><br><br>
+        
+                        <label for="brandName">Product Name:</label>
+                        <input type="text" id="brandName_<%= supplier._id %>" name="brandName" value="<%= supplier.brandName%>"><br><br>
+        
+                        <label for="supplierContact">Unit Cost:</label>
+                        <input type="number" id="supplierContact_<%= supplier._id %>" name="supplierContact" value="<%= supplier.supplierContact %>"><br><br>
+        
+                    
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+
+
+
+            
+                
+            </tr>
+            
+            <% }) %>
+
+            <%} else { %>
+                <p>There are no suppliers yet...</p>
+            
+            <% } %>   
+                            
+
                 
             </table>
 
         </div>
-            <div class="save-addproduct">
-                <!--<button id="editSave" class="editSave" type="submit">SAVE</button> -->
-                
-            </div>
-        <!--  </form> -->
-            
-
+           
         
-
-        <form id = "saveProduct" action="/products" method = "post">
-
-            <input type="hidden" name="action" value="addProduct">
-
-        <table id ="productTable2">
-
-            <tbody>
-
-
-            </tbody>
-        </table>
-
-        
-
-        </form>
 
      
         <div class="save-addproduct">
-           
-            <button id="cancelProduct" class="addBtn" style="display: none;">CANCEL</button>
-            <button id="saveproductbtn" class="saveBtn" type="submit" style="display: none;">SAVE PRODUCT</button>
-            <button class="addBtn" id = "addRowButton">ADD NEW PRODUCT</button>
+            <button class="addBtn" id = "addRowButton">ADD SUPPLIER</button>
         </div>
 
-      
-    
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+              <span id="close">X</span>
+              <h2>Add New Supplier</h2>
+              <!-- Your form content for adding a new product -->
+              <form id="productForm">
+                <label for="supplierName">Supplier Name:</label>
+                <input type="text" id="supplierName" name="supplierName"><br><br>
 
+                <label for="brandName">Brand: </label>
+                <input type="text" id="brandName" name="brandName"><br><br>
+
+                <label for="supplierContact">Supplier Contact: </label>
+                <input type="text" id="supplierContact" name="supplierContact"><br><br>
+
+                
+                <!-- Add other input fields as needed -->
+        
+                <button type="submit" id="modalSubmit">Submit</button>
+              </form>
+            </div>
+          </div>
+
+    
+      
+                <!-- Edit button -->
+       
+        <!-- Modal for editing -->
        
 
             
@@ -158,7 +197,6 @@
     </main> 
 
     </div>
-
 
 
     <script>
@@ -180,28 +218,20 @@ editBtns.forEach(button => {
 
 let accBtn = document.getElementById("accBtn")
 document.getElementById('modalSubmit').addEventListener('click', function () {
-  const brandName = document.getElementById('brandName').value;
-  const code = document.getElementById('code').value;
-  const productName = document.getElementById('productName').value;
-  const wholesalePrice = document.getElementById('wholesalePrice').value;
-  const retailPrice = document.getElementById('retailPrice').value;
-  const lowStockThreshold = document.getElementById('lowStockThreshold').value;
 
+    const supplierName = document.getElementById('supplierName').value;
+    const brandName = document.getElementById('brandName').value;
+    const supplierContact = document.getElementById('supplierContact').value;
 
   // Prepare the data object to send to the server
   const data = {
-    action: 'addProduct', // Indicate the action as 'addProduct'
+    supplierName: supplierName,
     brandName: brandName,
-    code: code,
-    productName: productName,
-    wholesalePrice: wholesalePrice,
-    retailPrice: retailPrice,
-    lowStockThreshold: lowStockThreshold
-    // Add other fields as needed for the new product
+    supplierContact: supplierContact,
   };
 
   // Send the form data to the backend using fetch
-  fetch('/products', {
+  fetch('/supplier', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -256,20 +286,17 @@ window.onclick = function (event) {
 };
 
 
-function openEditModal(productId) {
-  const modal = document.getElementById(`editModal_${productId}`);
+function openEditModal(supplierId) {
+  const modal = document.getElementById(`editModal_${supplierId}`);
   if (modal) {
     modal.style.display = 'block';
 
     const editForm = document.getElementById('editForm');
-    let editCodeID = document.getElementById(`editCodeID_${productId}`);
-    let editBrandName = document.getElementById(`editBrandName_${productId}`);
-    let editProductName = document.getElementById(`editProductName_${productId}`);
-    let editWholesalePrice = document.getElementById(`editWholesalePrice_${productId}`);
-    let editRetailPrice = document.getElementById(`editRetailPrice_${productId}`);
-    let editLowStockThreshold = document.getElementById(`editLowStockThreshold_${productId}`);
-   
-    
+    let supplierName = document.getElementById(`supplierName_${supplierId}`);
+    let brandName = document.getElementById(`brandName_${supplierId}`);
+    let supplierContact = document.getElementById(`supplierContact_${supplierId}`);
+
+
 // Assuming this code runs after the creation or update of the form
 console.log("EDITCODE", editCodeID.value)
 
@@ -279,15 +306,12 @@ editForm.addEventListener("submit", (event) => {
 console.log("put sub")
     // Get the updated values from the form fields
     const updatedData = {
-        code: editCodeID.value,
-        brandName: editBrandName.value,
-        productName: editProductName.value,
-        wholesalePrice: editWholesalePrice.value,
-        retailPrice: editRetailPrice.value,
-        lowStockThreshold: editLowStockThreshold.value,
+        supplierName: supplierName.value,
+        brandName: brandName.value,
+        supplierContact: supplierContact.value,
     };
 
-    fetch(`/products/${productId}`, {
+    fetch(`/supplier/${supplierId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
