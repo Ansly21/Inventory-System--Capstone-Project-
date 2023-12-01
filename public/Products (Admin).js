@@ -1,4 +1,4 @@
-const dateText = document.getElementById("date")
+/* const dateText = document.getElementById("date")
 // Create a new Date object
 const currentDate = new Date();
 
@@ -10,4 +10,4 @@ const day = currentDate.getDate();
 // Format the date as needed (e.g., "MM/DD/YY" or "YYYY-MM-DD")
 const formattedDate = `${month}/${day}/${year}`;
 
-dateText.textContent = formattedDate
+dateText.textContent = formattedDate */

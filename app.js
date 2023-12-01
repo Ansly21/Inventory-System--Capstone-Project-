@@ -599,23 +599,22 @@ app.post('/inventory', async (req, res) =>{
                 const status = req.body.status;
 
 
-                    for(let i = 0; i < code.length; i++){
+                 
 
                         const newData = new Product({
-                            code: code[i],
-                            productName: productName[i],
-                            unitCost: unitCost[i],
-                            unitPrice: unitPrice[i],
-                            lowStockThreshold: lowStockThreshold[i],
-                            startingInventory: startingInventory[i],
-                            status: status[i]
+                            code: code,
+                            productName: productName,
+                            unitCost: unitCost,
+                            unitPrice: unitPrice,
+                            lowStockThreshold: lowStockThreshold,
+                            startingInventory: startingInventory,
+                            status: status
                         });
 
-                        await newData.save();
+                       newData.save();
                         
 
-                    }
-
+                
                     console.log("added na sa db");
                   //  res.redirect('/products');
 
@@ -691,27 +690,53 @@ app.post('/inventory', async (req, res) =>{
 
  
 
-  //Reports
-  /*
-  app.get('/reports', (req, res)=>{
-
-   
-    Product.countDocuments({})
-  .then(count => {
-    console.log(`Number of documents in the collection: ${count}`);
-    res.render('Reports(admin)', { title: 'Reports' , totalProducts: count});
-  })
-  .catch(error => {
-    console.error(error);
-  });
 
 
-    
+
+// Import necessary modules and set up your app
+
+// Handle the PUT request for updating a product
+app.post('/products/:productId', async (req, res) => {
+  const productId = req.params.productId; // Get the product ID from the URL parameter
+
+  // Retrieve the updated data from the request body
+  const updatedData = req.body;
+
+  try {
+      // Find the product by ID in your database (assuming you're using a database like MongoDB)
+      const product = await Product.findById(productId);
+
+      if (!product) {
+          return res.status(404).json({ message: 'Product not found PUT' });
+      }
+
+      // Update the product fields with the new values
+      // Modify these lines according to your schema and update logic
+      product.code = updatedData.code;
+      product.productName = updatedData.productName;
+      product.unitCost = updatedData.unitCost;
+      product.unitPrice = updatedData.unitPrice;
+      product.lowStockThreshold = updatedData.lowStockThreshold;
+      product.startingInventory = updatedData.startingInventory;
+      product.status = updatedData.status;
+
+      // Save the updated product in the database
+      await product.save();
+
+      // Respond with a success message or the updated product
+      res.redirect('/products');
+    } catch (err) {
+      console.error('Error updating product:', err);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 
-  
- 
- });*/
+
+
+
+
+
  app.get('/reports', async (req, res) => {
 
   //Try block na nagcocontain ng lahat ng ipapasa sa reports page through res.render

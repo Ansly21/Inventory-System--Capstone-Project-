@@ -13,38 +13,51 @@
 <body id="body">
 
     <header>
+        
+
+          
+ 
+    </header>
+
+    <div class="flexx">
+    <div class="nav">
         <div class="image">
             <a href="/">
                 <img src="/Six7TwoLogo.png" alt="">
             </a>
         </div>
 
-            <h1 id="title">PRODUCTS</h1>
- 
-    </header>
+        <div class="we">
+        <a class="bb" href="/products">
+            <div class="te">
+                <h5 class="test">Products</h5>
+            </div>
+        </a>
 
+        <a class="bb" href="/inventory">
+            <div class="te">
+                <h5 class="test">Inventory</h5>
+            </div>
+        </a>
+
+        <a class="bb" href="/reports">
+            <div class="te">
+                <h5 class="test">Reports</h5>
+            </div>
+        </a>
+
+        <a class="bb" href="/account">
+            <div class="te">
+                <h5 class="test" id="accBtn">Accounts</h5>
+            </div>
+        </a>
+    </div>
+    </div>
+    
     <main>
-
-        <div class="nav">
-            <a href="/products">
-                <button  class="page-btn">Products<i class="gg-pen"></i></button>
-            </a>
-
-            <a href="/inventory">
-                <button>Inventory<i class="gg-copy"></i></button>
-            </a>
-
-            <a href="/reports">
-                <button>Reports<i class="gg-chart"></i></button>
-            </a>
-
-            <a href="/account">
-                <button id="accBtn">Accounts<i class="gg-smile"></i></button>
-            </a>
-        </div>
-
-
-
+        <div class="title-con">
+       <h1 id="title">PRODUCTS</h1>
+    </div>
         <input type="hidden" name="action" value="saveEditedRow">
         
 
@@ -87,22 +100,59 @@
                     <% products.forEach((product,index) => { %>
                 <tr class = "database-row">
 
-                    <form id ="editproduct" action="/products" method="post">
+                    
                     <input type="hidden" name="action" value="saveEditedRow">
 
-                    <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.code %>" ></td>
-                    <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>"></td>
-                    <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.unitCost %>"></td>
-                    <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.unitPrice %>"></td> 
-                    <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>"></td>
-                    <td><input type="number" contenteditable="true" name = "startingInventory[]"  value="<%= product.startingInventory %>"></td>
-                    <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"  onchange="handleStatusChange(this)"></td>
+                    <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.code %>" disabled></td>
+                    <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>" disabled></td>
+                    <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.unitCost %>" disabled></td>
+                    <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.unitPrice %>" disabled></td> 
+                    <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>" disabled></td>
+                    <td><input type="number" contenteditable="true" name = "startingInventory[]"  value="<%= product.startingInventory %>" disabled></td>
+                    <td><input type="range" contenteditable="true" name = "status[]" min="0" max="1"  value="<%= product.status %>"  onchange="handleStatusChange(this)" disabled></td>
                   
             
-                   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td>
+                 <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
+                 <td> <button class="editBtn" id="<%= product.id %>" data-target="#editModal_<%= product._id %>" type="button" onclick="openEditModal('<%= product._id %>')">Edit</button>
+
+                 </td>
+                   
                    
                     
-                   </form>
+                 <div id="editModal_<%= product._id %>" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeEditModal('<%= product._id%>')">X</span>
+                        <h2>Edit Product</h2>
+                        <form id="editForm" method="post" action="products/<%= product._id %>">
+                            <label for="code">Code:</label>
+                            <input type="text" id="editCodeID_<%= product.id %>" name="code" value="<%= product.code %>"><br><br>
+            
+                            <label for="productName">Product Name:</label>
+                            <input type="text" id="editProductName_<%= product.id %>" name="productName" value="<%= product.productName%>"><br><br>
+            
+                            <label for="unitCost">Unit Cost:</label>
+                            <input type="number" id="editUnitCost_<%= product.id %>" name="unitCost" value="<%= product.unitCost %>"><br><br>
+            
+                            <label for="unitPrice">Unit Price:</label>
+                            <input type="number" id="editUnitPrice_<%= product.id %>" name="unitPrice" value="<%= product.unitPrice %>"><br><br>
+            
+                            <label for="lowStockThreshold">Low stock threshold:</label>
+                            <input type="number" id="editLowStockThreshold_<%= product.id %>" name="lowStockThreshold"  value="<%= product.lowStockThreshold %>"><br><br>
+            
+                            <label for="startingInventory">Startring Inv:</label>
+                            <input type="number" id="editStartingInventory_<%= product.id %>" name="startingInventory" value="<%= product.startingInventory %>"><br><br>
+            
+                            <label for="status">Product Status:</label>
+                            <input type="range" id="editStatus_<%= product.id %>" name="status" min="0" max="1" value="<%= product.status %>"><br><br>
+                        
+                            <button type="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+
+
+                
                     
                 </tr>
                 
@@ -153,36 +203,240 @@
             <button class="addBtn" id = "addRowButton">ADD NEW PRODUCT</button>
         </div>
 
-      
-            <!--
-            <% if(products.length > 0) { %>
-                <% products.forEach(product => { %>
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+              <span id="close">X</span>
+              <h2>Add New Product</h2>
+              <!-- Your form content for adding a new product -->
+              <form id="productForm">
+                <label for="code">Code:</label>
+                <input type="text" id="code" name="code"><br><br>
 
-               <p><%= product._id %></p>
-               <p><%= product.productName %></p>
-                <p><%= product.unitCost %></p>
-                <p><%= product.unitPrice %></p>
-                <p><%= product.lowStockThreshold %></p>
-                <p><%= product.startingInventory %></p>
-                <p><%= product.status %></p>
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName"><br><br>
 
-                <% }) %>
+                <label for="unitCost">Unit Cost:</label>
+                <input type="number" id="unitCost" name="unitCost"><br><br>
 
-                <%} else { %>
-                    <p>There are no products yet...</p>
+                <label for="unitPrice">Unit Price:</label>
+                <input type="number" id="unitPrice" name="unitPrice"><br><br>
+
+                <label for="lowStockThreshold">Low stock threshold:</label>
+                <input type="number" id="lowStockThreshold" name="lowStockThreshold"><br><br>
+
+                <label for="startingInventory">Startring Inv:</label>
+                <input type="number" id="startingInventory" name="startingInventory"><br><br>
+
+                <label for="status">Product Status:</label>
+                <input type="range" id="status" name="status" min="0" max="1"><br><br>
                 
-                <% } %>    
+                <!-- Add other input fields as needed -->
+        
+                <button type="submit" id="modalSubmit">Submit</button>
+              </form>
+            </div>
+          </div>
 
-                -->
+    
+      
+                <!-- Edit button -->
+       
+        <!-- Modal for editing -->
+       
+
             
         </div>
 
     </main> 
 
+    </div>
+
     <script src="/Products (Admin).js"></script>
 
     <script>
-    let accBtn = document.getElementById("accBtn")
+
+  // Select all elements with class 'editBtn'
+let editBtns = document.querySelectorAll(".editBtn");
+
+
+let idLastClicked;
+// Loop through each button and attach an event listener
+editBtns.forEach(button => {
+    button.addEventListener("click", (e) => {
+        console.log(e.target.id);
+        idLastClicked = e.target.id
+    
+    });
+});
+
+
+let accBtn = document.getElementById("accBtn")
+    document.getElementById('modalSubmit').addEventListener('click', function () {
+  const code = document.getElementById('code').value;
+  const productName = document.getElementById('productName').value;
+  const unitCost = document.getElementById('unitCost').value;
+  const unitPrice = document.getElementById('unitPrice').value;
+  const lowStockThreshold = document.getElementById('lowStockThreshold').value;
+  const startingInventory = document.getElementById('startingInventory').value;
+  const status = document.getElementById('status').value;
+
+
+  // Prepare the data object to send to the server
+  const data = {
+    action: 'addProduct', // Indicate the action as 'addProduct'
+    code: code,
+    productName: productName,
+    unitCost: unitCost,
+    unitPrice: unitPrice,
+    lowStockThreshold: lowStockThreshold,
+    startingInventory: startingInventory,
+    status: status
+    // Add other fields as needed for the new product
+  };
+
+  // Send the form data to the backend using fetch
+  fetch('/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle success, e.g., close the modal and perform any UI updates
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+        // Perform any other necessary actions upon successful addition of a new product
+      } else {
+        // Handle errors if the request fails
+        console.error('Error adding product');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
+
+
+   // Get the modal
+const modal = document.getElementById('myModal');
+const editModal = document.getElementById(`editModal`);
+
+// Get the button that opens the modal
+const btn = document.getElementById('addRowButton');
+
+// Get the <span> element that closes the modal
+const span = document.getElementById("close")
+
+// When the user clicks the button, open the modal
+btn.onclick = function () {
+  modal.style.display = 'block';
+  editModal.style.display = 'block';
+};
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = 'none';
+  editModal.style.display = 'none';
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target === modal || event.target === editModal ) {
+    modal.style.display = 'none';
+    editModal.style.display = 'none';
+  }
+};
+
+
+function openEditModal(productId) {
+  const modal = document.getElementById(`editModal_${productId}`);
+  if (modal) {
+    modal.style.display = 'block';
+
+    const editForm = document.getElementById('editForm');
+    let editCodeID = document.getElementById(`editCodeID_${productId}`);
+    let editProductName = document.getElementById(`editProductName_${productId}`);
+    let editUnitCost = document.getElementById(`editUnitCost_${productId}`);
+    let editUnitPrice = document.getElementById(`editUnitPrice_${productId}`);
+    let editLowStockThreshold = document.getElementById(`editLowStockThreshold_${productId}`);
+    let editStartingInventory = document.getElementById(`editStartingInventory_${productId}`);
+    let editStatus = document.getElementById(`editStatus_${productId}`);
+
+// Assuming this code runs after the creation or update of the form
+console.log("EDITCODE", editCodeID.value)
+
+editForm.addEventListener("submit", (event) => {
+
+    console.log("EDITCODE", editCodeID.value)
+console.log("put sub")
+    // Get the updated values from the form fields
+    const updatedData = {
+        code: editCodeID.value,
+        productName: editProductName.value,
+        unitCost: editUnitCost.value,
+        unitPrice: editUnitPrice.value,
+        lowStockThreshold: editLowStockThreshold.value,
+        startingInventory: editStartingInventory.value,
+        status: editStatus.value
+    };
+
+    fetch(`/products/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Handle success
+            return response.json(); // Parse the response body as JSON
+        } else {
+            throw new Error('Error updating product');
+        }
+    })
+    .then(data => {
+        // Here 'data' contains the updated product from the server
+        console.log(data.updatedProduct);
+        // Perform actions with the updated product data as needed
+        const editModal = document.getElementById('editModal');
+        // Close the modal, update UI, etc.
+        location.reload()
+    })
+    .catch(error => {
+        location.reload()
+    });
+
+    event.preventDefault();
+});
+  }
+}
+// Function to close the edit modal
+function closeEditModal(productId) {
+  const modal = document.getElementById(`editModal_${idLastClicked}`);
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+// Function to save the edited data (you'll need to implement this)
+function saveEditedData() {
+  // Retrieve the edited data from the form fields
+  const editedProductName = document.getElementById('productNameEdit').value;
+  // Retrieve other edited data similarly
+
+  // Perform actions to save the edited data (e.g., send it to the server via AJAX)
+  // Implement your logic to save the edited data
+  // ...
+
+  // Close the edit modal after saving the changes
+  closeEditModal();
+}
+
+
+
 
 //FOR DECODING JWT TOKEN AFTER LOGGING IN
 function parseJwt (token) { 
@@ -201,46 +455,13 @@ function parseJwt (token) {
             
             function() {
             document.getElementById("saveProduct").submit();
-         });
-        
-        /*
-        document.addEventListener("DOMContentLoaded", function () {
-            // Get a reference to the table and button
-            const table = document.getElementById('productTable2');
-            const addRowButton = document.getElementById('addBtn');
-
-            // Function to add a new row to the table
-            function addRow() {
-                const newRow = table.insertRow();
-                const code = newRow.insertCell(0);
-                const productName = newRow.insertCell(1);
-                const unitCost = newRow.insertCell(2);
-                const unitPrice = newRow.insertCell(3);
-                const lowStockThreshold = newRow.insertCell(4);
-                const startingInventory = newRow.insertCell(5);
-                const status = newRow.insertCell(6);
-
-                // You can customize the content of the cells here
-                code.innerHTML = "<input type='text' placeholder='Code'>";
-                productName.innerHTML = "<input type='text' placeholder='Name'>";
-                unitCost.innerHTML = "<input type='text' placeholder='Unit Cost'>";
-                unitPrice.innerHTML = "<input type='text' placeholder='Unit Price'>";
-                lowStockThreshold.innerHTML = "<input type='text' placeholder='Low Stock Threshold'>";
-                startingInventory.innerHTML = "<input type='text' placeholder='Starting Inventory'>";
-                status.innerHTML = "<input type='range' min='0' max='1'>";
-                console.log("row is now added");
             }
-
-            // Attach the addRow function to the button's click event
-            addRowButton.addEventListener("click", addRow);
-        });*/
+         );
+        
+      
 
         // Function to add a new row to the table
-        function addRow() {
-
-          
-
-
+        /* function addRow() {
             const tableBody = document.querySelector("#productTable2 tbody");
             const newRow = tableBody.insertRow();
 
@@ -305,14 +526,9 @@ function parseJwt (token) {
 
             const cancelProduct= document.getElementById("cancelProduct");
             cancelProduct.style.display = "block";
-
-
-
         }
-
+ */
         
-
-
         function hideNewRow(){
 
             var table = document.getElementById("productTable2");
@@ -322,8 +538,6 @@ function parseJwt (token) {
                         table.deleteRow(0);
                     }
            
-
-
             const editSavebtn = document.getElementById("editSave");
             editSavebtn.style.display = "block";
 
@@ -331,26 +545,19 @@ function parseJwt (token) {
             cancelProduct.style.display = "none";
 
             const saveproductbtn = document.getElementById("saveproductbtn");
-            saveproductbtn.style.display = "none";
-
-            
-
+            saveproductbtn.style.display = "none"; 
         }
 
         
-
         function submitRow(button){
-
             // Traverse the DOM to find the row
-            var row = button.closest('tr');
+            var row = button.closest('div');
             
             // Find the form in the row (assuming the form is in the same row)
             var form = row.querySelector('form');
             
             // Submit the form
             form.submit();
-
-
         }
 
        function handleStatusChange(input) {
@@ -390,11 +597,11 @@ function parseJwt (token) {
 
 
         // Event listener for the "Add Row" button
-        document.querySelector("#addRowButton").addEventListener("click", addRow);
+       /*  document.querySelector("#addRowButton").addEventListener("click", addRow); */
         document.querySelector("#cancelProduct").addEventListener("click", hideNewRow);
 
     
-        let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    let accType = parseJwt(localStorage.getItem("TOKEN")).type
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
@@ -404,7 +611,6 @@ function parseJwt (token) {
             accBtn.style.display = "none"
         }
     }
-
 
         </script>
     </body>
