@@ -101,13 +101,36 @@
                 </tr>
             </thead>
               
-           <td>test</td>
+           
+            <% if(products.length > 0) { %>
+                <% products.forEach((product,index) => { %>
+            <tr class = "database-row">
+
+                
+                <input type="hidden" name="action" value="saveEditedRow">
+                <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.code %>" disabled></td>
+                <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.brandName %>" disabled></td>
+                <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>" disabled></td>
+                <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.currentInv %>" disabled></td>
+                <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.wholesalePrice %>" disabled></td>
+                <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.retailPrice %>" disabled></td> 
+                <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.totalRetail %>" disabled></td> 
+              
+        
+             <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
+             <td> <button class="editBtn" id="<%= product.id %>" data-target="#editModal_<%= product._id %>" type="button" onclick="openEditModal('<%= product._id %>')">Edit</button>
+             </td>
          
                    
         
 
 
-           
+             <% }) %>
+
+                <%} else { %>
+                    <p>There are no products yet...</p>
+                
+                <% } %>   
 
              
                 

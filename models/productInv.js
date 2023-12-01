@@ -8,12 +8,12 @@ const Schema = mongoose.Schema;
 
 const productInvSchema = new Schema({
     
-    productCode:{
+    code:{
         type:String,
         required: true
 
     },
-    brand:{
+    brandName:{
         type: String,
         required: true
     },
@@ -24,9 +24,11 @@ const productInvSchema = new Schema({
 
     },
 
-    currentInv:{
+    wholesalePrice: {
         type: Number,
-       
+        required: true,
+        get: (v) => parseFloat(v).toFixed(2),
+        set: (v) => parseFloat(v).toFixed(2),
     },
 
     retailPrice: {
@@ -42,21 +44,16 @@ const productInvSchema = new Schema({
         get: (v) => parseFloat(v).toFixed(2),
         set: (v) => parseFloat(v).toFixed(2),
     },
-
-    wholesalePrice: {
-        type: Number,
-        required: true,
-        get: (v) => parseFloat(v).toFixed(2),
-        set: (v) => parseFloat(v).toFixed(2),
-    },
-
     
-
     lowStockThreshold: {
         type: Number,
         required: true,
     },
 
+    currentInv:{
+        type: Number,
+       
+    }
 
 },  {timestamps: true});
 
