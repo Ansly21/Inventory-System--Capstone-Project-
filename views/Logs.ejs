@@ -7,8 +7,8 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
-    <title>Transactions</title>
-    <link rel="stylesheet" href="/Transactions.css">
+    <title>Logs</title>
+    <link rel="stylesheet" href="/Logs.css">
 </head>
 <body id="body">
 
@@ -51,19 +51,18 @@
                 <h5 class="test">Supplier</h5>
             </div>
         </a>
-        
+
         <a class="bb" href="/transactions">
-            <div class="te" id="currentPage">
-                <h5 class="test" id="accBtn">Transactions</h5>
+            <div class="te">
+                <h5 class="test">Transactions</h5>
             </div>
         </a>
 
         <a class="bb" href="/logs">
-            <div class="te">
+            <div class="te"  id="currentPage">
                 <h5 class="test">Logs</h5>
             </div>
         </a>
-
 
         <a class="bb" href="/account">
             <div class="te">
@@ -75,7 +74,7 @@
     
     <main>
         <div class="title-con">
-       <h1 id="title">TRANSACTIONS</h1>
+       <h1 id="title">LOGS</h1>
     </div>
         <input type="hidden" name="action" value="saveEditedRow">
         
@@ -104,47 +103,56 @@
                 <thead>
                 <tr>
                     <th>USER</th>
-                    <th>PRODUCT NAME</th>
-                    <th>STOCK IN</th>
-                    <th>STOCK OUT</th>
-                    <th>WHOLESALE PRICE</th>
-                    <th>RETAIL PRICE</th>
-                    <th>REMARKS</th>
+                    <th>ACTION</th>
                     <th>TIMESTAMPS</th>
                 </tr>
             </thead>
+       
+                
+          
             <%
             // Filter out transactions where user is not available
-            const filteredTransactions = transactions.filter(transaction => transaction.user);
+            const filteredTransactions = transactions.filter(transaction => transaction.userLogsOnly);
           %>
           
           <% if (filteredTransactions.length > 0) { %>
             <% filteredTransactions.forEach(transaction => { %>
               <tr>
-                <td><%= transaction.user %></td>
-                <td><%= transaction.productName %></td>
-                <td><%= transaction.stockIn %></td>
-                <td><%= transaction.stockOut %></td>
-                <td><%= transaction.wholesalePrice %></td>
-                <td><%= transaction.retailPrice %></td>
-                <td><%= transaction.remarks %></td>
+                <td><%= transaction.userLogsOnly %></td>
+                <td><%= transaction.action %></td>
                 <td><%= transaction.createdAt %></td>
               </tr>
             <% }); %>
           <% } else { %>
             <tr>
-              <td colspan="7">No transactions available</td>
+              <td colspan="3">No transactions available</td>
             </tr>
           <% } %>
-                
-     
 
-              
-              
+
+            
+                
+            </tr>
+            
+         
+
+                
             </table>
 
         </div>
+           
         
+
+     
+
+    
+      
+                <!-- Edit button -->
+       
+        <!-- Modal for editing -->
+       
+
+            
         </div>
 
     </main> 
@@ -339,7 +347,77 @@ function parseJwt (token) {
             }
          );
         
-       
+      
+
+        // Function to add a new row to the table
+        /* function addRow() {
+            const tableBody = document.querySelector("#productTable2 tbody");
+            const newRow = tableBody.insertRow();
+
+            // Add cells (columns) to the new row
+                const code = newRow.insertCell(0);
+                const productName = newRow.insertCell(1);
+                const unitCost = newRow.insertCell(2);
+                const unitPrice = newRow.insertCell(3);
+                const lowStockThreshold = newRow.insertCell(4);
+                const startingInventory = newRow.insertCell(5);
+                const status = newRow.insertCell(6);
+                const bt = newRow.insertCell(7);
+
+            // Create input elements for each cell
+            const codeInput = document.createElement("input");
+            codeInput.type = "text";
+            codeInput.name = "code[]"; // Use an array to collect multiple names
+            code.appendChild(codeInput);
+
+            const productInput = document.createElement("input");
+            productInput.type = "text";
+            productInput.name = "productName[]"; // Use an array to collect multiple emails
+            productName.appendChild(productInput);
+
+            const costInput = document.createElement("input");
+            costInput.type = "number";
+            costInput.name = "unitCost[]"; // Use an array to collect multiple emails
+            unitCost.appendChild(costInput);
+
+            const priceInput = document.createElement("input");
+            priceInput.type = "number";
+            priceInput.name = "unitPrice[]"; // Use an array to collect multiple emails
+            unitPrice.appendChild(priceInput);
+
+            const lowStockInput = document.createElement("input");
+            lowStockInput.type = "number";
+            lowStockInput.name = "lowStockThreshold[]"; // Use an array to collect multiple emails
+            lowStockThreshold.appendChild(lowStockInput);
+
+            const startInvInput = document.createElement("input");
+            startInvInput.type = "number";
+            startInvInput.name = "startingInventory[]"; // Use an array to collect multiple emails
+            startingInventory.appendChild(startInvInput);
+
+            const statusInput = document.createElement("input");
+            statusInput.type = "range";
+            statusInput.max = "1";
+            statusInput.min = "0";
+            statusInput.name = "status[]"; // Use an array to collect multiple emails
+            status.appendChild(statusInput);
+
+            const button = document.createElement("button");
+            button.textContent = "Save"
+            button.classList.add("saveBtn")
+            bt.appendChild(button);
+
+            const saveproductbtn = document.getElementById("saveproductbtn");
+            saveproductbtn.style.display = "block";
+
+            const editSavebtn = document.getElementById("editSave");
+            editSavebtn.style.display = "none";
+
+            const cancelProduct= document.getElementById("cancelProduct");
+            cancelProduct.style.display = "block";
+        }
+ */
+        
         function hideNewRow(){
 
             var table = document.getElementById("productTable2");

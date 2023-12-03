@@ -29,7 +29,6 @@ body {
 
 .we {
     margin-top: 2rem;
-    width: 300px;
 }
 
 .test {
@@ -41,6 +40,12 @@ body {
 
 }
 
+.testLogout {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 12rem;
+    padding: 1rem 0;
+}
 
 .te {
     border-radius: 10px;
@@ -56,6 +61,11 @@ body {
 #currentPage {
     background-color: #f7af28;
 
+}
+
+#logoutBtn {
+    background-color: gray;
+    text-align: center;
 }
 
 a {

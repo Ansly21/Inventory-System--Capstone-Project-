@@ -10,7 +10,13 @@ const transactionSchema = new Schema({
     
     user:{
         type:String,
-        required: true
+
+
+    },
+
+    userLogsOnly:{
+        type: String,
+ 
 
     },
 

@@ -18,6 +18,7 @@
           
  
     </header>
+    
 
     <div class="flexx">
     <div class="nav">
@@ -58,6 +59,12 @@
             </div>
         </a>
 
+        <a class="bb" href="/logs">
+            <div class="te">
+                <h5 class="test">Logs</h5>
+            </div>
+        </a>
+
         <a class="bb" href="/account">
             <div class="te">
                 <h5 class="test" id="accBtn">Accounts</h5>
@@ -70,10 +77,12 @@
         <div class="title-con">
        <h1 id="title">PRODUCTS</h1>
     </div>
+
+    
         <input type="hidden" name="action" value="saveEditedRow">
         
 
-        
+    
 
         <div class="table-container">
 
@@ -177,8 +186,7 @@
                 <% } %>   
 
                 
-
-             
+                
                 
             </table>
 
@@ -327,6 +335,7 @@ document.getElementById('modalSubmit').addEventListener('click', function () {
   })
     .then(response => {
       if (response.ok) {
+        
         // Handle success, e.g., close the modal and perform any UI updates
         const modal = document.getElementById('myModal');
         modal.style.display = 'none';
@@ -339,7 +348,6 @@ document.getElementById('modalSubmit').addEventListener('click', function () {
     .catch(error => {
       console.error('Error:', error);
     });
-
   
 /*  //FOR GO TO LOGS
     fetch('/transactions', {

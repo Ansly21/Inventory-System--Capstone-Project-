@@ -146,12 +146,39 @@ const form = document.getElementById('form')
             }).then((res) => res.json())
             if(result.status === 'ok') {
                 alert('Successfully logged in')
+                fetch('/transactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        userLogsOnly: email,
+        action: "Logged in to the system"
+        
+    })
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle success for the transaction
+        // ...
+      } else {
+        // Handle errors if the request fails
+        console.error('Error with the transaction');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
                 location.href="/"
                 signedIn = true;
                 localStorage.setItem("TOKEN", result.data)
             }else {
                 alert(result.error)
             }
+
+
+          
         }
 
 const selectionBtns = document.getElementById("selectionsContainer")

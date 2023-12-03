@@ -209,6 +209,21 @@ app.get('/home', (req, res)=>{
  })
 
 
+ app.get('/logs', async (req, res) => {
+  try {
+    const transactions = await Transaction.find({});
+
+    // Check if transactions exist
+    if (!transactions || transactions.length === 0) {
+   
+    }
+
+    res.render('Logs', { title: 'Logs', transactions });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal server error');
+  }
+});
 
 //SUPPLIER
 app.get('/supplier', async(req, res) => {
@@ -681,23 +696,27 @@ app.get('/transactions', async (req, res) => {
 // Assuming you have initialized Express and set up your routes
 app.post('/transactions', async(req,res) => {
   const user = req.body.user;
+  const userLogsOnly = req.body.userLogsOnly;
   const productName = req.body.productName;
   const stockIn = req.body.stockIn;
   const stockOut = req.body.stockOut;
   const wholesalePrice = req.body.wholesalePrice
   const retailPrice = req.body.retailPrice
   const remarks = req.body.remarks
+  const action = req.body.action
 
  
   try {
       const response = await Transaction.create({
           user,
+          userLogsOnly,
           productName,
           stockIn,
           stockOut,
           wholesalePrice,
           retailPrice,
-          remarks
+          remarks,
+          action
       })
       console.log("User created successfully", response)
   } catch(error) {
