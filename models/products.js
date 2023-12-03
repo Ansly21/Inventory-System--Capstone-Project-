@@ -25,23 +25,18 @@ const productsSchema = new Schema({
 
     wholesalePrice: {
         type: Number,
-        required: true,
+
         get: (v) => parseFloat(v).toFixed(2),
         set: (v) => parseFloat(v).toFixed(2),
     },
 
     retailPrice: {
-        type: Number,
-        required: true,
-        get: (v) => parseFloat(v).toFixed(2),
-        set: (v) => parseFloat(v).toFixed(2),
+        type: Number
     },
 
     totalRetail: {
         type: Number,
-        
-        get: (v) => parseFloat(v).toFixed(2),
-        set: (v) => parseFloat(v).toFixed(2),
+        default: 0
     },
 
     lowStockThreshold:{
@@ -53,7 +48,20 @@ const productsSchema = new Schema({
         type: Number,
         default: 0
        
-    }
+    },
+
+    prevQtyStockIn: {
+        type: Number
+    },
+
+    prevQtyStockOut: {
+        type: Number
+    },
+
+    prevTotalRetail: {
+        type: Number,
+        default: 0
+    },
 
 
 

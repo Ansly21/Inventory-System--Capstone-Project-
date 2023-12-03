@@ -287,28 +287,8 @@ app.post('/supplier/:supplierId', async (req, res) => {
 });
 
 
-
-
-
-
-
  //Inventory
  app.get('/inventory', (req, res)=>{
-
-   // res.render('Inventory(admin)');
-        
-      
-
-  
-    // res.render('Inventory(admin)', { title: 'Inventory' });
-
-    // const query = req.query.query;
-    // console.log(query);
- 
-     //if(typeof query === 'undefined'){
-        // console.log("walang laman");
-    
-
      Product.find()
          .then((result)=>{
              res.render('Inventory(admin)', { title: 'Inventory', products: result});
@@ -317,66 +297,10 @@ app.post('/supplier/:supplierId', async (req, res) => {
              console.log(err);
          })
  
-    // }
-     
-     /*else{
- 
-         const searchTerm = query;
-         const regexPattern = new RegExp(searchTerm, "i"); // "i" for case-insensitive search
- 
-         Product.find({ 
-             
-             $or:[
-             {productName: { $regex: regexPattern } },
-             {code: { $regex: regexPattern } },
-             ],
-             
-             })
-             
- 
-           .then((result) => {
- 
-             res.render('Inventory(admin)', { title: 'Inventory', products: result });
-            // console.log("query result: ", result); // Use the results as needed
-             // Respond to the client or perform further actions here
-           })
-           .catch((error) => {
-             // Handle any errors that occurred during the query
-             console.error(error);
-             // Respond to the client with an error message or handle the error appropriately
-           })
-           
-           ;
- 
- 
- 
-           
-        
-         
- 
-         console.log("may laman");*/
- 
- 
  
          const targetDate = req.query.date; // Get the selected date from the query parameter
            
          console.log(targetDate)
-         //res.json({ startingInventory: targetDate });
-/*
-         Product.find({ dateField: targetDate })
-            .then((result) => {
-                if (result.length === 0) {
-                // Handle the case where no matching documents were found
-                res.render('NoResultView', { title: 'No Results' });
-                } else {
-                // Render the view with the found document
-                res.render('Inventory(admin)', { title: 'Inventory', inventory: result });
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });*/
-
 })
 
 
@@ -400,102 +324,6 @@ app.get('/inventoryData', (req, res)=>{
             var resClosingInv;
             var docuTodayExists;
             var docuYesterdayExists;
-
-/*
-           Inventory.find({ date: oneDayBefore })
-            .then((result) => {
-                if (result.length === 0) {
-                // Handle the case where no matching documents were found
-                //res.json('NoResultView', { title: 'No Results' });
-                docuYesterdayExists = false;
-                console.log("walang ganyang docu");
-                } else {
-                // Render the view with the found document and use "inventory" as the key
-                
-                resClosingInv = result[0].closingInventory;
-                docuYesterdayExists = true;
-               // res.json({ startingInventory: result[0].closingInventory});
-            
-               // console.log(result[0].startingInventory);
-                //console.log(resClosingInv);
-                console.log("tama ka jan");
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
-
-            Inventory.find({ date: targetDate })
-            .then((result) => {
-                if (result.length === 0) {
-                // Handle the case where no matching documents were found
-                //res.json('NoResultView', { title: 'No Results' });
-                docuTodayExists = false;
-                console.log("walang ganyang docu");
-                } else {
-                // Render the view with the found document and use "inventory" as the key
-                
-                docuTodayExists = true;
-                
-                
-               // res.json({ startingInventory: result[0].closingInventory});
-            
-               // console.log(result[0].startingInventory);
-               
-                }
-                res.json({ startingInventory: resClosingInv, docuTodayExists: docuTodayExists, docuYesterdayExists : docuYesterdayExists});
-                console.log(resClosingInv);
-
-                console.log(docuExists);
-                console.log("tama ka jan");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-*/
-
-
-
-//working na pero may ttry lang 
-
-/*
-Inventory.find({ date: oneDayBefore })
-  .then((result) => {
-    if (result.length === 0) {
-      docuYesterdayExists = false;
-      console.log("walang ganyang docu");
-    } else {
-      resClosingInv = result[0].closingInventory;
-      docuYesterdayExists = true;
-      console.log("tama ka jan");
-    }
-
-    // Chain the second find operation here
-    return Inventory.find({ date: targetDate });
-  })
-  .then((result) => {
-    if (result.length === 0) {
-      docuTodayExists = false;
-      console.log("walang ganyang docu");
-    } else {
-      docuTodayExists = true;
-    }
-    
-    // Now you have both resClosingInv and docuTodayExists available
-    res.json({
-      startingInventory: resClosingInv,
-      docuTodayExists: docuTodayExists,
-      docuYesterdayExists: docuYesterdayExists
-    });
-    console.log(resClosingInv);
-    console.log("tama ka jan");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-      
-  */
 
 
   Inventory.find({ date: oneDayBefore })
@@ -546,9 +374,6 @@ Inventory.find({ date: oneDayBefore })
 
 app.post('/inventory', async (req, res) =>{
 
-
-    
-
         console.log("nasa save inventory ka");
         console.log(req.body);
 
@@ -583,33 +408,92 @@ app.post('/inventory', async (req, res) =>{
                                             console.error('Error saving product data:', error);
                                             res.status(500).send('Error saving data');
                                           }
-      });
+});
 
+
+
+//STOCK IN ROUTE
+app.post('/stockInInventory/:productId', async (req, res) => {
+  const productId = req.params.productId; // Get the product ID from the URL parameter
+
+  // Retrieve the updated data from the request body
+  const updatedData = req.body;
+
+    try {
+        // Find the product by ID in your database (assuming you're using a database like MongoDB)
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found PUT' });
+        }
+
+        // Update the product fields with the new values
+        // Modify these lines according to your schema and update logic
+        product.code = updatedData.code;
+        product.brandName = updatedData.brandName;
+        product.productName = updatedData.productName;
+        product.lowStockThreshold = updatedData.lowStockThreshold;
+        product.currentInv = updatedData.currentInv;
+        product.prevQtyStockIn = updatedData.prevQtyStockIn;
+  
+
+        // Save the updated product in the database
+        await product.save();
+
+        // Respond with a success message or the updated product
+        res.redirect('/Inventory(admin)');
+      } catch (err) {
+        console.error('Error stocking in inventory:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
+//STOCK OUT ROUTE
+app.post('/stockOutInventory/:productId', async (req, res) => {
+  const productId = req.params.productId; // Get the product ID from the URL parameter
+
+  // Retrieve the updated data from the request body
+  const updatedData = req.body;
+
+    try {
+        // Find the product by ID in your database (assuming you're using a database like MongoDB)
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found PUT' });
+        }
+
+        // Update the product fields with the new values
+        // Modify these lines according to your schema and update logic
+        product.code = updatedData.code;
+        product.brandName = updatedData.brandName;
+        product.productName = updatedData.productName;
+        product.lowStockThreshold = updatedData.lowStockThreshold;
+        product.currentInv = updatedData.currentInv;
+        product.totalRetail = updatedData.totalRetail;
+        product.prevTotalRetail = updatedData.prevTotalRetail;
+        product.prevQtyStockOut = updatedData.prevQtyStockOut;
+  
+
+        // Save the updated product in the database
+        await product.save();
+
+        // Respond with a success message or the updated product
+        res.redirect('/Inventory(admin)');
+      } catch (err) {
+        console.error('Error stocking in inventory:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
             
-        /*
-            const productName = req.body.productName;
-            const startingInventory = req.body.startingInventory;
-            const qtyPurchased = req.body.qtyPurchased;
-            const qtySold = req.body.qtySold;
-            const closingInv = req.body.closingInv;
-            const invValue = req.body.invValue;
-            const invCost = req.body.invCost;
-            const selectedDate = req.body.selectedDate;
-        */
 
 
- //Products
-
-
+ // GET Products
  app.get('/products', async(req, res)=>{
-
     const query = req.query.query;
     console.log(query);
 
-    
-
-    
-    
     if(typeof query === 'undefined'){
         console.log("walang laman");
      const suppliers = await Supplier.find({})
@@ -649,29 +533,14 @@ app.post('/inventory', async (req, res) =>{
           })
           
           ;
-
-
-
-          
-       
-        
-
         console.log("may laman");
-
-
     }
-    
-    
-        
  });
 
- 
+
+// POST Products
  app.post('/products', async (req, res) =>{
-
-
-
     if(req.body.action === 'addProduct'){
-
 
             console.log("nasa save product ka");
             console.log(req.body);
@@ -686,9 +555,6 @@ app.post('/inventory', async (req, res) =>{
                 const lowStockThreshold = req.body.lowStockThreshold;
                 const startingInventory = req.body.startingInventory;
                 const status = req.body.status;
-
-
-                 
 
                         const newData = new Product({
                             brandName: brandName,
@@ -714,16 +580,6 @@ app.post('/inventory', async (req, res) =>{
         console.log("nasa save edited row ka");
         console.log(req.body);
 
-       
-        /*
-        const code = req.body.code;
-        const productName = req.body.productName;
-        const unitCost = req.body.unitCost;
-        const unitPrice = req.body.unitPrice;
-        const lowStockThreshold = req.body.lowStockThreshold;
-        const startingInventory = req.body.startingInventory;
-        const status = req.body.status;*/
-
         const brandName = req.body.brandName[0]; // Get the first (and only) element of the array
         const code = req.body.code[0]; // Get the first (and only) element of the array
         const productName = req.body.productName[0];
@@ -734,9 +590,7 @@ app.post('/inventory', async (req, res) =>{
 
         try{
             const product = await Product.findOne({ code: code});
-               
-
-           
+    
 
             if (!product){
                 return res.status(404).json({message: 'product not found'});
@@ -747,11 +601,7 @@ app.post('/inventory', async (req, res) =>{
             product.productName = productName;
             product.wholesalePrice = wholesalePrice;
             product.retailPrice = retailPrice;
-            product.lowStockThreshold = lowStockThreshold;
-  
-
-        
-                            
+            product.lowStockThreshold = lowStockThreshold;           
 
             const updatedProduct = await product.save();
            // res.json(updatedProduct);
@@ -762,21 +612,10 @@ app.post('/inventory', async (req, res) =>{
             res.status(500).json({message: 'Server error'});
         }
 
-
-
         res.redirect('/products');
        // console.log(req.body);
     }
  });
-
-
-
-
-
-
-
- 
-
 
 
 

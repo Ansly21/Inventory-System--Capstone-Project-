@@ -12,12 +12,7 @@
 </head>
 <body id="body">
 
-    <header>
-        
 
-          
- 
-    </header>
 
     <div class="flexx">
     <div class="nav">
@@ -107,28 +102,96 @@
             <tr class = "database-row">
 
                 
-                <input type="hidden" name="action" value="saveEditedRow">
+                
                 <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.code %>" disabled></td>
-                <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.brandName %>" disabled></td>
+                <td><input type="text" contenteditable="true" name ="brandName[]"  value="<%= product.brandName %>" disabled></td>
                 <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>" disabled></td>
-                <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.currentInv %>" disabled></td>
-                <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.wholesalePrice %>" disabled></td>
-                <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.retailPrice %>" disabled></td> 
-                <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.totalRetail %>" disabled></td> 
+                <td><input type="text" contenteditable="true" name = "currentInv[]" value="<%= product.currentInv %>" disabled></td>
+                <td><input type="number" contenteditable="true" name = "wholesalePrice[]"  value="<%= product.wholesalePrice %>" disabled></td>
+                <td><input type="number" contenteditable="true" name = "retailPrice[]" value="<%= product.retailPrice %>" disabled></td> 
+                <td><input type="number" contenteditable="true" name = "totalRetailPrice[]" id="prevTotalRetail_<%= product.id %>" value="<%= product.prevTotalRetail %>" disabled></td> 
               
         
-             <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
-             <td> <button class="editBtn" id="<%= product.id %>" data-target="#editModal_<%= product._id %>" type="button" onclick="openEditModal('<%= product._id %>')">Edit</button>
+         
+             <td>
+              <button class="stockInBtn" id="<%= product.id %>" data-target="#stockInModal_<%= product._id %>" type="button" onclick="openstockInModal('<%= product._id %>')">Stock In</button>
+              <button class="stockOutBtn" id="<%= product.id %>" data-target="#stockOutModal_<%= product._id %>" type="button" onclick="openstockOutModal('<%= product._id %>')">Stock Out</button>
              </td>
          
-                   
+             
+            <!-- STOCK IN MODAL -->
+             <div id="stockInModal_<%= product._id %>" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closestockInModal('<%= product._id%>')">X</span>
+                    <h2>Stock In</h2>
+                    <form id="stockInForm_<%= product.id %>" method="post" action="stockInInventory/<%= product._id %>">
+                        <label for="stockInBrandName">Brand: </label>
+                        <input type="text" id="stockInBrandName_<%= product.id %>" name="stockInBrandName" value="<%= product.brandName %>" readonly><br><br>
+
+                        <label for="stockInCode">Code:</label>
+                        <input type="text" id="stockInCode_<%= product.id %>" name="stockInCode" value="<%= product.code %>" readonly><br><br>
         
+                        <label for="stockInProductName">Product Name:</label>
+                        <input type="text" id="stockInProductName_<%= product.id %>" name="stockInProductName" value="<%= product.productName%>" readonly><br><br>
+        
+                        <label for="stockInLowStockThreshold">Low stock threshold:</label>
+                        <input type="number" id="stockInLowStockThreshold_<%= product.id %>" name="stockInLowStockThreshold"  value="<%= product.lowStockThreshold %>" readonly><br><br>
+        
+                        <label for="stockInCurrentInv">Current Inventory:</label>
+                        <input type="number" id="stockInCurrentInv_<%= product.id %>" name="stockInCurrentInv" value="<%= product.currentInv %>" readonly><br><br>
+
+                        <label for="stockInWholeSalePrice">Wholesale Price:</label>
+                        <input type="number" id="stockInWholeSalePrice_<%= product.id %>" name="stockInWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
+                     
+                        <label for="qtyStockIn">QTY:</label>
+                        <input type="number" id="qtyStockIn_<%= product.id %>" name="qtyStockIn" min="1"><br><br>
+
+                        <button type="submit">STOCK IN</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <!-- STOCK OUT MODAL -->
+            <div id="stockOutModal_<%= product._id %>" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closestockOutModal('<%= product._id%>')">X</span>
+                    <h2>Stock OUT</h2>
+                    <form id="stockOutForm_<%= product.id %>" method="post" action="stockOutInventory/<%= product._id %>">
+                        <label for="stockOutBrandName">Brand: </label>
+                        <input type="text" id="stockOutBrandName_<%= product.id %>" name="stockOutBrandName" value="<%= product.brandName %>" readonly><br><br>
+
+                        <label for="stockOutCode">Code:</label>
+                        <input type="text" id="stockOutCode_<%= product.id %>" name="stockOutCode" value="<%= product.code %>" readonly><br><br>
+        
+                        <label for="stockOutProductName">Product Name:</label>
+                        <input type="text" id="stockOutProductName_<%= product.id %>" name="stockOutProductName" value="<%= product.productName%>" readonly><br><br>
+        
+                        <label for="stockOutLowStockThreshold">Low stock threshold:</label>
+                        <input type="number" id="stockOutLowStockThreshold_<%= product.id %>" name="stockOutLowStockThreshold"  value="<%= product.lowStockThreshold %>" readonly><br><br>
+        
+                        <label for="stockOutCurrentInv">Current Inventory:</label>
+                        <input type="number" id="stockOutCurrentInv_<%= product.id %>" name="stockOutCurrentInv" value="<%= product.currentInv %>" readonly><br><br>
+
+                        <label for="stockOutWholeSalePrice">Wholesale Price:</label>
+                        <input type="number" id="stockOutWholeSalePrice_<%= product.id %>" name="stockOutWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
+
+                        <label for="stockOuRetailPrice">Retail Price:</label>
+                        <input type="number" id="stockOutRetailPrice_<%= product.id %>" name="stockOuRetailPrice" value="<%= product.retailPrice %>"><br><br>
+                     
+                        <label for="qtyStockOut">QTY:</label>
+                        <input type="number" id="qtyStockOut_<%= product.id %>" name="qtyStockOut" min="0"><br><br>
+
+                        <button type="submit">STOCK OUT</button>
+                    </form>
+                </div>
+            </div>
 
 
              <% }) %>
 
                 <%} else { %>
-                    <p>There are no inventory yet...</p>
+                    <p>There is no inventory yet...</p>
                 
                 <% } %>   
 
@@ -163,13 +226,7 @@
         </form>
 
      
-        <div class="save-addproduct">
-           
-            <button id="cancelProduct" class="addBtn" style="display: none;">CANCEL</button>
-            <button id="saveproductbtn" class="saveBtn" type="submit" style="display: none;">SAVE PRODUCT</button>
-            <button class="addBtn" id = "addRowButton">ADD NEW PRODUCT</button>
-        </div>
-
+       
       
     
 
@@ -187,12 +244,12 @@
     <script>
 
   // Select all elements with class 'editBtn'
-let editBtns = document.querySelectorAll(".editBtn");
+let stockInBtns = document.querySelectorAll(".stockInBtn");
 
 
 let idLastClicked;
 // Loop through each button and attach an event listener
-editBtns.forEach(button => {
+stockInBtns.forEach(button => {
     button.addEventListener("click", (e) => {
         console.log(e.target.id);
         idLastClicked = e.target.id
@@ -201,56 +258,10 @@ editBtns.forEach(button => {
 });
 
 
-let accBtn = document.getElementById("accBtn")
-document.getElementById('modalSubmit').addEventListener('click', function () {
-  const brandName = document.getElementById('brandName').value;
-  const code = document.getElementById('code').value;
-  const productName = document.getElementById('productName').value;
-  const wholesalePrice = document.getElementById('wholesalePrice').value;
-  const retailPrice = document.getElementById('retailPrice').value;
-  const lowStockThreshold = document.getElementById('lowStockThreshold').value;
-
-
-  // Prepare the data object to send to the server
-  const data = {
-    action: 'addProduct', // Indicate the action as 'addProduct'
-    brandName: brandName,
-    code: code,
-    productName: productName,
-    wholesalePrice: wholesalePrice,
-    retailPrice: retailPrice,
-    lowStockThreshold: lowStockThreshold
-    // Add other fields as needed for the new product
-  };
-
-  // Send the form data to the backend using fetch
-  fetch('/products', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then(response => {
-      if (response.ok) {
-        // Handle success, e.g., close the modal and perform any UI updates
-        const modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-        // Perform any other necessary actions upon successful addition of a new product
-      } else {
-        // Handle errors if the request fails
-        console.error('Error adding product');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-});
-
 
    // Get the modal
 const modal = document.getElementById('myModal');
-const editModal = document.getElementById(`editModal`);
+const stockInModal = document.getElementById(`stockInModal`);
 
 // Get the button that opens the modal
 const btn = document.getElementById('addRowButton');
@@ -261,56 +272,59 @@ const span = document.getElementById("close")
 // When the user clicks the button, open the modal
 btn.onclick = function () {
   modal.style.display = 'block';
-  editModal.style.display = 'block';
+  stockInModal.style.display = 'block';
 };
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function () {
   modal.style.display = 'none';
-  editModal.style.display = 'none';
+  stockInModal.style.display = 'none';
 };
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
-  if (event.target === modal || event.target === editModal ) {
+  if (event.target === modal || event.target === stockInModal ) {
     modal.style.display = 'none';
-    editModal.style.display = 'none';
+    stockInModal.style.display = 'none';
   }
 };
 
-
-function openEditModal(productId) {
-  const modal = document.getElementById(`editModal_${productId}`);
+//STOCK IN FUNCTION
+function openstockInModal(productId) {
+  const modal = document.getElementById(`stockInModal_${productId}`);
   if (modal) {
     modal.style.display = 'block';
 
-    const editForm = document.getElementById('editForm');
-    let editCodeID = document.getElementById(`editCodeID_${productId}`);
-    let editBrandName = document.getElementById(`editBrandName_${productId}`);
-    let editProductName = document.getElementById(`editProductName_${productId}`);
-    let editWholesalePrice = document.getElementById(`editWholesalePrice_${productId}`);
+    const stockInForm = document.getElementById(`stockInForm_${productId}`);
+    let stockInCode = document.getElementById(`stockInCode_${productId}`);
+    let stockInBrandName = document.getElementById(`stockInBrandName_${productId}`);
+    let stockInProductName = document.getElementById(`stockInProductName_${productId}`);
+    let stockInWholeSalePrice = document.getElementById(`stockInWholeSalePrice_${productId}`);
     let editRetailPrice = document.getElementById(`editRetailPrice_${productId}`);
-    let editLowStockThreshold = document.getElementById(`editLowStockThreshold_${productId}`);
-   
+    let stockInLowStockThreshold = document.getElementById(`stockInLowStockThreshold_${productId}`);
+
     
 // Assuming this code runs after the creation or update of the form
-console.log("EDITCODE", editCodeID.value)
+console.log("EDITCODE", stockInCode.value)
 
-editForm.addEventListener("submit", (event) => {
+stockInForm.addEventListener("submit", (event) => {
+    let stockInCurrentInvValue = parseFloat(document.getElementById(`stockInCurrentInv_${productId}`).value);
+    let qtyStockIn = parseFloat(document.getElementById(`qtyStockIn_${productId}`).value);
+   
+    let currentInv = stockInCurrentInvValue + qtyStockIn;
+    console.log("EDITCODE", stockInCode.value)
 
-    console.log("EDITCODE", editCodeID.value)
-console.log("put sub")
     // Get the updated values from the form fields
     const updatedData = {
-        code: editCodeID.value,
-        brandName: editBrandName.value,
-        productName: editProductName.value,
-        wholesalePrice: editWholesalePrice.value,
-        retailPrice: editRetailPrice.value,
-        lowStockThreshold: editLowStockThreshold.value,
+        code: stockInCode.value,
+        brandName: stockInBrandName.value,
+        productName: stockInProductName.value,
+        lowStockThreshold: stockInLowStockThreshold.value,
+        currentInv: currentInv,
+        prevQtyStockIn: qtyStockIn
     };
 
-    fetch(`/products/${productId}`, {
+    fetch(`/stockInInventory/${productId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -322,14 +336,14 @@ console.log("put sub")
             // Handle success
             return response.json(); // Parse the response body as JSON
         } else {
-            throw new Error('Error updating product');
+            throw new Error('Error stocking in inventory');
         }
     })
     .then(data => {
         // Here 'data' contains the updated product from the server
         console.log(data.updatedProduct);
         // Perform actions with the updated product data as needed
-        const editModal = document.getElementById('editModal');
+        const stockInModal = document.getElementById('stockInModal');
         // Close the modal, update UI, etc.
         location.reload()
     })
@@ -341,27 +355,101 @@ console.log("put sub")
 });
   }
 }
+
+
+
+//STOCK OUT FUNCTION
+function openstockOutModal(productId) {
+  const modal = document.getElementById(`stockOutModal_${productId}`);
+  if (modal) {
+    modal.style.display = 'block';
+
+    const stockOutForm = document.getElementById(`stockOutForm_${productId}`);
+    let stockOutCode = document.getElementById(`stockOutCode_${productId}`);
+    let stockOutBrandName = document.getElementById(`stockOutBrandName_${productId}`);
+    let stockOutProductName = document.getElementById(`stockOutProductName_${productId}`);
+    let stockOutWholeSalePrice = document.getElementById(`stockOutWholeSalePrice_${productId}`);
+    
+    let stockOutLowStockThreshold = document.getElementById(`stockOutLowStockThreshold_${productId}`);
+    let prevTotalRetail = parseFloat(document.getElementById(`prevTotalRetail_${productId}`).value);
+
+    
+// Assuming this code runs after the creation or update of the form
+console.log("EDITCODE", stockOutCode.value)
+
+stockOutForm.addEventListener("submit", (event) => {
+
+    let stockOutCurrentInvValue = parseFloat(document.getElementById(`stockOutCurrentInv_${productId}`).value);
+    let qtyStockOut = parseFloat(document.getElementById(`qtyStockOut_${productId}`).value);
+    let retailPriceValue =  parseFloat(document.getElementById(`stockOutRetailPrice_${productId}`).value);
+  
+    let currentInv = stockOutCurrentInvValue - qtyStockOut;
+    console.log("EDITCODE", stockOutCode.value)
+
+    let totalRetail = prevTotalRetail + (retailPriceValue * qtyStockOut)
+
+   
+
+
+    // Get the updated values from the form fields
+    const updatedData = {
+        code: stockOutCode.value,
+        brandName: stockOutBrandName.value,
+        productName: stockOutProductName.value,
+        lowStockThreshold: stockOutLowStockThreshold.value,
+        currentInv: currentInv,
+        totalRetail: totalRetail,
+        prevTotalRetail: totalRetail,
+        prevQtyStockIn: qtyStockOut
+    };
+
+    fetch(`/stockOutInventory/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Handle success
+            return response.json(); // Parse the response body as JSON
+        } else {
+            throw new Error('Error stocking in inventory');
+        }
+    })
+    .then(data => {
+        // Here 'data' contains the updated product from the server
+        console.log(data.updatedProduct);
+        // Perform actions with the updated product data as needed
+        const stockInModal = document.getElementById('stockInModal');
+        // Close the modal, update UI, etc.
+        location.reload()
+    })
+    .catch(error => {
+        location.reload()
+    });
+
+    event.preventDefault();
+});
+  }
+}
+
 // Function to close the edit modal
-function closeEditModal(productId) {
-  const modal = document.getElementById(`editModal_${idLastClicked}`);
+function closestockInModal(productId) {
+  const modal = document.getElementById(`stockInModal_${productId}`);
   if (modal) {
     modal.style.display = 'none';
   }
 }
-// Function to save the edited data (you'll need to implement this)
-function saveEditedData() {
-  // Retrieve the edited data from the form fields
-  const editedProductName = document.getElementById('productNameEdit').value;
-  // Retrieve other edited data similarly
 
-  // Perform actions to save the edited data (e.g., send it to the server via AJAX)
-  // Implement your logic to save the edited data
-  // ...
-
-  // Close the edit modal after saving the changes
-  closeEditModal();
+// Function to close the edit modal
+function closestockOutModal(productId) {
+  const modal = document.getElementById(`stockOutModal_${productId}`);
+  if (modal) {
+    modal.style.display = 'none';
+  }
 }
-
 
 
 
@@ -376,85 +464,6 @@ function parseJwt (token) {
 }
 
 
-
-        
-        document.getElementById("saveproductbtn").addEventListener("click", 
-            
-            function() {
-            document.getElementById("saveProduct").submit();
-            }
-         );
-        
-      
-
-        // Function to add a new row to the table
-        /* function addRow() {
-            const tableBody = document.querySelector("#productTable2 tbody");
-            const newRow = tableBody.insertRow();
-
-            // Add cells (columns) to the new row
-                const code = newRow.insertCell(0);
-                const productName = newRow.insertCell(1);
-                const unitCost = newRow.insertCell(2);
-                const unitPrice = newRow.insertCell(3);
-                const lowStockThreshold = newRow.insertCell(4);
-                const startingInventory = newRow.insertCell(5);
-                const status = newRow.insertCell(6);
-                const bt = newRow.insertCell(7);
-
-            // Create input elements for each cell
-            const codeInput = document.createElement("input");
-            codeInput.type = "text";
-            codeInput.name = "code[]"; // Use an array to collect multiple names
-            code.appendChild(codeInput);
-
-            const productInput = document.createElement("input");
-            productInput.type = "text";
-            productInput.name = "productName[]"; // Use an array to collect multiple emails
-            productName.appendChild(productInput);
-
-            const costInput = document.createElement("input");
-            costInput.type = "number";
-            costInput.name = "unitCost[]"; // Use an array to collect multiple emails
-            unitCost.appendChild(costInput);
-
-            const priceInput = document.createElement("input");
-            priceInput.type = "number";
-            priceInput.name = "unitPrice[]"; // Use an array to collect multiple emails
-            unitPrice.appendChild(priceInput);
-
-            const lowStockInput = document.createElement("input");
-            lowStockInput.type = "number";
-            lowStockInput.name = "lowStockThreshold[]"; // Use an array to collect multiple emails
-            lowStockThreshold.appendChild(lowStockInput);
-
-            const startInvInput = document.createElement("input");
-            startInvInput.type = "number";
-            startInvInput.name = "startingInventory[]"; // Use an array to collect multiple emails
-            startingInventory.appendChild(startInvInput);
-
-            const statusInput = document.createElement("input");
-            statusInput.type = "range";
-            statusInput.max = "1";
-            statusInput.min = "0";
-            statusInput.name = "status[]"; // Use an array to collect multiple emails
-            status.appendChild(statusInput);
-
-            const button = document.createElement("button");
-            button.textContent = "Save"
-            button.classList.add("saveBtn")
-            bt.appendChild(button);
-
-            const saveproductbtn = document.getElementById("saveproductbtn");
-            saveproductbtn.style.display = "block";
-
-            const editSavebtn = document.getElementById("editSave");
-            editSavebtn.style.display = "none";
-
-            const cancelProduct= document.getElementById("cancelProduct");
-            cancelProduct.style.display = "block";
-        }
- */
         
         function hideNewRow(){
 
@@ -513,6 +522,8 @@ function parseJwt (token) {
         });
     }
 }
+
+let accBtn = document.getElementById("accBtn")
 
     if (localStorage.getItem("TOKEN") === null) {
         document.getElementById("body").style.display = "none"

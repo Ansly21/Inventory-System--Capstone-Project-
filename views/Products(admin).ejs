@@ -109,10 +109,10 @@
                     
                     <input type="hidden" name="action" value="saveEditedRow">
                     <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.code %>" disabled></td>
-                    <td><input type="text" contenteditable="true" name ="code[]"  value="<%= product.brandName %>" disabled></td>
+                    <td><input type="text" contenteditable="true" name ="brandName[]"  value="<%= product.brandName %>" disabled></td>
                     <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>" disabled></td>
-                    <td><input type="number" contenteditable="true" name = "unitCost[]"  value="<%= product.wholesalePrice %>" disabled></td>
-                    <td><input type="number" contenteditable="true" name = "unitPrice[]"  value="<%= product.retailPrice %>" disabled></td> 
+                    <td><input type="number" contenteditable="true" name = "wholesalePrice[]"  value="<%= product.wholesalePrice %>" disabled></td>
+                    <td><input type="number" contenteditable="true" name = "retailPrice[]"  value="<%= product.retailPrice %>" disabled></td> 
                     <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>" disabled></td> 
                   
             

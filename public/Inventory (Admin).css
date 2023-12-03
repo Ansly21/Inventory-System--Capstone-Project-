@@ -221,11 +221,20 @@ table th {
     font-size: 1.2rem;
 }
 
-.editBtn {
+.stockInBtn {
     display: block;
     margin: auto;
     font-size: 1.5rem;
     background-color: greenyellow;
+    border: 0;
+    padding: 0.5rem 0.7rem;
+}
+
+.stockOutBtn {
+    display: block;
+    margin: auto;
+    font-size: 1.5rem;
+    background-color: rgb(242, 80, 80);
     border: 0;
     padding: 0.5rem 0.7rem;
 }
