@@ -29,7 +29,7 @@
 
         <div class="we">
         <a class="bb" href="/products">
-            <div class="te">
+            <div class="te" id="currentPage">
                 <h5 class="test">Products</h5>
             </div>
         </a>
@@ -99,7 +99,7 @@
                     <th>CODE</th>
                     <th>BRAND</th>
                     <th>NAME</th>
-                    <th>WHOLESALE PRICE (₱) </th>
+                    <th>WHOLESALE PRICE (₱)</th>
                     <th>RETAIL PRICE (₱)</th>
                     <th>LOW STOCK THRESHOLD</th>
                     <th>ACTION</th>
@@ -123,7 +123,7 @@
                   
             
                  <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
-                 <td> <button class="editBtn" id="<%= product.id %>" data-target="#editModal_<%= product._id %>" type="button" onclick="openEditModal('<%= product._id %>')">Edit</button>
+                 <td> <button class="editBtn" id="<%= product.id %>" data-target="#editModal_<%= product._id %>" type="button" onclick="openEditModal('<%= product._id %>')">UPDATE</button>
                  </td>
                    
                    
@@ -131,7 +131,7 @@
                  <div id="editModal_<%= product._id %>" class="modal">
                     <div class="modal-content">
                         <span class="close" onclick="closeEditModal('<%= product._id%>')">X</span>
-                        <h2>Edit Product</h2>
+                        <h2>UPDATE PRODUCT</h2>
                         <form id="editForm" method="post" action="products/<%= product._id %>">
                             <label for="brandName">Brand: </label>
                             <select name="brandName" id="editBrandName_<%= product.id %>">
@@ -158,7 +158,7 @@
                             <input type="number" id="editLowStockThreshold_<%= product.id %>" name="lowStockThreshold"  value="<%= product.lowStockThreshold %>"><br><br>
             
                         
-                            <button type="submit">Save</button>
+                            <button id="saveEdit" type="submit">Save</button>
                         </form>
                     </div>
                 </div>
@@ -220,7 +220,7 @@
             <!-- Modal content -->
             <div class="modal-content">
               <span id="close">X</span>
-              <h2>Add New Product</h2>
+              <h2>NEW PRODUCT</h2>
               <!-- Your form content for adding a new product -->
               <form id="productForm">
                 <label for="brandName">Brand: </label>
@@ -254,7 +254,7 @@
                 
                 <!-- Add other input fields as needed -->
         
-                <button type="submit" id="modalSubmit">Submit</button>
+                <button type="submit" id="modalSubmit">Add Product</button>
               </form>
             </div>
           </div>

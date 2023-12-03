@@ -47,7 +47,7 @@
         </a>
 
         <a class="bb" href="/supplier">
-            <div class="te">
+            <div class="te" id="currentPage">
                 <h5 class="test">Supplier</h5>
             </div>
         </a>
@@ -115,7 +115,7 @@
              
         
              <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
-             <td> <button class="editBtn" id="<%= supplier._id %>" data-target="#editModal_<%= supplier._id %>" type="button" onclick="openEditModal('<%= supplier._id %>')">Edit</button>
+             <td> <button class="editBtn" id="<%= supplier._id %>" data-target="#editModal_<%= supplier._id %>" type="button" onclick="openEditModal('<%= supplier._id %>')">UPDATE</button>
              </td>
                
                
@@ -135,7 +135,7 @@
                         <input type="number" id="supplierContact_<%= supplier._id %>" name="supplierContact" value="<%= supplier.supplierContact %>"><br><br>
         
                     
-                        <button type="submit">Save</button>
+                        <button id="modalSubmit" type="submit">Save</button>
                     </form>
                 </div>
             </div>
@@ -163,7 +163,7 @@
 
      
         <div class="save-addproduct">
-            <button class="addBtn" id = "addRowButton">ADD SUPPLIER</button>
+            <button class="addBtn" id= "addRowButton">ADD SUPPLIER</button>
         </div>
 
         <div id="myModal" class="modal">
@@ -185,7 +185,7 @@
                 
                 <!-- Add other input fields as needed -->
         
-                <button type="submit" id="modalSubmit">Submit</button>
+                <button type="submit" id="modalSubmit">Add</button>
               </form>
             </div>
           </div>

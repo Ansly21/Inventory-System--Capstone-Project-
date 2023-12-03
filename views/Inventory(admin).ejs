@@ -30,7 +30,7 @@
         </a>
 
         <a class="bb" href="/inventory">
-            <div class="te">
+            <div class="te" id="currentPage">
                 <h5 class="test">Inventory</h5>
             </div>
         </a>
@@ -120,8 +120,8 @@
         
          
              <td>
-              <button class="stockInBtn" id="<%= product.id %>" data-target="#stockInModal_<%= product._id %>" type="button" onclick="openstockInModal('<%= product._id %>')">Stock In</button>
-              <button class="stockOutBtn" id="<%= product.id %>" data-target="#stockOutModal_<%= product._id %>" type="button" onclick="openstockOutModal('<%= product._id %>')">Stock Out</button>
+              <button class="stockInBtn" id="<%= product.id %>" data-target="#stockInModal_<%= product._id %>" type="button" onclick="openstockInModal('<%= product._id %>')">STOCK IN</button>
+              <button class="stockOutBtn" id="<%= product.id %>" data-target="#stockOutModal_<%= product._id %>" type="button" onclick="openstockOutModal('<%= product._id %>')">STOCK OUT</button>
              </td>
          
              
@@ -129,7 +129,7 @@
              <div id="stockInModal_<%= product._id %>" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closestockInModal('<%= product._id%>')">X</span>
-                    <h2>Stock In</h2>
+                    <h2>STOCK IN</h2>
                     <form id="stockInForm_<%= product.id %>" method="post" action="stockInInventory/<%= product._id %>">
                         <label for="stockInBrandName">Brand: </label>
                         <input type="text" id="stockInBrandName_<%= product.id %>" name="stockInBrandName" value="<%= product.brandName %>" readonly><br><br>
@@ -158,7 +158,7 @@
                         <label for="qtyStockIn">QTY:</label>
                         <input type="number" id="qtyStockIn_<%= product.id %>" name="qtyStockIn" min="1"><br><br>
 
-                        <button type="submit">STOCK IN</button>
+                        <button type="submit" class="modalSubmit">Restock</button>
                     </form>
                 </div>
             </div>
@@ -168,7 +168,7 @@
             <div id="stockOutModal_<%= product._id %>" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closestockOutModal('<%= product._id%>')">X</span>
-                    <h2>Stock OUT</h2>
+                    <h2>STOCK OUT</h2>
                     <form id="stockOutForm_<%= product.id %>" method="post" action="stockOutInventory/<%= product._id %>">
                         <label for="stockOutBrandName">Brand: </label>
                         <input type="text" id="stockOutBrandName_<%= product.id %>" name="stockOutBrandName" value="<%= product.brandName %>" readonly><br><br>
@@ -202,7 +202,7 @@
                         <label for="qtyStockOut">QTY:</label>
                         <input type="number" id="qtyStockOut_<%= product.id %>" name="qtyStockOut" min="0"><br><br>
 
-                        <button type="submit">STOCK OUT</button>
+                        <button type="submit" class="modalSubmit">Proceed</button>
                     </form>
                 </div>
             </div>
