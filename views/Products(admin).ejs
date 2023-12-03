@@ -52,6 +52,12 @@
             </div>
         </a>
 
+        <a class="bb" href="/transactions">
+            <div class="te">
+                <h5 class="test" id="accBtn">Transactions</h5>
+            </div>
+        </a>
+
         <a class="bb" href="/account">
             <div class="te">
                 <h5 class="test" id="accBtn">Accounts</h5>
@@ -287,6 +293,9 @@ editBtns.forEach(button => {
 
 
 let accBtn = document.getElementById("accBtn")
+
+let user = parseJwt(localStorage.getItem("TOKEN")).email
+
 document.getElementById('modalSubmit').addEventListener('click', function () {
   const brandName = document.getElementById('brandName').value;
   const code = document.getElementById('code').value;
@@ -330,6 +339,32 @@ document.getElementById('modalSubmit').addEventListener('click', function () {
     .catch(error => {
       console.error('Error:', error);
     });
+
+  
+
+    fetch('/transactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        user,
+        action: `Added ${productName} as a new product`
+    })
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle success for the transaction
+        // ...
+      } else {
+        // Handle errors if the request fails
+        console.error('Error with the transaction');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
 });
 
 

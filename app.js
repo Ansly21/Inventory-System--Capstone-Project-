@@ -15,6 +15,7 @@ const User = require('./models/user');
 const Product = require('./models/products');
 const Inventory = require('./models/inventory');
 const Supplier = require('./models/supplier');
+const Transaction = require('./models/transaction');
 
 const { MongoDBCollectionNamespace } = require('mongodb');
 
@@ -659,6 +660,53 @@ app.post('/products/:productId', async (req, res) => {
 
 
 
+// TRANSACTION BY ID
+app.get('/transactions', async (req, res) => {
+  try {
+    const transactions = await Transaction.find({});
+
+    // Check if transactions exist
+    if (!transactions || transactions.length === 0) {
+      return res.status(404).send('No transactions found');
+    }
+
+    res.render('Transactions', { title: 'All Transactions', transactions });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal server error');
+  }
+});
+
+
+// Assuming you have initialized Express and set up your routes
+app.post('/transactions', async(req,res) => {
+  const user = req.body.user;
+  const action = req.body.action;
+
+ 
+  try {
+      const response = await Transaction.create({
+          user,
+          action
+      })
+      console.log("User created successfully", response)
+  } catch(error) {
+      if(error.code === 11000) {
+          return res.json({status: 'error', error: "Email already in use"})
+      }
+      throw error
+  }
+
+  try {
+      const userData = await User.find({});
+      
+      res.json({status: 'ok', userData: userData});
+    } catch (error) {
+      console.log(error);
+      res.json({status: 'error', error: error});
+    }
+
+})
 
 
 

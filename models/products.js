@@ -31,7 +31,9 @@ const productsSchema = new Schema({
     },
 
     retailPrice: {
-        type: Number
+        type: Number,
+        get: (v) => parseFloat(v).toFixed(2),
+        set: (v) => parseFloat(v).toFixed(2),
     },
 
     totalRetail: {

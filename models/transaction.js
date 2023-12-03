@@ -13,31 +13,34 @@ const transactionSchema = new Schema({
         required: true
 
     },
-    brand:{
+
+    action:{
         type: String,
-        required: true
+
+    },
+
+    brand:{
+        type: String
     },
 
     productName:{
-        type: String,
-        required: true
+        type: String
 
     },
 
     stockIn:{
-        type: number,
+        type: Number,
 
     },
 
     stockOut:{
-        type: number,
+        type: Number,
 
     },
 
 
     wholesalePrice: {
         type: Number,
-        required: true,
         get: (v) => parseFloat(v).toFixed(2),
         set: (v) => parseFloat(v).toFixed(2),
     },
@@ -54,7 +57,6 @@ const transactionSchema = new Schema({
 
     retailPrice: {
         type: Number,
-        required: true,
         get: (v) => parseFloat(v).toFixed(2),
         set: (v) => parseFloat(v).toFixed(2),
     },
@@ -71,7 +73,6 @@ const transactionSchema = new Schema({
 
     remarks: {
         type: String,
-        required: true,
     }
 
 
