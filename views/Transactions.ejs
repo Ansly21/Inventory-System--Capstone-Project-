@@ -7,7 +7,7 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
-    <title>Supplier</title>
+    <title>Transactions</title>
     <link rel="stylesheet" href="/Transactions.css">
 </head>
 <body id="body">
@@ -98,20 +98,39 @@
                 <thead>
                 <tr>
                     <th>USER</th>
-                    <th>ACTIVITY</th>
+                    <th>PRODUCT NAME</th>
+                    <th>STOCK IN</th>
+                    <th>STOCK OUT</th>
+                    <th>WHOLESALE PRICE</th>
+                    <th>RETAIL PRICE</th>
+                    <th>REMARKS</th>
                     <th>TIMESTAMPS</th>
                 </tr>
             </thead>
-              
-            <% transactions.forEach(transaction => { %>
+
+            <% if (transactions && transactions.length > 0) { %>
+                <% transactions.forEach(transaction => { %>
+                  <tr>
+                    <td><%= transaction.user %></td>
+                    <td><%= transaction.productName %></td>
+                    <td><%= transaction.stockIn %></td>
+                    <td><%= transaction.stockOut %></td>
+                    <td><%= transaction.wholesalePrice %></td>
+                    <td><%= transaction.retailPrice %></td>
+                    <td><%= transaction.remarks %></td>
+                    <td><%= transaction.createdAt %></td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
                 <tr>
-                  <td><%= transaction.user %></td>
-                  <td><%= transaction.action %></td>
-                  <td><%= transaction.createdAt %></td>
+                  <td colspan="6">No transactions available</td>
                 </tr>
-              <% }); %>
-          
+              <% } %>
                 
+     
+
+              
+              
             </table>
 
         </div>

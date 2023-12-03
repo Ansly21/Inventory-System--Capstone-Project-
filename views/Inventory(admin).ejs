@@ -149,6 +149,12 @@
                         <label for="stockInWholeSalePrice">Wholesale Price:</label>
                         <input type="number" id="stockInWholeSalePrice_<%= product.id %>" name="stockInWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
                      
+                        <select name="stockInRemarks" id="remarksOptions_<%= product.id %>">
+                            <option value="Restock">Restock</option>
+                        </select>
+
+                        <br><br>
+
                         <label for="qtyStockIn">QTY:</label>
                         <input type="number" id="qtyStockIn_<%= product.id %>" name="qtyStockIn" min="1"><br><br>
 
@@ -185,6 +191,14 @@
                         <label for="stockOuRetailPrice">Retail Price:</label>
                         <input type="number" id="stockOutRetailPrice_<%= product.id %>" name="stockOuRetailPrice" value="<%= product.retailPrice %>"><br><br>
                      
+                        <select name="stockOutRemarks" id="stockOutRemarksOptions_<%= product.id %>">
+                            <option value="Sold">Sold</option>
+                            <option value="Donated">Donated</option>
+                            <option value="Lost">Lost</option>
+                        </select>
+
+                        <br><br>
+
                         <label for="qtyStockOut">QTY:</label>
                         <input type="number" id="qtyStockOut_<%= product.id %>" name="qtyStockOut" min="0"><br><br>
 
@@ -308,6 +322,8 @@ function openstockInModal(productId) {
     let stockInWholeSalePrice = document.getElementById(`stockInWholeSalePrice_${productId}`);
     let editRetailPrice = document.getElementById(`editRetailPrice_${productId}`);
     let stockInLowStockThreshold = document.getElementById(`stockInLowStockThreshold_${productId}`);
+    
+    let stockInRemark = document.getElementById(`remarksOptions_${productId}`);
 
     
 // Assuming this code runs after the creation or update of the form
@@ -357,6 +373,35 @@ stockInForm.addEventListener("submit", (event) => {
         location.reload()
     });
 
+    let user = parseJwt(localStorage.getItem("TOKEN")).email
+    fetch('/transactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        user: user,
+        productName: stockInProductName.value,
+        stockIn: qtyStockIn,
+        stockOut: 0,
+        wholesalePrice: stockInWholeSalePrice.value,
+        retailPrice: 0,
+        remarks: stockInRemark.value
+    })
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle success for the transaction
+        // ...
+      } else {
+        // Handle errors if the request fails
+        console.error('Error with the transaction');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
     event.preventDefault();
 });
   }
@@ -379,6 +424,7 @@ function openstockOutModal(productId) {
     let stockOutLowStockThreshold = document.getElementById(`stockOutLowStockThreshold_${productId}`);
     let prevTotalRetail = parseFloat(document.getElementById(`prevTotalRetail_${productId}`).value);
 
+    let stockOutRemarks = document.getElementById(`stockOutRemarksOptions_${productId}`)
     
 // Assuming this code runs after the creation or update of the form
 console.log("EDITCODE", stockOutCode.value)
@@ -434,6 +480,63 @@ stockOutForm.addEventListener("submit", (event) => {
     })
     .catch(error => {
         location.reload()
+    });
+
+
+    fetch(`/stockInInventory/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Handle success
+            return response.json(); // Parse the response body as JSON
+        } else {
+            throw new Error('Error stocking in inventory');
+        }
+    })
+    .then(data => {
+        // Here 'data' contains the updated product from the server
+        console.log(data.updatedProduct);
+        // Perform actions with the updated product data as needed
+        const stockInModal = document.getElementById('stockInModal');
+        // Close the modal, update UI, etc.
+        location.reload()
+    })
+    .catch(error => {
+        location.reload()
+    });
+
+    let user = parseJwt(localStorage.getItem("TOKEN")).email
+    fetch('/transactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        user: user,
+        productName: stockOutProductName.value,
+        stockIn: 0,
+        stockOut: qtyStockOut,
+        wholesalePrice: 0,
+        retailPrice: retailPriceValue,
+        remarks: stockOutRemarks.value
+    })
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle success for the transaction
+        // ...
+      } else {
+        // Handle errors if the request fails
+        console.error('Error with the transaction');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
     });
 
     event.preventDefault();

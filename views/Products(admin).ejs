@@ -341,7 +341,7 @@ document.getElementById('modalSubmit').addEventListener('click', function () {
     });
 
   
-
+/*  //FOR GO TO LOGS
     fetch('/transactions', {
     method: 'POST',
     headers: {
@@ -349,7 +349,7 @@ document.getElementById('modalSubmit').addEventListener('click', function () {
     },
     body: JSON.stringify({
         user,
-        action: `Added ${productName} as a new product`
+        action: `Added ${productName} as a new product`,
     })
   })
     .then(response => {
@@ -363,8 +363,10 @@ document.getElementById('modalSubmit').addEventListener('click', function () {
     })
     .catch(error => {
       console.error('Error:', error);
-    });
+    }); */
 
+
+    
 });
 
 
@@ -411,12 +413,38 @@ function openEditModal(productId) {
     let editWholesalePrice = document.getElementById(`editWholesalePrice_${productId}`);
     let editRetailPrice = document.getElementById(`editRetailPrice_${productId}`);
     let editLowStockThreshold = document.getElementById(`editLowStockThreshold_${productId}`);
-   
+    let user = parseJwt(localStorage.getItem("TOKEN")).email
     
 // Assuming this code runs after the creation or update of the form
 console.log("EDITCODE", editCodeID.value)
 
 editForm.addEventListener("submit", (event) => {
+
+   /*  //CAN ONLY DETECT FIRSTT TABLE EDIT -> Transaction
+    let user = parseJwt(localStorage.getItem("TOKEN")).email
+    fetch('/transactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        user: user,
+        action: `Edited something`
+    })
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle success for the transaction
+        // ...
+      } else {
+        // Handle errors if the request fails
+        console.error('Error with the transaction');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    }); */
+
 
     console.log("EDITCODE", editCodeID.value)
 console.log("put sub")
@@ -457,10 +485,12 @@ console.log("put sub")
         location.reload()
     });
 
+
+    
+
     event.preventDefault();
 });
-  }
-}
+  }}
 // Function to close the edit modal
 function closeEditModal(productId) {
   const modal = document.getElementById(`editModal_${idLastClicked}`);

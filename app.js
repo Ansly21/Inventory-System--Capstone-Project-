@@ -667,7 +667,7 @@ app.get('/transactions', async (req, res) => {
 
     // Check if transactions exist
     if (!transactions || transactions.length === 0) {
-      return res.status(404).send('No transactions found');
+   
     }
 
     res.render('Transactions', { title: 'All Transactions', transactions });
@@ -681,13 +681,23 @@ app.get('/transactions', async (req, res) => {
 // Assuming you have initialized Express and set up your routes
 app.post('/transactions', async(req,res) => {
   const user = req.body.user;
-  const action = req.body.action;
+  const productName = req.body.productName;
+  const stockIn = req.body.stockIn;
+  const stockOut = req.body.stockOut;
+  const wholesalePrice = req.body.wholesalePrice
+  const retailPrice = req.body.retailPrice
+  const remarks = req.body.remarks
 
  
   try {
       const response = await Transaction.create({
           user,
-          action
+          productName,
+          stockIn,
+          stockOut,
+          wholesalePrice,
+          retailPrice,
+          remarks
       })
       console.log("User created successfully", response)
   } catch(error) {
