@@ -127,6 +127,7 @@
                     <th>WHOLESALE PRICE (₱)</th>
                     <th>RETAIL PRICE (₱)</th>
                     <th>LOW STOCK THRESHOLD</th>
+                    <th>STATUS</th>
                     <th>ACTION</th>
                 </tr>
             </thead>
@@ -145,7 +146,7 @@
                     <td><input type="number" contenteditable="true" name = "wholesalePrice[]"  value="<%= product.wholesalePrice %>" disabled></td>
                     <td><input type="number" contenteditable="true" name = "retailPrice[]"  value="<%= product.retailPrice %>" disabled></td> 
                     <td><input type="number" contenteditable="true" name = "lowStockThreshold[]"  value="<%= product.lowStockThreshold %>" disabled></td> 
-                  
+                    <td><input type="text" contenteditable="true" name = "isActive[]"  value="<%= product.isActive %>" disabled></td> 
             
                  <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
                  <td> <button class="editBtn" id="<%= product.id %>" data-target="#editModal_<%= product._id %>" type="button" onclick="openEditModal('<%= product._id %>')">UPDATE</button>
@@ -181,8 +182,14 @@
             
                             <label for="lowStockThreshold">Low stock threshold:</label>
                             <input type="number" id="editLowStockThreshold_<%= product.id %>" name="lowStockThreshold"  value="<%= product.lowStockThreshold %>"><br><br>
-            
+                           
+                            <select name="isActive" id="editIsActive_<%= product.id %>">
+                                <option value="<%= product.isActive %>" selected><%= product.isActive %></option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
                         
+                            <br><br>
+
                             <button id="saveEdit" type="submit">Save</button>
                         </form>
                     </div>
@@ -437,7 +444,8 @@ let psLength = decodedCodeCategoryPS.length + 1
     wholesalePrice: wholesalePrice,
     retailPrice: retailPrice,
     lowStockThreshold: lowStockThreshold,
-    category: categoryOptions
+    category: categoryOptions,
+    isActive: "Active"
     // Add other fields as needed for the new product
   };
 
@@ -542,6 +550,7 @@ function openEditModal(productId) {
     let editWholesalePrice = document.getElementById(`editWholesalePrice_${productId}`);
     let editRetailPrice = document.getElementById(`editRetailPrice_${productId}`);
     let editLowStockThreshold = document.getElementById(`editLowStockThreshold_${productId}`);
+    let editIsActive = document.getElementById(`editIsActive_${productId}`);
     let user = parseJwt(localStorage.getItem("TOKEN")).email
     
 // Assuming this code runs after the creation or update of the form
@@ -559,6 +568,7 @@ console.log("put sub")
         wholesalePrice: editWholesalePrice.value,
         retailPrice: editRetailPrice.value,
         lowStockThreshold: editLowStockThreshold.value,
+        isActive: editIsActive.value
     };
 
     fetch(`/products/${productId}`, {

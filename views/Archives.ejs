@@ -139,11 +139,11 @@
                 </tr>
             </thead>
               
-            <% users.forEach(user => { %>
+            <% inactiveProducts.forEach(product => { %>
                 <tr>
-                    <td><%= user.email %></td>
-                    <td><%= user.type %></td>
-                    <td><button class="restoreBtn" id="<%= user._id %>" onclick="restoreUser(event)" type="button">Restore account</button></td>
+                    <td><%= product.code %></td>
+                    <td><%= product.productName %></td>
+                    <td><button class="restoreBtn" id="<%= product._id %>" onclick="restoreProduct(event)" type="button">Restore product</button></td>
                 </tr>
             <% }); %>
                             
@@ -222,52 +222,14 @@ let editBtns = document.querySelectorAll(".editBtn");
 
 let idLastClicked;
 // Loop through each button and attach an event listener
-editBtns.forEach(button => {
+btn.forEach(button => {
     button.addEventListener("click", (e) => {
         console.log(e.target.id);
         idLastClicked = e.target.id
-    
+        console.log(idLastClicked)
     });
 });
 
-let productForm = document.getElementById('productForm')
-let accBtn = document.getElementById("accBtn")
-productForm.addEventListener('submit', function () {
-
-    const supplierName = document.getElementById('supplierName').value;
-    const brandName = document.getElementById('brandName').value;
-    const supplierContact = document.getElementById('supplierContact').value;
-
-  // Prepare the data object to send to the server
-  const data = {
-    supplierName: supplierName,
-    brandName: brandName,
-    supplierContact: supplierContact,
-  };
-
-  // Send the form data to the backend using fetch
-  fetch('/supplier', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then(response => {
-      if (response.ok) {
-        // Handle success, e.g., close the modal and perform any UI updates
-        const modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-        // Perform any other necessary actions upon successful addition of a new product
-      } else {
-        // Handle errors if the request fails
-        console.error('Error adding product');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-});
 
 
 async function restoreUser(event) {
@@ -293,113 +255,36 @@ async function restoreUser(event) {
   }
 
 
-   // Get the modal
-const modal = document.getElementById('myModal');
-const editModal = document.getElementById(`editModal`);
 
-// Get the button that opens the modal
-const btn = document.getElementById('addRowButton');
+async function restoreProduct(event) {
+    const productId = event.target.id; // Or use the appropriate attribute that stores the product ID
+    const confirmed = confirm('Are you sure you want to restore this product?');
 
-// Get the <span> element that closes the modal
-const span = document.getElementById("close")
+    if (confirmed) {
+        const result = await fetch(`/products/${productId}/restore`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                isActive: "Active"
+            })
+        }).then((res) => res.json());
 
-// When the user clicks the button, open the modal
-btn.onclick = function () {
-  modal.style.display = 'block';
-  editModal.style.display = 'block';
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-  modal.style.display = 'none';
-  editModal.style.display = 'none';
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target === modal || event.target === editModal ) {
-    modal.style.display = 'none';
-    editModal.style.display = 'none';
-  }
-};
-
-
-function openEditModal(supplierId) {
-  const modal = document.getElementById(`editModal_${supplierId}`);
-  if (modal) {
-    modal.style.display = 'block';
-
-    const editForm = document.getElementById('editForm');
-    let supplierName = document.getElementById(`supplierName_${supplierId}`);
-    let brandName = document.getElementById(`brandName_${supplierId}`);
-    let supplierContact = document.getElementById(`supplierContact_${supplierId}`);
-
-
-// Assuming this code runs after the creation or update of the form
-console.log("EDITCODE", editCodeID.value)
-
-editForm.addEventListener("submit", (event) => {
-
-    console.log("EDITCODE", editCodeID.value)
-console.log("put sub")
-    // Get the updated values from the form fields
-    const updatedData = {
-        supplierName: supplierName.value,
-        brandName: brandName.value,
-        supplierContact: supplierContact.value,
-    };
-
-    fetch(`/supplier/${supplierId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedData)
-    })
-    .then(response => {
-        if (response.ok) {
-            // Handle success
-            return response.json(); // Parse the response body as JSON
+        if (result.status === 'ok') {
+            alert('Product restored successfully');
+            location.reload();
         } else {
-            throw new Error('Error updating product');
+            alert(result.error);
         }
-    })
-    .then(data => {
-        // Here 'data' contains the updated product from the server
-        console.log(data.updatedProduct);
-        // Perform actions with the updated product data as needed
-        const editModal = document.getElementById('editModal');
-        // Close the modal, update UI, etc.
-        location.reload()
-    })
-    .catch(error => {
-        location.reload()
-    });
-
-    event.preventDefault();
-});
-  }
+    } else {
+        // Handle cancellation of the confirmation dialog here
+        console.log('Restoration cancelled');
+    }
 }
-// Function to close the edit modal
-function closeEditModal(productId) {
-  const modal = document.getElementById(`editModal_${idLastClicked}`);
-  if (modal) {
-    modal.style.display = 'none';
-  }
-}
-// Function to save the edited data (you'll need to implement this)
-function saveEditedData() {
-  // Retrieve the edited data from the form fields
-  const editedProductName = document.getElementById('productNameEdit').value;
-  // Retrieve other edited data similarly
 
-  // Perform actions to save the edited data (e.g., send it to the server via AJAX)
-  // Implement your logic to save the edited data
-  // ...
 
-  // Close the edit modal after saving the changes
-  closeEditModal();
-}
+
 
 
 
@@ -425,75 +310,6 @@ function parseJwt (token) {
          );
         
       
-
-        // Function to add a new row to the table
-        /* function addRow() {
-            const tableBody = document.querySelector("#productTable2 tbody");
-            const newRow = tableBody.insertRow();
-
-            // Add cells (columns) to the new row
-                const code = newRow.insertCell(0);
-                const productName = newRow.insertCell(1);
-                const unitCost = newRow.insertCell(2);
-                const unitPrice = newRow.insertCell(3);
-                const lowStockThreshold = newRow.insertCell(4);
-                const startingInventory = newRow.insertCell(5);
-                const status = newRow.insertCell(6);
-                const bt = newRow.insertCell(7);
-
-            // Create input elements for each cell
-            const codeInput = document.createElement("input");
-            codeInput.type = "text";
-            codeInput.name = "code[]"; // Use an array to collect multiple names
-            code.appendChild(codeInput);
-
-            const productInput = document.createElement("input");
-            productInput.type = "text";
-            productInput.name = "productName[]"; // Use an array to collect multiple emails
-            productName.appendChild(productInput);
-
-            const costInput = document.createElement("input");
-            costInput.type = "number";
-            costInput.name = "unitCost[]"; // Use an array to collect multiple emails
-            unitCost.appendChild(costInput);
-
-            const priceInput = document.createElement("input");
-            priceInput.type = "number";
-            priceInput.name = "unitPrice[]"; // Use an array to collect multiple emails
-            unitPrice.appendChild(priceInput);
-
-            const lowStockInput = document.createElement("input");
-            lowStockInput.type = "number";
-            lowStockInput.name = "lowStockThreshold[]"; // Use an array to collect multiple emails
-            lowStockThreshold.appendChild(lowStockInput);
-
-            const startInvInput = document.createElement("input");
-            startInvInput.type = "number";
-            startInvInput.name = "startingInventory[]"; // Use an array to collect multiple emails
-            startingInventory.appendChild(startInvInput);
-
-            const statusInput = document.createElement("input");
-            statusInput.type = "range";
-            statusInput.max = "1";
-            statusInput.min = "0";
-            statusInput.name = "status[]"; // Use an array to collect multiple emails
-            status.appendChild(statusInput);
-
-            const button = document.createElement("button");
-            button.textContent = "Save"
-            button.classList.add("saveBtn")
-            bt.appendChild(button);
-
-            const saveproductbtn = document.getElementById("saveproductbtn");
-            saveproductbtn.style.display = "block";
-
-            const editSavebtn = document.getElementById("editSave");
-            editSavebtn.style.display = "none";
-
-            const cancelProduct= document.getElementById("cancelProduct");
-            cancelProduct.style.display = "block";
-        }
- */
         
         function hideNewRow(){
 

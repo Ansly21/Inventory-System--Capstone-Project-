@@ -134,7 +134,7 @@ app.post('/', async (req, res) => {
 app.get('/account', async (req, res) => {
   try {
       const users = await User.find({ isActive: true }); // Fetch users where isActive is true
-      const products = await Product.find({});
+      const products = await Product.find({ isActive: 'Active' });
       res.render('AccManagement(admin)', { products, users, title: 'Account Management' });
   } catch (err) {
       console.error(err);
@@ -234,7 +234,7 @@ app.get('/home', (req, res)=>{
  app.get('/logs', async (req, res) => {
   try {
     const transactions = await Transaction.find({});
-    const products = await Product.find({})
+    const products = await Product.find({ isActive: 'Active' });
 
     // Check if transactions exist
     if (!transactions || transactions.length === 0) {
@@ -255,9 +255,11 @@ app.get('/archive', async(req, res)=>{
   
   try {
     const users = await User.find({ isActive: false }); // Fetch users where isActive is true
-    const products = await Product.find({})
+    const products = await Product.find({ isActive: 'Active' });
+    const inactiveProducts = await Product.find({ isActive: 'Inactive' });
 
-    res.render('Archives', {title: 'Archives', products, users});
+
+    res.render('Archives', {title: 'Archives', products, users, inactiveProducts});
 } catch (err) {
     console.error(err)
     res.status(500).send('Internal server error')
@@ -270,7 +272,7 @@ app.get('/supplier', async(req, res) => {
  
 
     try {
-      const products = await Product.find({})
+      const products = await Product.find({ isActive: 'Active' });
       const suppliers = await Supplier.find({})
 
       res.render('Supplier', {title: 'Supplier', suppliers, products})
@@ -345,15 +347,14 @@ app.post('/supplier/:supplierId', async (req, res) => {
 
 
  //Inventory
- app.get('/inventory', (req, res)=>{
-     Product.find()
-         .then((result)=>{
-             res.render('Inventory(admin)', { title: 'Inventory', products: result});
-         })
-         .catch((err)=>{
-             console.log(err);
-         })
- 
+ app.get('/inventory', async(req, res)=>{
+  try {
+    const result = await Product.find({ isActive: 'Active' });
+    res.render('Inventory(admin)', { title: 'Inventory', products: result });
+} catch (err) {
+    console.log(err);
+    res.status(500).send('Internal server error');
+}
  
          const targetDate = req.query.date; // Get the selected date from the query parameter
            
@@ -549,22 +550,23 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
 
  // GET Products
  app.get('/products', async(req, res)=>{
-    const query = req.query.query;
-    console.log(query);
+  const query = req.query.query;
+  console.log(query);
 
-    if(typeof query === 'undefined'){
-        console.log("walang laman");
-     const suppliers = await Supplier.find({})
-     const filteredProducts = await Product.find({ category: 'WS' });
-     const filteredProductsOS = await Product.find({ category: 'OS' });
-     const filteredProductsPS = await Product.find({ category: 'PSS' });
-    Product.find()
-        .then((result)=>{
-            res.render('Products(admin)', { title: 'Products', products: result, suppliers, filteredProducts, filteredProductsOS, filteredProductsPS});
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
+  if (typeof query === 'undefined') {
+      console.log("walang laman");
+      const suppliers = await Supplier.find({});
+      const filteredProducts = await Product.find({ isActive: 'Active', category: 'WS' });
+      const filteredProductsOS = await Product.find({ isActive: 'Active', category: 'OS' });
+      const filteredProductsPS = await Product.find({ isActive: 'Active', category: 'PSS' });
+
+      try {
+          const result = await Product.find({ isActive: 'Active' });
+          res.render('Products(admin)', { title: 'Products', products: result, suppliers, filteredProducts, filteredProductsOS, filteredProductsPS });
+      } catch (err) {
+          console.log(err);
+          res.status(500).send('Internal server error');
+      }
 
     }else{
 
@@ -615,12 +617,14 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
                 const wholesalePrice = req.body.wholesalePrice;
                 const retailPrice = req.body.retailPrice;
                 const lowStockThreshold = req.body.lowStockThreshold;
+                const isActive = req.body.isActive;
                 const startingInventory = req.body.startingInventory;
                 const status = req.body.status;
 
                         const newData = new Product({
                             brandName: brandName,
                             code: code,
+                            isActive: isActive,
                             category, category,
                             productName: productName,
                             wholesalePrice: wholesalePrice,
@@ -707,8 +711,10 @@ app.post('/products/:productId', async (req, res) => {
       product.brandName = updatedData.brandName;
       product.productName = updatedData.productName;
       product.wholesalePrice = updatedData.wholesalePrice;
+      product.isActive = updatedData.isActive;
       product.retailPrice = updatedData.retailPrice;
       product.lowStockThreshold = updatedData.lowStockThreshold;
+      product.isActive = updatedData.isActive;
  
 
       // Save the updated product in the database
@@ -722,13 +728,40 @@ app.post('/products/:productId', async (req, res) => {
   }
 });
 
+// Handle the POST request for restoring a product (activating)
+app.post('/products/:productId/restore', async (req, res) => {
+  const productId = req.params.productId;
+
+  try {
+      // Find the product by ID in your database
+      const product = await Product.findById(productId);
+
+      if (!product) {
+          return res.status(404).json({ message: 'Product not found' });
+      }
+
+      // Update only the isActive field to "Active"
+      product.isActive = 'Active';
+
+      // Save the updated product in the database
+      await product.save();
+
+      // Respond with a success message or the updated product
+      res.json({ status: 'ok', message: 'Product restored successfully' });
+  } catch (err) {
+      console.error('Error restoring product:', err);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 
 
 // TRANSACTION BY ID
 app.get('/transactions', async (req, res) => {
   try {
     const transactions = await Transaction.find({});
-    const products = await Product.find({})
+    const products = await Product.find({ isActive: 'Active' });
 
     // Check if transactions exist
     if (!transactions || transactions.length === 0) {
@@ -798,7 +831,7 @@ app.post('/transactions', async(req,res) => {
 
   //Try block na nagcocontain ng lahat ng ipapasa sa reports page through res.render
   try {
-    const products = await Product.find({})
+    const products = await Product.find({ isActive: 'Active' });
     const transactions = await Transaction.find({});
     res.render('Reports(admin)', {
       title: 'Reports',

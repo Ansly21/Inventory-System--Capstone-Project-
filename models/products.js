@@ -9,18 +9,15 @@ const Schema = mongoose.Schema;
 const productsSchema = new Schema({
     
     code:{
-        type:String,
-        required: true
+        type:String
     },
 
     brandName:{
-        type: String,
-        required: true
+        type: String
     },
 
     productName:{
-        type: String,
-        required: true
+        type: String
     },
 
     category:{
@@ -45,9 +42,13 @@ const productsSchema = new Schema({
         default: 0
     },
 
+    isActive: {
+        type: String,
+        default: "Active"
+    },
+
     lowStockThreshold:{
-        type: Number,
-        required: true
+        type: Number
     },
 
     currentInv:{
