@@ -138,23 +138,24 @@
                     <h2>STOCK IN</h2>
                     <form id="stockInForm_<%= product.id %>" method="post" action="stockInInventory/<%= product._id %>">
                         <label for="stockInBrandName">Brand: </label>
-                        <input type="text" id="stockInBrandName_<%= product.id %>" name="stockInBrandName" value="<%= product.brandName %>" readonly><br><br>
+                        <input class="readOnlyBG" type="text" id="stockInBrandName_<%= product.id %>" name="stockInBrandName" value="<%= product.brandName %>" readonly><br><br>
 
                         <label for="stockInCode">Code:</label>
-                        <input type="text" id="stockInCode_<%= product.id %>" name="stockInCode" value="<%= product.code %>" readonly><br><br>
+                        <input class="readOnlyBG" type="text" id="stockInCode_<%= product.id %>" name="stockInCode" value="<%= product.code %>" readonly><br><br>
         
                         <label for="stockInProductName">Product Name:</label>
-                        <input type="text" id="stockInProductName_<%= product.id %>" name="stockInProductName" value="<%= product.productName%>" readonly><br><br>
+                        <input class="readOnlyBG" type="text" id="stockInProductName_<%= product.id %>" name="stockInProductName" value="<%= product.productName%>" readonly><br><br>
         
                         <label for="stockInLowStockThreshold">Low stock threshold:</label>
-                        <input type="number" id="stockInLowStockThreshold_<%= product.id %>" name="stockInLowStockThreshold"  value="<%= product.lowStockThreshold %>" readonly><br><br>
+                        <input class="readOnlyBG" type="number" id="stockInLowStockThreshold_<%= product.id %>" name="stockInLowStockThreshold"  value="<%= product.lowStockThreshold %>" readonly><br><br>
         
                         <label for="stockInCurrentInv">Current Inventory:</label>
-                        <input type="number" id="stockInCurrentInv_<%= product.id %>" name="stockInCurrentInv" value="<%= product.currentInv %>" readonly><br><br>
+                        <input class="readOnlyBG" type="number" id="stockInCurrentInv_<%= product.id %>" name="stockInCurrentInv" value="<%= product.currentInv %>" readonly><br><br>
 
                         <label for="stockInWholeSalePrice">Wholesale Price:</label>
                         <input type="number" id="stockInWholeSalePrice_<%= product.id %>" name="stockInWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
-                     
+                        
+                        <label for="stockInRemarks">Remarks:</label>
                         <select name="stockInRemarks" id="remarksOptions_<%= product.id %>">
                             <option value="Restock">Restock</option>
                         </select>
@@ -177,26 +178,27 @@
                     <h2>STOCK OUT</h2>
                     <form id="stockOutForm_<%= product.id %>" method="post" action="stockOutInventory/<%= product._id %>">
                         <label for="stockOutBrandName">Brand: </label>
-                        <input type="text" id="stockOutBrandName_<%= product.id %>" name="stockOutBrandName" value="<%= product.brandName %>" readonly><br><br>
+                        <input class="readOnlyBG" type="text" id="stockOutBrandName_<%= product.id %>" name="stockOutBrandName" value="<%= product.brandName %>" readonly><br><br>
 
                         <label for="stockOutCode">Code:</label>
-                        <input type="text" id="stockOutCode_<%= product.id %>" name="stockOutCode" value="<%= product.code %>" readonly><br><br>
+                        <input class="readOnlyBG" type="text" id="stockOutCode_<%= product.id %>" name="stockOutCode" value="<%= product.code %>" readonly><br><br>
         
                         <label for="stockOutProductName">Product Name:</label>
-                        <input type="text" id="stockOutProductName_<%= product.id %>" name="stockOutProductName" value="<%= product.productName%>" readonly><br><br>
+                        <input class="readOnlyBG" type="text" id="stockOutProductName_<%= product.id %>" name="stockOutProductName" value="<%= product.productName%>" readonly><br><br>
         
                         <label for="stockOutLowStockThreshold">Low stock threshold:</label>
-                        <input type="number" id="stockOutLowStockThreshold_<%= product.id %>" name="stockOutLowStockThreshold"  value="<%= product.lowStockThreshold %>" readonly><br><br>
+                        <input class="readOnlyBG" type="number" id="stockOutLowStockThreshold_<%= product.id %>" name="stockOutLowStockThreshold"  value="<%= product.lowStockThreshold %>" readonly><br><br>
         
                         <label for="stockOutCurrentInv">Current Inventory:</label>
-                        <input type="number" id="stockOutCurrentInv_<%= product.id %>" name="stockOutCurrentInv" value="<%= product.currentInv %>" readonly><br><br>
+                        <input class="readOnlyBG" type="number" id="stockOutCurrentInv_<%= product.id %>" name="stockOutCurrentInv" value="<%= product.currentInv %>" readonly><br><br>
 
                         <label for="stockOutWholeSalePrice">Wholesale Price:</label>
-                        <input type="number" id="stockOutWholeSalePrice_<%= product.id %>" name="stockOutWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
+                        <input class="readOnlyBG" type="number" id="stockOutWholeSalePrice_<%= product.id %>" name="stockOutWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
 
                         <label for="stockOuRetailPrice">Retail Price:</label>
                         <input type="number" id="stockOutRetailPrice_<%= product.id %>" name="stockOuRetailPrice" value="<%= product.retailPrice %>"><br><br>
                      
+                        <label for="stockOutRemarks">Remarks:</label>
                         <select name="stockOutRemarks" id="stockOutRemarksOptions_<%= product.id %>">
                             <option value="Sold">Sold</option>
                             <option value="Donated">Donated</option>

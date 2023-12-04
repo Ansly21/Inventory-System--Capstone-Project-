@@ -246,19 +246,19 @@
                 <br><br>
 
                 <label for="code">Code:</label>
-                <input type="text" id="code" name="code"><br><br>
+                <input type="text" id="code" name="code" required><br><br>
 
                 <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName"><br><br>
+                <input type="text" id="productName" name="productName" required><br><br>
 
                 <label for="wholesalePrice">Wholesale Price:</label>
-                <input type="number" id="wholesalePrice" name="wholesalePrice"><br><br>
+                <input type="number" id="wholesalePrice" name="wholesalePrice" required><br><br>
 
                 <label for="retailPrice">Retail Price:</label>
-                <input type="number" id="retailPrice" name="retailPrice"><br><br>
+                <input type="number" id="retailPrice" name="retailPrice" required><br><br>
 
                 <label for="lowStockThreshold">Low stock threshold:</label>
-                <input type="number" id="lowStockThreshold" name="lowStockThreshold"><br><br>
+                <input type="number" id="lowStockThreshold" name="lowStockThreshold" required><br><br>
                 
                 <!-- Add other input fields as needed -->
         
@@ -350,15 +350,15 @@ productForm.addEventListener('submit', function () {
       console.error('Error:', error);
     });
   
-/*  //FOR GO TO LOGS
+    //FOR GO TO LOGS
     fetch('/transactions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-        user,
-        action: `Added ${productName} as a new product`,
+        userLogsOnly: user,
+        action: `Added "${productName}" as a new product`,
     })
   })
     .then(response => {
@@ -372,7 +372,7 @@ productForm.addEventListener('submit', function () {
     })
     .catch(error => {
       console.error('Error:', error);
-    }); */
+    }); 
 
 
     
@@ -546,74 +546,7 @@ function parseJwt (token) {
         
       
 
-        // Function to add a new row to the table
-        /* function addRow() {
-            const tableBody = document.querySelector("#productTable2 tbody");
-            const newRow = tableBody.insertRow();
-
-            // Add cells (columns) to the new row
-                const code = newRow.insertCell(0);
-                const productName = newRow.insertCell(1);
-                const unitCost = newRow.insertCell(2);
-                const unitPrice = newRow.insertCell(3);
-                const lowStockThreshold = newRow.insertCell(4);
-                const startingInventory = newRow.insertCell(5);
-                const status = newRow.insertCell(6);
-                const bt = newRow.insertCell(7);
-
-            // Create input elements for each cell
-            const codeInput = document.createElement("input");
-            codeInput.type = "text";
-            codeInput.name = "code[]"; // Use an array to collect multiple names
-            code.appendChild(codeInput);
-
-            const productInput = document.createElement("input");
-            productInput.type = "text";
-            productInput.name = "productName[]"; // Use an array to collect multiple emails
-            productName.appendChild(productInput);
-
-            const costInput = document.createElement("input");
-            costInput.type = "number";
-            costInput.name = "unitCost[]"; // Use an array to collect multiple emails
-            unitCost.appendChild(costInput);
-
-            const priceInput = document.createElement("input");
-            priceInput.type = "number";
-            priceInput.name = "unitPrice[]"; // Use an array to collect multiple emails
-            unitPrice.appendChild(priceInput);
-
-            const lowStockInput = document.createElement("input");
-            lowStockInput.type = "number";
-            lowStockInput.name = "lowStockThreshold[]"; // Use an array to collect multiple emails
-            lowStockThreshold.appendChild(lowStockInput);
-
-            const startInvInput = document.createElement("input");
-            startInvInput.type = "number";
-            startInvInput.name = "startingInventory[]"; // Use an array to collect multiple emails
-            startingInventory.appendChild(startInvInput);
-
-            const statusInput = document.createElement("input");
-            statusInput.type = "range";
-            statusInput.max = "1";
-            statusInput.min = "0";
-            statusInput.name = "status[]"; // Use an array to collect multiple emails
-            status.appendChild(statusInput);
-
-            const button = document.createElement("button");
-            button.textContent = "Save"
-            button.classList.add("saveBtn")
-            bt.appendChild(button);
-
-            const saveproductbtn = document.getElementById("saveproductbtn");
-            saveproductbtn.style.display = "block";
-
-            const editSavebtn = document.getElementById("editSave");
-            editSavebtn.style.display = "none";
-
-            const cancelProduct= document.getElementById("cancelProduct");
-            cancelProduct.style.display = "block";
-        }
- */
+        
         
         function hideNewRow(){
 

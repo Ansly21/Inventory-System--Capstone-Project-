@@ -241,6 +241,10 @@ table th {
     font-weight: bold;
 }
 
+.readOnlyBG {
+    background-color: rgb(172, 172, 172);
+}
+
 .stockOutBtn {
     display: block;
     margin: auto;
