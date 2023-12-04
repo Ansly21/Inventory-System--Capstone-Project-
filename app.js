@@ -134,8 +134,8 @@ app.post('/', async(req, res)=>{
 app.get('/account', async(req, res)=>{
     try {
         const users = await User.find({})
-
-        res.render('AccManagement(admin)', {users, title: 'Account Management'});
+        const products = await Product.find({})
+        res.render('AccManagement(admin)', {products, users, title: 'Account Management'});
     } catch (err) {
         console.error(err)
         res.status(500).send('Internal server error')
@@ -212,13 +212,14 @@ app.get('/home', (req, res)=>{
  app.get('/logs', async (req, res) => {
   try {
     const transactions = await Transaction.find({});
+    const products = await Product.find({})
 
     // Check if transactions exist
     if (!transactions || transactions.length === 0) {
    
     }
 
-    res.render('Logs', { title: 'Logs', transactions });
+    res.render('Logs', { title: 'Logs', transactions, products });
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal server error');
@@ -230,9 +231,10 @@ app.get('/supplier', async(req, res) => {
  
 
     try {
+      const products = await Product.find({})
       const suppliers = await Supplier.find({})
 
-      res.render('Supplier', {title: 'Supplier', suppliers})
+      res.render('Supplier', {title: 'Supplier', suppliers, products})
   } catch (err) {
       console.error(err)
       res.status(500).send('Internal server error')
@@ -679,13 +681,14 @@ app.post('/products/:productId', async (req, res) => {
 app.get('/transactions', async (req, res) => {
   try {
     const transactions = await Transaction.find({});
+    const products = await Product.find({})
 
     // Check if transactions exist
     if (!transactions || transactions.length === 0) {
    
     }
 
-    res.render('Transactions', { title: 'All Transactions', transactions });
+    res.render('Transactions', { title: 'All Transactions', transactions, products});
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal server error');

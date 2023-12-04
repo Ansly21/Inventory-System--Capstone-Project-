@@ -7,6 +7,8 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Inventory</title>
     <link rel="stylesheet" href="/Inventory (Admin).css">
 </head>
@@ -31,7 +33,7 @@
 
         <a class="bb" href="/inventory">
             <div class="te" id="currentPage">
-                <h5 class="test">Inventory</h5>
+                <h5 class="test">Inventory &nbsp <span class="badge" id="invNavWarning">0</span> </h5>
             </div>
         </a>
 
@@ -69,6 +71,16 @@
     
     <main>
         <div class="title-con">
+
+            <div>
+                <i class="fas fa-bell" id="notifIcon" onclick="showAlert()">
+                    <span class="badge" id="lowStockCount">0</span> 
+                </i>
+                <div class="lowStockDiv" id="lowStockDiv">
+            </div>
+        </div>
+            
+
        <h1 id="title">INVENTORY</h1>
     </div>
         <input type="hidden" name="action" value="saveEditedRow">
@@ -108,7 +120,7 @@
                 </tr>
             </thead>
               
-           
+          
             <% if(products.length > 0) { %>
                 <% products.forEach((product,index) => { %>
             <tr class = "database-row">
@@ -169,7 +181,7 @@
                     </form>
                 </div>
             </div>
-
+            
 
             <!-- STOCK OUT MODAL -->
             <div id="stockOutModal_<%= product._id %>" class="modal">
@@ -255,10 +267,10 @@
 
      
        
-      
+        
     
 
-       
+   
 
             
         </div>
@@ -267,10 +279,62 @@
 
     </div>
 
+    <div id="productsDisplay" style="display: none;"><%= JSON.stringify(products) %></div>
 
+ 
+
+    </div>
 
     <script>
 
+const productsData = document.getElementById('productsDisplay').innerHTML;
+const decodedProducts = JSON.parse(productsData.replace(/&quot;/g, '"'));
+console.log(decodedProducts);
+
+let lowStockCountSpan = document.getElementById('lowStockCount')
+let notifDiv = document.getElementById('lowStockDiv')
+let notifIcon = document.getElementById('notifIcon')
+
+let lowStockCount = 0;
+
+if (decodedProducts.length > 0) {
+    let productDetailsHTML = '';
+
+    for (let i = 0; i < decodedProducts.length; i++) {
+        if (decodedProducts[i].currentInv <= decodedProducts[i].lowStockThreshold) {
+            lowStockCount++;
+            let productDetails = `Product: ${decodedProducts[i].productName}, TH: ${decodedProducts[i].lowStockThreshold}, Inv: ${decodedProducts[i].currentInv} <br>`;
+            productDetailsHTML += productDetails;
+        }
+    }
+
+    notifDiv.innerHTML = productDetailsHTML;
+
+    // Show or hide notifDiv based on the lowStockCount
+    if (lowStockCount > 0) {
+        notifDiv.style.display = 'none';
+    } else {
+        notifDiv.style.display = 'none';
+        notifIcon.style.display = 'none';
+    }
+} else {
+    notifDiv.style.display = 'none';
+}
+
+
+lowStockCountSpan.textContent = lowStockCount
+if (lowStockCount == 0) {
+    document.getElementById('invNavWarning').style.display = "none"
+}
+document.getElementById('invNavWarning').textContent = lowStockCount
+
+function showAlert() {
+    notifDiv.style.display = "block"
+}
+
+
+
+    
   // Select all elements with class 'editBtn'
 let stockInBtns = document.querySelectorAll(".stockInBtn");
 

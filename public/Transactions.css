@@ -295,6 +295,32 @@ td {
     border: 1px solid black;
  
 }
+
+/* NOTIF */
+.lowStockDiv {
+    background-color: white;
+    padding: 1rem;
+    position: absolute;
+    right: 3%;
+    display: none;
+    overflow: scroll;
+    height: 130px;
+}
+
+.fa-bell {
+    position: absolute;
+    right: 6%;
+    font-size: 2rem;
+    top: 1%;
+    cursor: pointer;
+}
+
+.badge {
+    position: relative;
+    font-family: sans-serif;
+    color: red;
+}
+
 @media (max-width:800px) {
     :root {
         font-size: 0.5rem;
