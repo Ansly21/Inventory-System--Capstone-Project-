@@ -9,19 +9,18 @@ const Schema = mongoose.Schema;
 const supplierSchema = new Schema({
     
     supplierName:{
-        type: String,
-        required: true
+        type: String
     },
 
     brandName:{
-        type: String,
-        required: true
+        type: String
+
 
     },
 
     supplierContact:{
-        type: String,
-        required: false
+        type: String
+
     },
 
     

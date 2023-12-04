@@ -303,8 +303,9 @@ editBtns.forEach(button => {
 let accBtn = document.getElementById("accBtn")
 
 let user = parseJwt(localStorage.getItem("TOKEN")).email
+let productForm = document.getElementById("productForm")
 
-document.getElementById('modalSubmit').addEventListener('click', function () {
+productForm.addEventListener('submit', function () {
   const brandName = document.getElementById('brandName').value;
   const code = document.getElementById('code').value;
   const productName = document.getElementById('productName').value;
