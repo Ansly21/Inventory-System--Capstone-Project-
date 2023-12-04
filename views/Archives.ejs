@@ -9,8 +9,8 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <title>Supplier</title>
-    <link rel="stylesheet" href="/Supplier.css">
+    <title>Archive</title>
+    <link rel="stylesheet" href="/Archives.css">
 </head>
 <body id="body">
 
@@ -49,7 +49,7 @@
         </a>
 
         <a class="bb" href="/supplier">
-            <div class="te" id="currentPage">
+            <div class="te">
                 <h5 class="test">Supplier</h5>
             </div>
         </a>
@@ -67,7 +67,7 @@
         </a>
 
         <a class="bb" href="/archive">
-            <div class="te"">
+            <div class="te"  id="currentPage">
                 <h5 class="test" id="accBtn">Archive</h5>
             </div>
         </a>
@@ -92,7 +92,7 @@
         
 
         <div class="title-con">
-       <h1 id="title">SUPPLIER</h1>
+       <h1 id="title">ARCHIVE</h1>
     </div>
         <input type="hidden" name="action" value="saveEditedRow">
         
@@ -102,80 +102,27 @@
         <div class="table-container">
 
             <div id = "prodTableContainer">
-            <div class="search-date">
+        
 
-                <form action="/products" method ="get">
-                <input type="search" id="search" name = "query" placeholder="enter product name or id">
-                <button type = "submit" style="display: none;">Search</button>
-
-                </form>
-               <!-- <p id="date">-->
-                    <!-- Date is dynamically rendered from JS -->
-               <!--  </p> -->
-
-
-            </div>
+                
             
             <table id ="productTable">
 
                 <thead>
                 <tr>
-                    <th>SUPPLIER</th>
-                    <th>BRAND</th>
-                    <th>SUPPLIER CONTACT</th>
+                    <th>EMAIL ACCOUNT</th>
+                    <th>TYPE</th>
                     <th>ACTION</th>
                 </tr>
             </thead>
               
-            <% if(suppliers.length > 0) { %>
-                <% suppliers.forEach((supplier,index) => { %>
-            <tr class = "database-row">
-
-                
-                <input type="hidden" name="action" value="saveEditedRow">
-                <td><input type="text" contenteditable="true" name ="supplierName"  value="<%= supplier.supplierName %>" disabled></td>
-                <td><input type="text" contenteditable="true" name = "brandName"  value="<%= supplier.brandName %>" disabled></td>
-                <td><input type="number" contenteditable="true" name = "supplierContact"  value="<%= supplier.supplierContact %>" disabled></td>
-             
-        
-             <!--   <td><button type ="button" onclick="submitRow(this)" class="saveBtn">Save</button></td> -->
-             <td> <button class="editBtn" id="<%= supplier._id %>" data-target="#editModal_<%= supplier._id %>" type="button" onclick="openEditModal('<%= supplier._id %>')">UPDATE</button>
-             </td>
-               
-               
-                
-             <div id="editModal_<%= supplier._id %>" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeEditModal('<%= supplier._id%>')">X</span>
-                    <h2>Edit Product</h2>
-                    <form id="editForm" method="post" action="supplier/<%= supplier._id %>">
-                        <label for="supplierName">Supplier Name:</label>
-                        <input type="text" id="supplierName_<%= supplier._id %>" name="supplierName" value="<%= supplier.supplierName %>"><br><br>
-        
-                        <label for="brandName">Brand:</label>
-                        <input type="text" id="brandName_<%= supplier._id %>" name="brandName" value="<%= supplier.brandName%>"><br><br>
-        
-                        <label for="supplierContact">Supplier Contact:</label>
-                        <input type="number" id="supplierContact_<%= supplier._id %>" name="supplierContact" value="<%= supplier.supplierContact %>"><br><br>
-        
-                    
-                        <button id="modalSubmit" type="submit">Save</button>
-                    </form>
-                </div>
-            </div>
-
-
-
-            
-                
-            </tr>
-            
-            <% }) %>
-
-            <%} else { %>
-                <p>There are no suppliers yet...</p>
-            
-            <% } %>   
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.email %></td>
+                    <td><%= user.type %></td>
+                    <td><button class="restoreBtn" id="<%= user._id %>" onclick="restoreUser(event)" type="button">Restore account</button></td>
+                </tr>
+            <% }); %>
                             
 
                 
@@ -186,42 +133,10 @@
         
 
      
-        <div class="save-addproduct">
-            <button class="addBtn" id= "addRowButton">ADD SUPPLIER</button>
-        </div>
-
-        <div id="myModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-              <span id="close">X</span>
-              <h2>Add New Supplier</h2>
-              <!-- Your form content for adding a new product -->
-              <form id="productForm">
-                <label for="supplierName">Supplier Name:</label>
-                <input type="text" id="supplierName" name="supplierName" required><br><br>
-
-                <label for="brandName">Brand: </label>
-                <input type="text" id="brandName" name="brandName" required><br><br>
-
-                <label for="supplierContact">Supplier Contact: </label>
-                <input type="text" id="supplierContact" name="supplierContact" required><br><br>
-
-                
-                <!-- Add other input fields as needed -->
-        
-                <button type="submit" id="modalSubmit">Add</button>
-              </form>
-            </div>
-          </div>
-
-    
-      
-                <!-- Edit button -->
-       
-        <!-- Modal for editing -->
-       
 
         <div id="productsDisplay" style="display: none;"><%= JSON.stringify(products) %></div>
+
+      
    
         </div>
 
@@ -330,6 +245,29 @@ productForm.addEventListener('submit', function () {
       console.error('Error:', error);
     });
 });
+
+
+async function restoreUser(event) {
+        const userId = event.target.id;
+        const confirmed = confirm('Are you sure you want to restore this account?');
+    
+
+        const result = await fetch(`/account/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    isActive: true
+                })
+            }).then((res) => res.json())
+            if(result.status === 'ok') {
+                alert('Account restored successfully')
+                location.reload() // Add this line to refresh the page
+            }else {
+                alert(result.error)
+            }
+  }
 
 
    // Get the modal

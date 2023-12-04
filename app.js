@@ -107,47 +107,46 @@ app.get('/', (req, res)=>{
 })
 
 
-app.post('/', async(req, res)=>{ 
-    const {email, password} = req.body
-    const user = await User.findOne({email}).lean()
+app.post('/', async (req, res) => { 
+  const { email, password } = req.body;
+  const user = await User.findOne({ email }).lean();
 
-    if(!user) {
-        return res.json({status: 'error', error: "Invalid email/password"})
-    }
+  if (!user) {
+      return res.json({ status: 'error', error: 'Invalid email/password' });
+  }
 
-    if(await bcrypt.compare(password, user.password)) {
+  if (user.isActive && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign({
+          id: user._id,
+          email: user.email,
+          type: user.type
+      }, JWT_SECRET);
 
-        const token = jwt.sign({
-            id: user._id,
-            email: user.email,
-            type: user.type
-        }, 
-        JWT_SECRET
-    )
-        return res.json({status: 'ok', data: token})
-    }
-    res.json({status: 'error', error: "Invalid email/password"})
-}) 
+      return res.json({ status: 'ok', data: token });
+  }
+
+  res.json({ status: 'error', error: 'Invalid email/password' });
+});
+
 
 
 //ACCOUNT MGT
-app.get('/account', async(req, res)=>{
-    try {
-        const users = await User.find({})
-        const products = await Product.find({})
-        res.render('AccManagement(admin)', {products, users, title: 'Account Management'});
-    } catch (err) {
-        console.error(err)
-        res.status(500).send('Internal server error')
-    }
-
- })
-
+app.get('/account', async (req, res) => {
+  try {
+      const users = await User.find({ isActive: true }); // Fetch users where isActive is true
+      const products = await Product.find({});
+      res.render('AccManagement(admin)', { products, users, title: 'Account Management' });
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal server error');
+  }
+});
 
  app.post('/account', async(req,res) => {
     const email = req.body.email;
     const plainTextPassword = req.body.password;
     const type = req.body.type;
+    const isActive = req.body.isActive;
     
     const hasSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -160,7 +159,8 @@ app.get('/account', async(req, res)=>{
         const response = await User.create({
             type,
             email,
-            password
+            password,
+            isActive
         })
         console.log("User created successfully", response)
     } catch(error) {
@@ -202,6 +202,28 @@ app.delete('/account/:userId', async (req, res) => {
   });
 
 
+  app.put('/account/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    const isActive = req.body.isActive;
+  
+    console.log(userId);
+  
+    try {
+      const user = await User.findByIdAndUpdate(userId, { isActive }, { new: true });
+  
+      if (!user) {
+        return res.json({ status: 'error', error: 'User not found' });
+      }
+  
+      console.log('User updated successfully', user);
+      res.json({ status: 'ok', user });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal server error');
+    }
+  });
+  
+
 
  //HOME
 app.get('/home', (req, res)=>{ 
@@ -225,6 +247,23 @@ app.get('/home', (req, res)=>{
     res.status(500).send('Internal server error');
   }
 });
+
+
+
+//ARCHIVE
+app.get('/archive', async(req, res)=>{
+  
+  try {
+    const users = await User.find({ isActive: false }); // Fetch users where isActive is true
+    const products = await Product.find({})
+
+    res.render('Archives', {title: 'Archives', products, users});
+} catch (err) {
+    console.error(err)
+    res.status(500).send('Internal server error')
+}
+})
+
 
 //SUPPLIER
 app.get('/supplier', async(req, res) => {
@@ -916,46 +955,6 @@ async function getTotalArrayValuesN(arrayAttributeName, startDate, endDate) {
     throw error; // Propagate the error to the caller
   }
 }
-
-
-/*
-async function getAllAttributeValues2(attributeName) {
-  try {
-    const documents = await Inventory.find({}); // Retrieve all documents
-
-    // Extract the values of the specified attribute from each document
-    const attributeArray = documents.map(document => document[attributeName]);
-
-    return attributeArray;
-  } catch (error) {
-    console.error(error);
-    throw error; // Propagate the error to the caller
-  }
-}*/
-
-
-
- /*
- app.use((req,res) =>{
-
-    res.status(404).render('errorpage');
- })*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//app.use('/', pagesRoute) //USE PAGES ROUTE
-
 
 
 

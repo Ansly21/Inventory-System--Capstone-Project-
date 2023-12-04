@@ -1,9 +1,10 @@
 const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    type: {type: String}
+    email: {type: String, unique: true},
+    password: {type: String},
+    type: {type: String},
+    isActive: {type: Boolean, default: true}
 },
 {collection: 'system-users'}
 )

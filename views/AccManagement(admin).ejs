@@ -62,6 +62,14 @@
                 </div>
             </a>
 
+            
+            <a class="bb" href="/archive">
+                <div class="te"">
+                    <h5 class="test" id="accBtn">Archive</h5>
+                </div>
+            </a>
+
+
             <a class="bb" href="/account">
                 <div class="te" id="currentPage">
                     <h5 class="test" id="accBtn">Accounts</h5>
@@ -114,7 +122,7 @@
                     </td>
                     <td>
                         <!-- DELETE BUTTON -->
-                        <button class="delete-btn"  id="<%= users[i]._id %>" onclick="deleteUser(event)" type="button">Delete account</button>
+                        <button class="delete-btn"  id="<%= users[i]._id %>" onclick="archiveUser(event)" type="button">Archive account</button>
                     </td>
                 </tr>
                 <% } %>
@@ -226,7 +234,7 @@ function parseJwt (token) {
             const email = document.getElementById('email').value
             const password = document.getElementById('password').value
             const type = document.getElementById('accType').value
-
+            isActive = true
 
             const result = await fetch('/account', {
                 method: 'POST',
@@ -236,7 +244,8 @@ function parseJwt (token) {
                 body: JSON.stringify({
                     type,
                     email,
-                    password
+                    password,
+                    isActive
                 })
             }).then((res) => res.json())
             if(result.status === 'ok') {
@@ -265,6 +274,31 @@ function parseJwt (token) {
         alert(result.error);
         }
   }
+
+
+  async function archiveUser(event) {
+        const userId = event.target.id;
+        const confirmed = confirm('Are you sure you want to archive this account?');
+    
+
+        const result = await fetch(`/account/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    isActive: false
+                })
+            }).then((res) => res.json())
+            if(result.status === 'ok') {
+                alert('Account archived successfully')
+                location.reload() // Add this line to refresh the page
+            }else {
+                alert(result.error)
+            }
+  }
+
+
 console.log(localStorage.getItem("TOKEN"))
 if (localStorage.getItem("TOKEN") === null) {
         alert("You don't have permission to access this page.");
