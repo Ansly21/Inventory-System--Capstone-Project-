@@ -372,6 +372,15 @@ td {
     font-size: 1.3rem;
 }
 
+caption {
+    font-size: 2rem;
+    border: 4px solid black;
+}
+
+#productTable {
+    margin-bottom: 18rem;
+}
+
 @media (max-width:800px) {
     :root {
         font-size: 0.5rem;

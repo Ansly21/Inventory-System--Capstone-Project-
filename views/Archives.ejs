@@ -107,11 +107,34 @@
                 
             
             <table id ="productTable">
-
+    <caption>Archived Accounts</caption>
                 <thead>
                 <tr>
                     <th>EMAIL ACCOUNT</th>
                     <th>TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+              
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.email %></td>
+                    <td><%= user.type %></td>
+                    <td><button class="restoreBtn" id="<%= user._id %>" onclick="restoreUser(event)" type="button">Restore account</button></td>
+                </tr>
+            <% }); %>
+                            
+
+                
+            </table>
+
+
+            <table id ="productTable2">
+                <caption>Archived Products</caption>
+                <thead>
+                <tr>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
                     <th>ACTION</th>
                 </tr>
             </thead>
