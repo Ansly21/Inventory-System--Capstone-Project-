@@ -111,7 +111,17 @@
             </div>
             
             <table id ="productTable">
-            <caption>TOTAL SALES TABLE</caption>
+                <!-- FROM -->
+                <label for="fromDate">From: </label>
+                <input type="date" name="fromDate" id="fromDate">
+
+                <!-- TO -->
+                <label for="toDate">To: </label>
+                <input type="date" name="toDate" id="toDate">
+
+                <button id="generate">Generate</button>
+
+        
                 <thead>
                 <tr>
                     <th>CODE</th>
@@ -120,11 +130,7 @@
                 </tr>
             </thead>
               
-            
-
-
-            
-         
+        
                 
             </table>
 
@@ -132,7 +138,7 @@
            
         
 
-     
+        
       
 
     
@@ -153,6 +159,13 @@
 
 
     <script>
+//GET DATE INPUT
+
+let fromDate = document.getElementById("fromDate").value
+let toDate = document.getElementById("toDate").value
+let generate = document.getElementById("generate")
+
+
 const productsData = document.getElementById('productsDisplay').innerHTML;
 const decodedProducts = JSON.parse(productsData.replace(/&quot;/g, '"'));
 console.log(decodedProducts);
@@ -161,60 +174,87 @@ const transactionData = document.getElementById('transactionData').innerHTML;
 const decodedtransactionData = JSON.parse(transactionData.replace(/&quot;/g, '"'));
 console.log(decodedtransactionData);
 
-const combinedData = decodedtransactionData.reduce((accumulator, product) => {
-    if (product.code && !accumulator.hasOwnProperty(product.code)) {
-        accumulator[product.code] = {
-            totalSales: product.totalSales,
-            productName: product.productName
-        };
-    } else if (product.code && accumulator.hasOwnProperty(product.code)) {
-        accumulator[product.code].totalSales += product.totalSales;
+generate.addEventListener('click', () => {
+    const fromDateValue = new Date(document.getElementById("fromDate").value);
+    const toDateValue = new Date(document.getElementById("toDate").value);
+
+    const filteredTransactionData = decodedtransactionData
+        .filter(product => (
+            product.code !== undefined &&
+            product.totalSales !== undefined &&
+            product.createdAt !== undefined &&
+            new Date(product.createdAt) >= fromDateValue &&
+            new Date(product.createdAt) <= toDateValue
+        ));
+
+    const combinedData = filteredTransactionData.reduce((accumulator, product) => {
+        if (!accumulator.hasOwnProperty(product.code)) {
+            accumulator[product.code] = {
+                totalSales: product.totalSales,
+                code: product.code,
+                productName: product.productName
+            };
+        } else {
+            accumulator[product.code].totalSales += product.totalSales;
+        }
+        return accumulator;
+    }, {});
+
+    const tableBody = document.getElementById('productTable'); // Get the table body element
+
+    // Clear previous table body data
+    tableBody.innerHTML = '';
+
+    // Create the table header
+    const tableHeader = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    const codeHeader = document.createElement('th');
+    const productNameHeader = document.createElement('th');
+    const totalSalesHeader = document.createElement('th');
+
+    codeHeader.textContent = 'CODE';
+    productNameHeader.textContent = 'PRODUCT NAME';
+    totalSalesHeader.textContent = 'TOTAL SALES';
+
+    headerRow.appendChild(codeHeader);
+    headerRow.appendChild(productNameHeader);
+    headerRow.appendChild(totalSalesHeader);
+    tableHeader.appendChild(headerRow);
+
+    // Append the table header to the table
+    tableBody.appendChild(tableHeader);
+
+    // Function to create table rows with data
+    function createTableRow(data) {
+        const row = document.createElement('tr');
+        const codeCell = document.createElement('td');
+        const productNameCell = document.createElement('td');
+        const totalSalesCell = document.createElement('td');
+
+        codeCell.textContent = data.code;
+        productNameCell.textContent = data.productName;
+        totalSalesCell.textContent = data.totalSales;
+
+        row.appendChild(codeCell);
+        row.appendChild(productNameCell);
+        row.appendChild(totalSalesCell);
+
+        return row;
     }
-    return accumulator;
-}, {});
 
-// Convert combinedData object to an array of objects excluding undefined or empty code
-const finalData = Object.keys(combinedData)
-    .filter(code => combinedData[code].totalSales !== undefined)
-    .map(code => ({
-        code,
-        totalSales: combinedData[code].totalSales,
-        productName: combinedData[code].productName
-    }));
+    // Function to populate the table body with data
+    function populateTable(dataObj) {
+        Object.values(dataObj).forEach(data => {
+            const row = createTableRow(data);
+            tableBody.appendChild(row);
+        });
+    }
 
-console.log(finalData);
+    // Call the function to populate the table body with aggregated data
+    populateTable(combinedData);
+});
 
-// Get the table element
-const table = document.getElementById('productTable');
 
-// Function to create table rows with data
-function createTableRow(data) {
-    const row = document.createElement('tr');
-    const codeCell = document.createElement('td');
-    const productNameCell = document.createElement('td');
-    const totalSalesCell = document.createElement('td');
-
-    codeCell.textContent = data.code;
-    productNameCell.textContent = data.productName;
-    totalSalesCell.textContent = data.totalSales;
-
-    row.appendChild(codeCell);
-    row.appendChild(productNameCell);
-    row.appendChild(totalSalesCell);
-
-    return row;
-}
-
-// Function to populate the table with data
-function populateTable(dataArray) {
-    dataArray.forEach(data => {
-        const row = createTableRow(data);
-        table.appendChild(row);
-    });
-}
-
-// Call the function to populate the table
-populateTable(finalData);
 
 
 
@@ -264,170 +304,6 @@ function showAlert() {
     notifDiv.style.display = "block"
 }
 
-  // Select all elements with class 'editBtn'
-let editBtns = document.querySelectorAll(".editBtn");
-
-
-let idLastClicked;
-// Loop through each button and attach an event listener
-editBtns.forEach(button => {
-    button.addEventListener("click", (e) => {
-        console.log(e.target.id);
-        idLastClicked = e.target.id
-    
-    });
-});
-
-let productForm = document.getElementById('productForm')
-let accBtn = document.getElementById("accBtn")
-productForm.addEventListener('submit', function () {
-
-    const supplierName = document.getElementById('supplierName').value;
-    const brandName = document.getElementById('brandName').value;
-    const supplierContact = document.getElementById('supplierContact').value;
-
-  // Prepare the data object to send to the server
-  const data = {
-    supplierName: supplierName,
-    brandName: brandName,
-    supplierContact: supplierContact,
-  };
-
-  // Send the form data to the backend using fetch
-  fetch('/supplier', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then(response => {
-      if (response.ok) {
-        // Handle success, e.g., close the modal and perform any UI updates
-        const modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-        // Perform any other necessary actions upon successful addition of a new product
-      } else {
-        // Handle errors if the request fails
-        console.error('Error adding product');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-});
-
-
-   // Get the modal
-const modal = document.getElementById('myModal');
-const editModal = document.getElementById(`editModal`);
-
-// Get the button that opens the modal
-const btn = document.getElementById('addRowButton');
-
-// Get the <span> element that closes the modal
-const span = document.getElementById("close")
-
-// When the user clicks the button, open the modal
-btn.onclick = function () {
-  modal.style.display = 'block';
-  editModal.style.display = 'block';
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-  modal.style.display = 'none';
-  editModal.style.display = 'none';
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target === modal || event.target === editModal ) {
-    modal.style.display = 'none';
-    editModal.style.display = 'none';
-  }
-};
-
-
-function openEditModal(supplierId) {
-  const modal = document.getElementById(`editModal_${supplierId}`);
-  if (modal) {
-    modal.style.display = 'block';
-
-    const editForm = document.getElementById('editForm');
-    let supplierName = document.getElementById(`supplierName_${supplierId}`);
-    let brandName = document.getElementById(`brandName_${supplierId}`);
-    let supplierContact = document.getElementById(`supplierContact_${supplierId}`);
-
-
-// Assuming this code runs after the creation or update of the form
-console.log("EDITCODE", editCodeID.value)
-
-editForm.addEventListener("submit", (event) => {
-
-    console.log("EDITCODE", editCodeID.value)
-console.log("put sub")
-    // Get the updated values from the form fields
-    const updatedData = {
-        supplierName: supplierName.value,
-        brandName: brandName.value,
-        supplierContact: supplierContact.value,
-    };
-
-    fetch(`/supplier/${supplierId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedData)
-    })
-    .then(response => {
-        if (response.ok) {
-            // Handle success
-            return response.json(); // Parse the response body as JSON
-        } else {
-            throw new Error('Error updating product');
-        }
-    })
-    .then(data => {
-        // Here 'data' contains the updated product from the server
-        console.log(data.updatedProduct);
-        // Perform actions with the updated product data as needed
-        const editModal = document.getElementById('editModal');
-        // Close the modal, update UI, etc.
-        location.reload()
-    })
-    .catch(error => {
-        location.reload()
-    });
-
-    event.preventDefault();
-});
-  }
-}
-// Function to close the edit modal
-function closeEditModal(productId) {
-  const modal = document.getElementById(`editModal_${idLastClicked}`);
-  if (modal) {
-    modal.style.display = 'none';
-  }
-}
-// Function to save the edited data (you'll need to implement this)
-function saveEditedData() {
-  // Retrieve the edited data from the form fields
-  const editedProductName = document.getElementById('productNameEdit').value;
-  // Retrieve other edited data similarly
-
-  // Perform actions to save the edited data (e.g., send it to the server via AJAX)
-  // Implement your logic to save the edited data
-  // ...
-
-  // Close the edit modal after saving the changes
-  closeEditModal();
-}
-
-
-
 
 //FOR DECODING JWT TOKEN AFTER LOGGING IN
 function parseJwt (token) { 
@@ -441,143 +317,6 @@ function parseJwt (token) {
 
 
 
-        
-        document.getElementById("saveproductbtn").addEventListener("click", 
-            
-            function() {
-            document.getElementById("saveProduct").submit();
-            }
-         );
-        
-      
-
-        // Function to add a new row to the table
-        /* function addRow() {
-            const tableBody = document.querySelector("#productTable2 tbody");
-            const newRow = tableBody.insertRow();
-
-            // Add cells (columns) to the new row
-                const code = newRow.insertCell(0);
-                const productName = newRow.insertCell(1);
-                const unitCost = newRow.insertCell(2);
-                const unitPrice = newRow.insertCell(3);
-                const lowStockThreshold = newRow.insertCell(4);
-                const startingInventory = newRow.insertCell(5);
-                const status = newRow.insertCell(6);
-                const bt = newRow.insertCell(7);
-
-            // Create input elements for each cell
-            const codeInput = document.createElement("input");
-            codeInput.type = "text";
-            codeInput.name = "code[]"; // Use an array to collect multiple names
-            code.appendChild(codeInput);
-
-            const productInput = document.createElement("input");
-            productInput.type = "text";
-            productInput.name = "productName[]"; // Use an array to collect multiple emails
-            productName.appendChild(productInput);
-
-            const costInput = document.createElement("input");
-            costInput.type = "number";
-            costInput.name = "unitCost[]"; // Use an array to collect multiple emails
-            unitCost.appendChild(costInput);
-
-            const priceInput = document.createElement("input");
-            priceInput.type = "number";
-            priceInput.name = "unitPrice[]"; // Use an array to collect multiple emails
-            unitPrice.appendChild(priceInput);
-
-            const lowStockInput = document.createElement("input");
-            lowStockInput.type = "number";
-            lowStockInput.name = "lowStockThreshold[]"; // Use an array to collect multiple emails
-            lowStockThreshold.appendChild(lowStockInput);
-
-            const startInvInput = document.createElement("input");
-            startInvInput.type = "number";
-            startInvInput.name = "startingInventory[]"; // Use an array to collect multiple emails
-            startingInventory.appendChild(startInvInput);
-
-            const statusInput = document.createElement("input");
-            statusInput.type = "range";
-            statusInput.max = "1";
-            statusInput.min = "0";
-            statusInput.name = "status[]"; // Use an array to collect multiple emails
-            status.appendChild(statusInput);
-
-            const button = document.createElement("button");
-            button.textContent = "Save"
-            button.classList.add("saveBtn")
-            bt.appendChild(button);
-
-            const saveproductbtn = document.getElementById("saveproductbtn");
-            saveproductbtn.style.display = "block";
-
-            const editSavebtn = document.getElementById("editSave");
-            editSavebtn.style.display = "none";
-
-            const cancelProduct= document.getElementById("cancelProduct");
-            cancelProduct.style.display = "block";
-        }
- */
-        
-        function hideNewRow(){
-
-            var table = document.getElementById("productTable2");
-
-                    // Clear all rows by removing them one by one
-                    while (table.rows.length > 0) {
-                        table.deleteRow(0);
-                    }
-           
-            const editSavebtn = document.getElementById("editSave");
-            editSavebtn.style.display = "block";
-
-            const cancelProduct= document.getElementById("cancelProduct");
-            cancelProduct.style.display = "none";
-
-            const saveproductbtn = document.getElementById("saveproductbtn");
-            saveproductbtn.style.display = "none"; 
-        }
-
-        
-        function submitRow(button){
-            // Traverse the DOM to find the row
-            var row = button.closest('div');
-            
-            // Find the form in the row (assuming the form is in the same row)
-            var form = row.querySelector('form');
-            
-            // Submit the form
-            form.submit();
-        }
-
-       function handleStatusChange(input) {
-    // Get the row of the changed input
-    var row = input.parentNode.parentNode;
-
-    // Get the value of the status input
-    var statusValue = input.value;
-
-    // If the status is changed to 0, set other columns (except code and productName) to -1
-    if (statusValue === '0') {
-        // Get the lowStockThreshold input in the row
-        var lowStockThresholdInput = row.querySelector('input[name^="lowStockThreshold"]');
-        
-        // Set the value of the lowStockThreshold input to -1
-        if (lowStockThresholdInput) {
-            lowStockThresholdInput.value = '-1';
-        }
-
-        // Get all the input elements in the row, excluding lowStockThreshold
-        var otherInputs = row.querySelectorAll('input[name^="unitCost"], input[name^="unitPrice"], input[name^="startingInventory"]');
-        
-        // Set the value of each input to 0
-        otherInputs.forEach(function (input) {
-            input.value = '0';
-        });
-    }
-}
-
     if (localStorage.getItem("TOKEN") === null) {
         document.getElementById("body").style.display = "none"
         alert("You don't have permission to access this page.");
@@ -585,13 +324,6 @@ function parseJwt (token) {
     }
 
   
-
-
-        // Event listener for the "Add Row" button
-       /*  document.querySelector("#addRowButton").addEventListener("click", addRow); */
-        document.querySelector("#cancelProduct").addEventListener("click", hideNewRow);
-
-    
     let accType = parseJwt(localStorage.getItem("TOKEN")).type
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
