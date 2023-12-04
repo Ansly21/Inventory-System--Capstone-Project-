@@ -23,6 +23,10 @@ const productsSchema = new Schema({
         required: true
     },
 
+    category:{
+        type: String
+    },
+
     wholesalePrice: {
         type: Number,
 

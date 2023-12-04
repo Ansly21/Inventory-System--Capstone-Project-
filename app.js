@@ -451,6 +451,7 @@ app.post('/stockInInventory/:productId', async (req, res) => {
         product.brandName = updatedData.brandName;
         product.productName = updatedData.productName;
         product.lowStockThreshold = updatedData.lowStockThreshold;
+        product.prevTotalRetail = updatedData.prevTotalRetail;
         product.currentInv = updatedData.currentInv;
         product.prevQtyStockIn = updatedData.prevQtyStockIn;
   
@@ -515,9 +516,12 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
     if(typeof query === 'undefined'){
         console.log("walang laman");
      const suppliers = await Supplier.find({})
+     const filteredProducts = await Product.find({ category: 'WS' });
+     const filteredProductsOS = await Product.find({ category: 'OS' });
+     const filteredProductsPS = await Product.find({ category: 'PSS' });
     Product.find()
         .then((result)=>{
-            res.render('Products(admin)', { title: 'Products', products: result, suppliers});
+            res.render('Products(admin)', { title: 'Products', products: result, suppliers, filteredProducts, filteredProductsOS, filteredProductsPS});
         })
         .catch((err)=>{
             console.log(err);
@@ -568,6 +572,7 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
                 const brandName = req.body.brandName;
                 const code = req.body.code;
                 const productName = req.body.productName;
+                const category = req.body.category;
                 const wholesalePrice = req.body.wholesalePrice;
                 const retailPrice = req.body.retailPrice;
                 const lowStockThreshold = req.body.lowStockThreshold;
@@ -577,6 +582,7 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
                         const newData = new Product({
                             brandName: brandName,
                             code: code,
+                            category, category,
                             productName: productName,
                             wholesalePrice: wholesalePrice,
                             retailPrice: retailPrice,
@@ -604,6 +610,7 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
         const wholesalePrice = parseFloat(req.body.wholesalePrice[0]); // Convert to a number
         const retailPrice = parseFloat(req.body.retailPrice[0]);
         const lowStockThreshold = parseInt(req.body.lowStockThreshold[0]); // Convert to an integer
+       
 
 
         try{
@@ -620,6 +627,7 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
             product.wholesalePrice = wholesalePrice;
             product.retailPrice = retailPrice;
             product.lowStockThreshold = lowStockThreshold;           
+            
 
             const updatedProduct = await product.save();
            // res.json(updatedProduct);
@@ -699,6 +707,7 @@ app.get('/transactions', async (req, res) => {
 // Assuming you have initialized Express and set up your routes
 app.post('/transactions', async(req,res) => {
   const user = req.body.user;
+  const code = req.body.code;
   const userLogsOnly = req.body.userLogsOnly;
   const productName = req.body.productName;
   const stockIn = req.body.stockIn;
@@ -707,11 +716,13 @@ app.post('/transactions', async(req,res) => {
   const retailPrice = req.body.retailPrice
   const remarks = req.body.remarks
   const action = req.body.action
+  const totalSales = req.body.totalSales
 
  
   try {
       const response = await Transaction.create({
           user,
+          code,
           userLogsOnly,
           productName,
           stockIn,
@@ -719,7 +730,8 @@ app.post('/transactions', async(req,res) => {
           wholesalePrice,
           retailPrice,
           remarks,
-          action
+          action,
+          totalSales
       })
       console.log("User created successfully", response)
   } catch(error) {
@@ -747,451 +759,13 @@ app.post('/transactions', async(req,res) => {
 
   //Try block na nagcocontain ng lahat ng ipapasa sa reports page through res.render
   try {
-
-    //TotalProducts
-    const totalProducts = await getProductCount();
-    console.log(`Number of documents in the collection: ${totalProducts}`);
-
-  
-    
-
-
-    //LowStock
-    const mostRecentAttributeValue = await getMostRecentAttributeValue('closingInventory');
-    console.log('Array of closingInv of the recent date',mostRecentAttributeValue);
-
-    const allAttributeValues = await getAllAttributeValues('lowStockThreshold');
-    console.log('Array of their low stock threshold', allAttributeValues);
-
-    const lowStockProductNames = await getMostRecentAttributeValue('productName');
-
-    let count = 0;
-    let indexesArray = []; // Array to store indexes when the condition is true
-    if(mostRecentAttributeValue && allAttributeValues) {
-      if (mostRecentAttributeValue.length === allAttributeValues.length) {
-        for (let i = 0; i < mostRecentAttributeValue.length; i++) {
-          if (mostRecentAttributeValue[i] <= allAttributeValues[i]) {
-            count++;
-            indexesArray.push(i);
-          }
-        }
-      } else {
-        // Handle the case where allAttributeValues is not available
-        console.log('allAttributeValues is not available');
-      }
-    }
-   
-    
-    console.log('Count of values where closingInv < low stock threshold:', count);
-    console.log('Indexes where closingInv < low stock threshold:', indexesArray);
-
-    const selectedLowStock = getValuesAtIndices(allAttributeValues, indexesArray);
-    const selectedClosingInv = getValuesAtIndices(mostRecentAttributeValue, indexesArray);
-    const selectedNameStock = getValuesAtIndices(lowStockProductNames, indexesArray);
-
-    console.log(selectedNameStock);
-    console.log(selectedLowStock);
-    console.log(selectedClosingInv);
-
-
-
-
-
-
-    //StockValue
-    const allstockValue = await getMostRecentAttributeValue('inventoryValue');
-    console.log('Array of their inventoryValue', allstockValue);
-      let sumVariable;
-            // Ensure allstockValue is an array of numbers
-        if (Array.isArray(allstockValue) && allstockValue.every(value => typeof value === 'number')) {
-          const sum = allstockValue.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-          console.log(`Sum of all values in allstockValue: ${sum}`);
-
-          // Assign the sum to a variable if needed
-          sumVariable = sum;
-         // console.log('Value of sumVariable:', sumVariable);
-        } else {
-          console.log('allstockValue is not a valid array of numbers');
-        }
-
-        console.log('Value of sumVariable:', sumVariable);
-
-
-
-
-
-    //StockCost
-    const allstockCost = await getMostRecentAttributeValue('inventoryCost');
-    console.log('Array of their inventoryValue', allstockCost);
-      let totalStockCost;
-            // Ensure allstockValue is an array of numbers
-        if (Array.isArray(allstockCost) && allstockCost.every(value => typeof value === 'number')) {
-          const sum = allstockCost.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-          console.log(`Sum of all values in allstockCost: ${sum}`);
-
-          // Assign the sum to a variable if needed
-          totalStockCost = sum;
-         // console.log('Value of sumVariable:', sumVariable);
-        } else {
-          console.log('allstockCost is not a valid array of numbers');
-        }
-
-        console.log('Value of allstockCost:', totalStockCost);
-
-
-  //BEST SELLER (BAR CHART)
-        const totalArrayValues = await getTotalArrayValues1('numOfSold');
-        console.log('Total sum of array values at the same index across all documents:', totalArrayValues); 
-
-
-      
-        // Find the indices with the top 5 highest values
-        
-        const topIndices = getTopIndices(totalArrayValues, 5);
-
-        console.log('Top 5 indices with the highest values:', topIndices);
-        function getTopIndices(array, count) {
-          if (!Array.isArray(array)) {
-            console.log('Array is not available or invalid');
-            return []; // Return an empty array or handle the situation accordingly
-          }
-        
-          const indicesWithValues = array.map((value, index) => ({ value, index }));
-          indicesWithValues.sort((a, b) => b.value - a.value); // Sort in descending order
-          const topIndices = indicesWithValues.slice(0, count).map(item => item.index);
-          return topIndices;
-        }
-        
-
-        const allProductNames = await getMostRecentAttributeValue('productName');
-        console.log('array of productNames', allProductNames);
-        
-
-                // Get values from totalArrayValues at the specified indices
-        const selectedValuesSold = getValuesAtIndices(totalArrayValues, topIndices);
-        const selectedValuesName = getValuesAtIndices(allProductNames, topIndices);
-
-
-        // Output the selected values
-        console.log(selectedValuesName);
-        console.log(selectedValuesSold);
-
-        function getValuesAtIndices(array, indices) {
-          return indices.map(index => array[index]);
-}
-
-
-//LowStockThreshold
-
-
-//Top Revenue
-
-const allUnitPrices = await getAllAttributeValues('unitPrice');
-console.log('Array of their unit prices', allUnitPrices);
-
-
-console.log(totalArrayValues);
-
-const revenue = multiplyArrays(allUnitPrices, totalArrayValues );
-
-console.log('unit price * numOfSold (revenue)', revenue);
-
-// Create an array of objects with value and index
-const indexedArray = revenue.map((value, index) => ({ value, index }));
-
-// Sort the array based on values in descending order
-indexedArray.sort((a, b) => b.value - a.value);
-
-// Extract the indices of the top 5 highest values
-const top5Indices = indexedArray.slice(0, 5).map(item => item.index);
-
-console.log('index of top 5 revenue', top5Indices);
-
-
-const revenueProductName = getValuesAtIndices(allProductNames, top5Indices);
-const revenueValue = getValuesAtIndices(revenue, top5Indices);
-
-
-console.log("Total Revenue composes of:");
-console.log(revenueProductName);
-console.log(revenueValue);
-
-
-
-function multiplyArrays(arr1, arr2) {
-  // Check if the arrays have the same length
-  if (arr1.length !== arr2.length) {
-    throw new Error('Arrays must have the same length for element-wise multiplication');
-  }
-
-  // Perform element-wise multiplication
-  const resultArray = arr1.map((value, index) => value * arr2[index]);
-
-  return resultArray;
-
-}
-
-
-// LEAST SELLER (BAR CHART)
-const leastTotalArrayValues = await getTotalArrayValues1('numOfSold');
-console.log('Total sum of array values at the same index across all documents:', leastTotalArrayValues);
-
-// Find the indices with the bottom 5 values
-const leastBottomIndices = getLeastBottomIndices(leastTotalArrayValues, 5);
-console.log('Bottom 5 indices with the lowest values:', leastBottomIndices);
-
-function getLeastBottomIndices(array, count) {
-  if (!Array.isArray(array)) {
-    console.log('Array is not available or invalid');
-    return []; // Return an empty array or handle the situation accordingly
-  }
-
-  const indicesWithValues = array.map((value, index) => ({ value, index }));
-  indicesWithValues.sort((a, b) => a.value - b.value); // Sort in ascending order
-  const leastBottomIndices = indicesWithValues.slice(0, count).map(item => item.index);
-  return leastBottomIndices;
-}
-
-
-const leastProductNames = await getMostRecentAttributeValue('productName');
-console.log('Array of productNames', leastProductNames);
-
-// Get values from leastTotalArrayValues at the specified indices
-const leastSelectedValuesSold = getValuesAtIndices(leastTotalArrayValues, leastBottomIndices);
-const leastSelectedValuesName = getValuesAtIndices(leastProductNames, leastBottomIndices);
-
-// Output the selected values
-console.log(leastSelectedValuesName);
-console.log(leastSelectedValuesSold);
-
-function getValuesAtIndices(array, indices) {
-  return indices.map(index => array[index]);
-}
-
-
-// LEAST Revenue
-
-const leastAllUnitPrices = await getAllAttributeValues('unitPrice');
-console.log('Array of their unit prices', leastAllUnitPrices);
-
-console.log(leastTotalArrayValues);
-
-const leastRevenue = multiplyArrays(leastAllUnitPrices, leastTotalArrayValues);
-
-console.log('unit price * numOfSold (revenue)', leastRevenue);
-
-// Create an array of objects with value and index
-const leastIndexedArray = leastRevenue.map((value, index) => ({ value, index }));
-
-// Sort the array based on values in ascending order
-leastIndexedArray.sort((a, b) => a.value - b.value);
-
-// Extract the indices of the bottom 5 lowest values
-const leastBottom5Indices = leastIndexedArray.slice(0, 5).map(item => item.index);
-
-console.log('index of bottom 5 revenue', leastBottom5Indices);
-
-const leastRevenueProductName = getValuesAtIndices(leastProductNames, leastBottom5Indices);
-const leastRevenueValue = getValuesAtIndices(leastRevenue, leastBottom5Indices);
-
-console.log("Least Revenue composes of:");
-console.log(leastRevenueProductName);
-console.log(leastRevenueValue);
-/*
-function multiplyArrays(arr1, arr2) {
-  if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
-    console.log('Arrays are not available or invalid');
-    return []; // Return an empty array or handle the situation accordingly
-  }
-
-  // Check if the arrays have the same length
-  if (arr1.length !== arr2.length) {
-    throw new Error('Arrays must have the same length for element-wise multiplication');
-  }
-
-  // Perform element-wise multiplication
-  const resultArray = arr1.map((value, index) => value * arr2[index]);
-
-  return resultArray;
-}*/
-
-function multiplyArrays(arr1, arr2) {
-  if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
-    console.log('Arrays are not available or invalid');
-    return []; // Return an empty array or handle the situation accordingly
-  }
-
-  const maxLength = Math.max(arr1.length, arr2.length);
-
-  // Perform element-wise multiplication
-  const resultArray = Array.from({ length: maxLength }, (_, index) => {
-    const value1 = arr1[index] || 0;
-    const value2 = arr2[index] || 0;
-    return value1 * value2;
-  });
-
-  return resultArray;
-}
-
-  //CODE OF PRODUCT IN LOW STOCK
-  let productNamesString = selectedNameStock;
-  const lowstockProductCode = await Product.find({ productName: { $in: productNamesString } })
-  .select('code -_id');
-  const lowStockCodes = lowstockProductCode.map(obj => obj.code);
-  
-
-    //CODE OF PRODUCT IN BEST SELLER
-    let bestSellerString = selectedValuesName;
-    const bestSellerProductCode = await Product.find({ productName: { $in: bestSellerString } })
-    .select('code -_id');
-    const bestSellerCodes = bestSellerProductCode.map(obj => obj.code);
-
-      //CODE OF PRODUCT IN LEAST SELLER
-      let leastSellerString = leastSelectedValuesName;
-      const leastSellerProductCode = await Product.find({ productName: { $in: leastSellerString } })
-      .select('code -_id');
-      const leastSellerCodes = leastSellerProductCode.map(obj => obj.code);
-
-      //CODE OF PRODUCT IN TOP REVENUE
-      let topRevenueString = revenueProductName;
-      const topRevenueProductCode = await Product.find({ productName: { $in: topRevenueString } })
-      .select('code -_id');
-      const topRevenueCodes = topRevenueProductCode.map(obj => obj.code);
-
-      //CODE OF PRODUCT IN LEAST REVENUE
-      let leastRevenueString = leastRevenueProductName;
-      const leastRevenueProductCode = await Product.find({ productName: { $in: leastRevenueString } })
-      .select('code -_id');
-      const leastRevenueCodes = leastRevenueProductCode.map(obj => obj.code);
-
-
-    // BEST SELLER (BAR CHART)
-
-    const startDateValue = req.query.startDate;
-    const endDateValue = req.query.endDate;
-
-
-    let startSalesDate;
-    let endSalesDate;
-    if (startDateValue && endDateValue) {
-        // Convert received date strings to Date objects
-         startSalesDate = new Date(startDateValue);
-         endSalesDate = new Date(endDateValue);
-
-        // Use startSalesDate and endSalesDate in your logic
-        // For example:
-        console.log('Start Date:', startSalesDate);
-        console.log('End Date:', endSalesDate);
-    } else {
-       startSalesDate = new Date('2023-1-1'); // Replace with your start date
-       endSalesDate = new Date('2023-1-1'); 
-    }
-// Replace with your end date
-
-const totalSalesArray = await getTotalArrayValuesN('numOfSold', startSalesDate, endSalesDate);
-console.log('Total sum of array values at the same index across all documents:', totalSalesArray);
-
-// Find all indices in descending order
-const allSalesIndices = getAllIndices(totalSalesArray);
-
-console.log('All indices with values in descending order:', allSalesIndices);
-
-const allProductNamesSales = await getMostRecentAttributeValue('productName');
-console.log('Array of productNames', allProductNamesSales);
-
-const unitPricesSalesTable = await getAllAttributeValues('unitPrice');
-console.log('Array of their unit prices', unitPricesSalesTable);
-
-console.log('array of total Sales: ', totalSalesArray);
-
-const allRevenueSalesTable = multiplyArrays(totalSalesArray, unitPricesSalesTable);
-
-const sortedRevenueIndices = getAllIndices(allRevenueSalesTable);
-
-
-console.log("values of  rev",allRevenueSalesTable);
-console.log("indices of descending rev",sortedRevenueIndices);
-
-// Get values from totalSalesArray at the specified indices
-
-const selectedSalesValues = getValuesAtIndices(totalSalesArray, sortedRevenueIndices);
-const selectedProductNames = getValuesAtIndices(allProductNamesSales,sortedRevenueIndices);
-const selectedSalesUnitPrices = getValuesAtIndices(unitPricesSalesTable, sortedRevenueIndices);
-const sortedRevenueSalesTable = getValuesAtIndices(allRevenueSalesTable, sortedRevenueIndices);
-
-
-
-
-// Output the selected values
-console.log( "Product names: ", selectedProductNames);
-console.log("NumOfSold: ",selectedSalesValues);
-console.log("UnitPrices:  ",selectedSalesUnitPrices);
-console.log("Revenues:  ",sortedRevenueSalesTable);
-
-//console.log("Revenues:  ",allRevenueSalesTable);
-
-
-function getAllIndices(array) {
-  if (!Array.isArray(array)) {
-    console.log('Array is not available or invalid');
-    return []; // Return an empty array or handle the situation accordingly
-  }
-
-  const indicesWithValues = array.map((value, index) => ({ value, index }));
-  indicesWithValues.sort((a, b) => b.value - a.value); // Sort in descending order
-  const allIndices = indicesWithValues.map(item => item.index);
-  return allIndices;
-}
-
-
-
-
-
-    // Now, render the view with the required values
+    const products = await Product.find({})
+    const transactions = await Transaction.find({});
     res.render('Reports(admin)', {
       title: 'Reports',
-      totalProducts: totalProducts,
-      lowStock : count,
-      stockValue: sumVariable,
-      stockCost: totalStockCost,
+      products,
+      transactions
 
-      //TopSellerBarChart
-      topSellerName: selectedValuesName,
-      topSellerValue: selectedValuesSold,
-
-      
-      //LowStockChart
-      lowStockName: selectedNameStock,
-      closingInv: selectedClosingInv,
-      lowStockThreshold : selectedLowStock,
-      lowStockCodes: [lowStockCodes],
-      bestSellerCodes: bestSellerCodes,
-      leastSellerCodes: leastSellerCodes,
-
-      //RevenueChart
-      revenueProductName: revenueProductName,
-      revenueValue: revenueValue,
-      topRevenueCodes: [topRevenueCodes],
-
-      //LeastSellerChart
-      leastSelectedValuesSold: leastSelectedValuesSold,
-      leastSelectedValuesName: leastSelectedValuesName,
-
-      //LeastRevenueChart
-      leastRevenueProductName: leastRevenueProductName,
-      leastRevenueValue: leastRevenueValue,
-      leastRevenueCodes: [leastRevenueCodes],
-
-      //NewTable Revenue Table complete info
-      allSalesProdName: selectedProductNames,
-      allSalesNumOfPurchased: selectedSalesValues,
-      allSalesUnitPrices: selectedSalesUnitPrices,
-      allSalesRevenues: sortedRevenueSalesTable
-      
-    //  mostRecentDocument: mostRecentDocument,
-      // Add other values here
     });
    
 

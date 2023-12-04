@@ -162,7 +162,7 @@
 
                             <br><br>
                             <label for="code">Code:</label>
-                            <input type="text" id="editCodeID_<%= product.id %>" name="code" value="<%= product.code %>"><br><br>
+                            <input type="text" class="readOnlyBG" id="editCodeID_<%= product.id %>" name="code" value="<%= product.code %>" readonly><br><br>
             
                             <label for="productName">Product Name:</label>
                             <input type="text" id="editProductName_<%= product.id %>" name="productName" value="<%= product.productName%>"><br><br>
@@ -254,9 +254,17 @@
                 </select>
                 
                 <br><br>
+                <label for="categoryName">Category: </label>
+                <select name="categoryName" id="categoryName" required>
+                    <option value="" ></option>
+                    <option value="WS">Writing Supply</option>
+                    <option value="OS">Office Supply</option>
+                    <option value="PS">Paper Supply</option>
+                </select>
+                <br><br>
 
                 <label for="code">Code:</label>
-                <input type="text" id="code" name="code" required><br><br>
+                <input type="text" id="code" class="readOnlyBG" placeholder="AUTO GENERATED" name="code" readonly required><br><br>
 
                 <label for="productName">Product Name:</label>
                 <input type="text" id="productName" name="productName" required><br><br>
@@ -277,8 +285,11 @@
             </div>
           </div>
 
-    
-      
+          <div id="codeCategory" style="display: none;"><%= JSON.stringify(filteredProducts) %></div>
+          <div id="codeCategoryOS" style="display: none;"><%= JSON.stringify(filteredProductsOS) %></div>
+          <div id="codeCategoryPS" style="display: none;"><%= JSON.stringify(filteredProductsPS) %></div>
+
+       
                 <!-- Edit button -->
        
         <!-- Modal for editing -->
@@ -294,6 +305,9 @@
     <script src="/Products (Admin).js"></script>
 
     <script>
+
+
+
 const productsData = document.getElementById('productsDisplay').innerHTML;
 const decodedProducts = JSON.parse(productsData.replace(/&quot;/g, '"'));
 console.log(decodedProducts);
@@ -323,9 +337,10 @@ if (decodedProducts.length > 0) {
     } else {
         notifDiv.style.display = 'none';
         notifIcon.style.display = 'none';
-    }
+    } 
 } else {
     notifDiv.style.display = 'none';
+    notifIcon.style.display = 'none';
 }
 
 
@@ -360,16 +375,54 @@ let accBtn = document.getElementById("accBtn")
 let user = parseJwt(localStorage.getItem("TOKEN")).email
 let productForm = document.getElementById("productForm")
 
+//WS
+let codeCategory = document.getElementById('codeCategory').innerHTML
+let decodedCodeCategory = JSON.parse(codeCategory.replace(/&quot;/g, '"'));
+console.log(decodedCodeCategory);
+
+//OS
+let codeCategoryOS = document.getElementById('codeCategoryOS').innerHTML
+let decodedCodeCategoryOS = JSON.parse(codeCategoryOS.replace(/&quot;/g, '"'));
+console.log(decodedCodeCategoryOS);
+
+//PS
+let codeCategoryPS = document.getElementById('codeCategoryPS').innerHTML
+let decodedCodeCategoryPS = JSON.parse(codeCategoryPS.replace(/&quot;/g, '"'));
+console.log(decodedCodeCategoryPS);
+
+
+
 productForm.addEventListener('submit', function () {
+
   const brandName = document.getElementById('brandName').value;
-  const code = document.getElementById('code').value;
+  let categoryOptions = document.getElementById('categoryName').value
+  let code = document.getElementById('code').value;
   const productName = document.getElementById('productName').value;
   const wholesalePrice = document.getElementById('wholesalePrice').value;
   const retailPrice = document.getElementById('retailPrice').value;
   const lowStockThreshold = document.getElementById('lowStockThreshold').value;
+  
+  const productsData = document.getElementById('productsDisplay').innerHTML;
+  const decodedProducts = JSON.parse(productsData.replace(/&quot;/g, '"'));
+  const matchingProduct = decodedProducts.some(product => product.productName.toLowerCase() === productName.toLowerCase());
+ 
+
+let wsLength = decodedCodeCategory.length + 1
+let osLength = decodedCodeCategoryOS.length + 1
+let psLength = decodedCodeCategoryPS.length + 1
+
+ if (categoryOptions == "WS") {
+    code = `WS${wsLength} `
+ } else if (categoryOptions == "OS") {
+    code = `OS${osLength}`
+ } else if (categoryOptions == "PS") {
+    code = `PS${psLength}`
+ }
 
 
-  // Prepare the data object to send to the server
+ if (!matchingProduct) {
+    console.log(matchingProduct);
+   // Prepare the data object to send to the server
   const data = {
     action: 'addProduct', // Indicate the action as 'addProduct'
     brandName: brandName,
@@ -377,7 +430,8 @@ productForm.addEventListener('submit', function () {
     productName: productName,
     wholesalePrice: wholesalePrice,
     retailPrice: retailPrice,
-    lowStockThreshold: lowStockThreshold
+    lowStockThreshold: lowStockThreshold,
+    category: categoryOptions
     // Add other fields as needed for the new product
   };
 
@@ -429,6 +483,11 @@ productForm.addEventListener('submit', function () {
       console.error('Error:', error);
     }); 
 
+} else {
+    console.log("DUPLICATE, WONT SUBMIT TO DB")
+}
+
+  
 
     
 });
@@ -483,32 +542,6 @@ function openEditModal(productId) {
 console.log("EDITCODE", editCodeID.value)
 
 editForm.addEventListener("submit", (event) => {
-
-   /*  //CAN ONLY DETECT FIRSTT TABLE EDIT -> Transaction
-    let user = parseJwt(localStorage.getItem("TOKEN")).email
-    fetch('/transactions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        user: user,
-        action: `Edited something`
-    })
-  })
-    .then(response => {
-      if (response.ok) {
-        // Handle success for the transaction
-        // ...
-      } else {
-        // Handle errors if the request fails
-        console.error('Error with the transaction');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    }); */
-
 
     console.log("EDITCODE", editCodeID.value)
 console.log("put sub")

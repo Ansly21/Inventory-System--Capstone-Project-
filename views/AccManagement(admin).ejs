@@ -189,10 +189,14 @@ if (decodedProducts.length > 0) {
     }
 } else {
     notifDiv.style.display = 'none';
+    notifIcon.style.display = 'none';
 }
 
 
 lowStockCountSpan.textContent = lowStockCount
+if (lowStockCount == 0) {
+    document.getElementById('invNavWarning').style.display = "none"
+}
 document.getElementById('invNavWarning').textContent = lowStockCount
 function showAlert() {
     notifDiv.style.display = "block"

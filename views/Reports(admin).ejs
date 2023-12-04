@@ -3,132 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/shopping-cart.css' rel='stylesheet'>
-    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/danger.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/chart.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/smile.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
+    <title>Reports</title>
     <link rel="stylesheet" href="/Reports (Admin).css">
-    <title>Reports (Admin)</title>
-     <!-- Include Chart.js from CDN -->
-     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body id="body">
 
     <header>
+        
+
+          
+ 
+    </header>
+
+    <div class="flexx">
+    <div class="nav">
         <div class="image">
             <a href="/">
                 <img src="/Six7TwoLogo.png" alt="">
             </a>
         </div>
 
-            <h1 id="title">REPORTS</h1>
- 
-    </header>
-
-    <main>
-        <div class="nav">
-            <a href="/products">
-                <button>
-                    Products<i class="gg-pen"></i>
-                </button>
-            </a>
-
-            <a href="/inventory">
-                <button>
-                        Inventory
-                        <i class="gg-copy"></i>
-                </button>
-            </a>
-
-            <a href="/reports">
-                <button class="page-btn">Reports<i class="gg-chart"></i></button>
-            </a>
-
-            <a href="account">
-                <button id="accBtn">Accounts<i class="gg-smile"></i></button>
-            </a>
-        </div>
-
-
-
-        <div class="right-side">
-            <section>
-                <div class="info-container totalProductsContainer">
-                    <i class="bi bi-cart-plus"></i>
-                    <div class="info">
-                        <p class="info-title">Total Products</p>
-                        <p class="info-num"><%= totalProducts %></p>
-                    </div>
-                </div>
-
-                <div class="info-container lowStockContainer">
-                    <i class="bi bi-exclamation-circle"></i>
-                    <div class="info">
-                        <p class="info-title">Low Stock</p>
-                        <p class="info-num"><%= lowStock %></p>
-                    </div>
-                </div>
-                <div class="info-container stockValueContainer">
-                    <i class="bi bi-coin"></i>
-                    <div class="info">
-                        <p class="info-title">Stock Value (₱)</p>
-                        <p class="info-num"><%= stockValue %></p>
-                    </div>
-                </div>
-
-                <div class="info-container stockCostContainer">
-                    <i class="bi bi-cash-stack"></i>
-                    <div class="info">
-                        <p class="info-title">Stock Cost (₱)</p>
-                        <p class="info-num"><%= stockCost %></p>
-                    </div>
-                </div>
-            </section>
-           
-            <div class="inputS">
-            <select name="" id="selectOptions" class="selectOptions">
-                <option value="sample">Choose</option>
-                <option value="lowstock">Low Stock</option>
-               <!-- <option value="bestSeller">Best Seller</option>
-                <option value="leastSeller">Least Seller</option>
-                <option value="topRevenue">Top Revenue</option>
-                <option value="leastRevenue">Least Revenue</option>-->
-                <option value="allRevenue">Revenue</option>
-            </select>
-
-           <form id="reportForm" action="/reports" method="GET"> <!-- Assuming GET method -->
-    <p>From:</p>
-    <input class="inpDate" type="date" id="startDatePicker" name="startDate" min="2023-01-01" max="">
-    <p>To:</p>
-    <input class="inpDate" type="date" id="endDatePicker" name="endDate" min="2023-01-01" max="">
-    
-    <button type="submit">Submit</button>
-</form>
-</div>
-
-            <div class="table-container" id="table-container">
-                <!-- DYNAMICALLY RENDER TABLE-->
-
-                
+        <div class="we">
+        <a class="bb" href="/products">
+            <div class="te">
+                <h5 class="test">Products</h5>
             </div>
+        </a>
+
+        <a class="bb" href="/inventory">
+            <div class="te">
+                <h5 class="test">Inventory &nbsp <span class="badge" id="invNavWarning">0</span> </h5>
+            </div>
+        </a>
+
+        <a class="bb" href="/reports">
+            <div class="te" id="currentPage">
+                <h5 class="test">Reports</h5>
+            </div>
+        </a>
+
+        <a class="bb" href="/supplier">
+            <div class="te">
+                <h5 class="test">Supplier</h5>
+            </div>
+        </a>
+
+        <a class="bb" href="/transactions">
+            <div class="te">
+                <h5 class="test" id="accBtn">Transactions</h5>
+            </div>
+        </a>
+
+        <a class="bb" href="/logs">
+            <div class="te">
+                <h5 class="test">Logs</h5>
+            </div>
+        </a>
+
+        <a class="bb" href="/account">
+            <div class="te">
+                <h5 class="test" id="accBtn">Accounts</h5>
+            </div>
+        </a>
+    </div>
+    </div>
+    
+    <main>
+        <div>
+            <i class="fas fa-bell" id="notifIcon" onclick="showAlert()">
+                <span class="badge" id="lowStockCount">0</span> 
+            </i>
+            <div class="lowStockDiv" id="lowStockDiv">
         </div>
 
-        <div id="productCodeElement"><%= lowStockCodes[0].code %></div>
+    </div>
+        
 
-    </main>
+        <div class="title-con">
+       <h1 id="title">REPORTS</h1>
+    </div>
+        <input type="hidden" name="action" value="saveEditedRow">
+        
+
+        
+
+        <div class="table-container">
+
+            <div id = "prodTableContainer">
+            <div class="search-date">
+
+                <form action="/products" method ="get">
+                <input type="search" id="search" name = "query" placeholder="enter product name or id">
+                <button type = "submit" style="display: none;">Search</button>
+
+                </form>
+               <!-- <p id="date">-->
+                    <!-- Date is dynamically rendered from JS -->
+               <!--  </p> -->
 
 
-    <script src="https://kit.fontawesome.com/b0d1390b7c.js" crossorigin="anonymous"></script>
-    <canvas id="myChart" width="60" height="15"></canvas>
+            </div>
+            
+            <table id ="productTable">
+            <caption>TOTAL SALES TABLE</caption>
+                <thead>
+                <tr>
+                    <th>CODE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>TOTAL SALES</th>
+                </tr>
+            </thead>
+              
+            
+
+
+            
+         
+                
+            </table>
+
+        </div>
+           
+        
+
+     
+      
+
+    
+      
+                <!-- Edit button -->
+       
+        <!-- Modal for editing -->
+       
+        <div id="productsDisplay" style="display: none;"><%= JSON.stringify(products) %></div>
+        <div id="transactionData" style="display: none;"><%= JSON.stringify(transactions) %></div>
+
+   
+        </div>
+
+    </main> 
+
+    </div>
+
 
     <script>
+const productsData = document.getElementById('productsDisplay').innerHTML;
+const decodedProducts = JSON.parse(productsData.replace(/&quot;/g, '"'));
+console.log(decodedProducts);
+
+const transactionData = document.getElementById('transactionData').innerHTML;
+const decodedtransactionData = JSON.parse(transactionData.replace(/&quot;/g, '"'));
+console.log(decodedtransactionData);
+
+const combinedData = decodedtransactionData.reduce((accumulator, product) => {
+    if (product.code && !accumulator.hasOwnProperty(product.code)) {
+        accumulator[product.code] = {
+            totalSales: product.totalSales,
+            productName: product.productName
+        };
+    } else if (product.code && accumulator.hasOwnProperty(product.code)) {
+        accumulator[product.code].totalSales += product.totalSales;
+    }
+    return accumulator;
+}, {});
+
+// Convert combinedData object to an array of objects excluding undefined or empty code
+const finalData = Object.keys(combinedData)
+    .filter(code => combinedData[code].totalSales !== undefined)
+    .map(code => ({
+        code,
+        totalSales: combinedData[code].totalSales,
+        productName: combinedData[code].productName
+    }));
+
+console.log(finalData);
+
+// Get the table element
+const table = document.getElementById('productTable');
+
+// Function to create table rows with data
+function createTableRow(data) {
+    const row = document.createElement('tr');
+    const codeCell = document.createElement('td');
+    const productNameCell = document.createElement('td');
+    const totalSalesCell = document.createElement('td');
+
+    codeCell.textContent = data.code;
+    productNameCell.textContent = data.productName;
+    totalSalesCell.textContent = data.totalSales;
+
+    row.appendChild(codeCell);
+    row.appendChild(productNameCell);
+    row.appendChild(totalSalesCell);
+
+    return row;
+}
+
+// Function to populate the table with data
+function populateTable(dataArray) {
+    dataArray.forEach(data => {
+        const row = createTableRow(data);
+        table.appendChild(row);
+    });
+}
+
+// Call the function to populate the table
+populateTable(finalData);
+
+
+
+
+
+
+let lowStockCountSpan = document.getElementById('lowStockCount')
+let notifDiv = document.getElementById('lowStockDiv')
+let notifIcon = document.getElementById('notifIcon')
+
+let lowStockCount = 0;
+
+if (decodedProducts.length > 0) {
+    let productDetailsHTML = '';
+
+    for (let i = 0; i < decodedProducts.length; i++) {
+        if (decodedProducts[i].currentInv <= decodedProducts[i].lowStockThreshold) {
+            lowStockCount++;
+            let productDetails = `Product: ${decodedProducts[i].productName}, TH: ${decodedProducts[i].lowStockThreshold}, Inv: ${decodedProducts[i].currentInv} <br>`;
+            productDetailsHTML += productDetails;
+        }
+    }
+
+    notifDiv.innerHTML = productDetailsHTML;
+
+    // Show or hide notifDiv based on the lowStockCount
+    if (lowStockCount > 0) {
+        notifDiv.style.display = 'none';
+    } else {
+        notifDiv.style.display = 'none';
+        notifIcon.style.display = 'none';
+    }
+} else {
+    notifDiv.style.display = 'none';
+    notifIcon.style.display = 'none';
+}
+
+
+lowStockCountSpan.textContent = lowStockCount
+if (lowStockCount == 0) {
+    document.getElementById('invNavWarning').style.display = "none"
+}
+document.getElementById('invNavWarning').textContent = lowStockCount
+
+
+function showAlert() {
+    notifDiv.style.display = "block"
+}
+
+  // Select all elements with class 'editBtn'
+let editBtns = document.querySelectorAll(".editBtn");
+
+
+let idLastClicked;
+// Loop through each button and attach an event listener
+editBtns.forEach(button => {
+    button.addEventListener("click", (e) => {
+        console.log(e.target.id);
+        idLastClicked = e.target.id
+    
+    });
+});
+
+let productForm = document.getElementById('productForm')
+let accBtn = document.getElementById("accBtn")
+productForm.addEventListener('submit', function () {
+
+    const supplierName = document.getElementById('supplierName').value;
+    const brandName = document.getElementById('brandName').value;
+    const supplierContact = document.getElementById('supplierContact').value;
+
+  // Prepare the data object to send to the server
+  const data = {
+    supplierName: supplierName,
+    brandName: brandName,
+    supplierContact: supplierContact,
+  };
+
+  // Send the form data to the backend using fetch
+  fetch('/supplier', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then(response => {
+      if (response.ok) {
+        // Handle success, e.g., close the modal and perform any UI updates
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+        // Perform any other necessary actions upon successful addition of a new product
+      } else {
+        // Handle errors if the request fails
+        console.error('Error adding product');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
+
+
+   // Get the modal
+const modal = document.getElementById('myModal');
+const editModal = document.getElementById(`editModal`);
+
+// Get the button that opens the modal
+const btn = document.getElementById('addRowButton');
+
+// Get the <span> element that closes the modal
+const span = document.getElementById("close")
+
+// When the user clicks the button, open the modal
+btn.onclick = function () {
+  modal.style.display = 'block';
+  editModal.style.display = 'block';
+};
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = 'none';
+  editModal.style.display = 'none';
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target === modal || event.target === editModal ) {
+    modal.style.display = 'none';
+    editModal.style.display = 'none';
+  }
+};
+
+
+function openEditModal(supplierId) {
+  const modal = document.getElementById(`editModal_${supplierId}`);
+  if (modal) {
+    modal.style.display = 'block';
+
+    const editForm = document.getElementById('editForm');
+    let supplierName = document.getElementById(`supplierName_${supplierId}`);
+    let brandName = document.getElementById(`brandName_${supplierId}`);
+    let supplierContact = document.getElementById(`supplierContact_${supplierId}`);
+
+
+// Assuming this code runs after the creation or update of the form
+console.log("EDITCODE", editCodeID.value)
+
+editForm.addEventListener("submit", (event) => {
+
+    console.log("EDITCODE", editCodeID.value)
+console.log("put sub")
+    // Get the updated values from the form fields
+    const updatedData = {
+        supplierName: supplierName.value,
+        brandName: brandName.value,
+        supplierContact: supplierContact.value,
+    };
+
+    fetch(`/supplier/${supplierId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // Handle success
+            return response.json(); // Parse the response body as JSON
+        } else {
+            throw new Error('Error updating product');
+        }
+    })
+    .then(data => {
+        // Here 'data' contains the updated product from the server
+        console.log(data.updatedProduct);
+        // Perform actions with the updated product data as needed
+        const editModal = document.getElementById('editModal');
+        // Close the modal, update UI, etc.
+        location.reload()
+    })
+    .catch(error => {
+        location.reload()
+    });
+
+    event.preventDefault();
+});
+  }
+}
+// Function to close the edit modal
+function closeEditModal(productId) {
+  const modal = document.getElementById(`editModal_${idLastClicked}`);
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+// Function to save the edited data (you'll need to implement this)
+function saveEditedData() {
+  // Retrieve the edited data from the form fields
+  const editedProductName = document.getElementById('productNameEdit').value;
+  // Retrieve other edited data similarly
+
+  // Perform actions to save the edited data (e.g., send it to the server via AJAX)
+  // Implement your logic to save the edited data
+  // ...
+
+  // Close the edit modal after saving the changes
+  closeEditModal();
+}
+
+
 
 
 //FOR DECODING JWT TOKEN AFTER LOGGING IN
@@ -141,875 +439,170 @@ function parseJwt (token) {
     return JSON.parse(base64);
 }
 
-console.log('<%= allSalesProdName %>');
-console.log('<%= allSalesNumOfPurchased %>');
-console.log('<%= allSalesUnitPrices %>');
-console.log('<%= allSalesRevenues %>');
 
-    
-let productCodeValue =document.getElementById('productCodeElement').innerText;
-
-// Get the form and date pickers
-const reportForm = document.getElementById('reportForm');
-const startDatePicker = document.getElementById('startDatePicker');
-const endDatePicker = document.getElementById('endDatePicker');
-
-// Function to save form values to localStorage
-function saveFormValues() {
-    localStorage.setItem('startDateValue', startDatePicker.value);
-    localStorage.setItem('endDateValue', endDatePicker.value);
-}
-
-// Event listener for form submission
-reportForm.addEventListener('submit', function(event) {
-    // Save the form values to localStorage when submitting
-    saveFormValues();
-});
-
-// Function to populate form fields with saved values
-function populateFormFields() {
-    const storedStartDate = localStorage.getItem('startDateValue');
-    const storedEndDate = localStorage.getItem('endDateValue');
-
-    if (storedStartDate) {
-        startDatePicker.value = storedStartDate;
-    }
-
-    if (storedEndDate) {
-        endDatePicker.value = storedEndDate;
-    }
-}
-
-// Call populateFormFields function when the page loads
-window.addEventListener('load', function() {
-    populateFormFields();
-});
-
-
-var option;
-
-    //TABLE CODE
-    //CONVERT LOW STOCK DATA TO ARRAYS    
-    let lowStockNameArray = '<%= lowStockName %>'.split(',');
-    let closingInvArray = '<%= closingInv %>'.split(',');
-    let lowStockThresholdArray = '<%= lowStockThreshold %>'.split(',');
-    
-    //CONVERT LEAST SELLER DATA TO ARRAYS
-    let leastSelectedSoldArray = '<%= leastSelectedValuesSold %>'.split(',')
-    let leastSelectedNameArray = '<%= leastSelectedValuesName %>'.split(',')
-
-    //CONVERT TOP SELLER DATA TO ARRAYS
-    let topSellerNameArray = '<%= topSellerName %>'.split(',')
-    let topSellerValueArray = '<%= topSellerValue %>'.split(',')
-
-
-   let productCode = '<%= lowStockCodes %>'.split(',')
-
-   let bestSellerCodeArray = '<%= bestSellerCodes %>'.split(',')
-   
-   let leastSellerCodeArray = '<%= leastSellerCodes %>'.split(',')
-
-   //TOP REVENUE
-    let topRevenueCode = '<%= topRevenueCodes %>'.split(',')
-    let topRevenueNames =  '<%= revenueProductName %>'.split(',')
-    let topRevenueValues =  '<%= revenueValue %>'.split(',')
-
-    //LEAST REVENUE
-    let leastRevenueCode = '<%= leastRevenueCodes %>'.split(',')
-    let leastRevenueNames =  '<%= leastRevenueProductName %>'.split(',')
-    let leastRevenueValues =  '<%= leastRevenueValue %>'.split(',')
-
-      
-        // All Revenue
-        let allSalesProdNameString = '<%= allSalesProdName %>';
-        let allSalesProdNameArray = allSalesProdNameString.split(',');
-
-        let allSalesNumOfPurchasedString = '<%= allSalesNumOfPurchased %>';
-        let allSalesNumOfPurchasedArray = allSalesNumOfPurchasedString.split(',');
-
-        let allSalesUnitPricesString = '<%= allSalesUnitPrices %>';
-        let allSalesUnitPricesArray = allSalesUnitPricesString.split(',');
-
-        let allSalesRevenuesString = '<%= allSalesRevenues %>';
-        let allSalesRevenuesArray = allSalesRevenuesString.split(',');
-        
-    document.getElementById("selectOptions").addEventListener("change", () => {
-    console.log("Dropdown selection changed"); // Check if this log appears in the console
-    // option = document.getElementById("selectOptions").value
-    //console.log(option);
-    
-
-    // Rest of your code for generating the table...
-});
-
-    document.getElementById("selectOptions").addEventListener("change", () => {
-        if (document.getElementById("selectOptions").value === "lowstock") {
-            // Assuming lowStockNameArray, closingInvArray, and lowStockThresholdArray are already available as arrays
-            const lowStockName = lowStockNameArray;
-            const closingInv = closingInvArray;
-            const lowStockThreshold = lowStockThresholdArray;
-
-            const tableContainer = document.getElementById('table-container');
-            const table = document.createElement('table');
-            table.id = "report-table"
-            table.innerHTML = `
-                <caption>LOW STOCK TABLE</caption>
-                <tr>
-                    <th>CODE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>CURRENT STOCK</th>
-                    <th>LOW STOCK THRESHOLD</th>
-                </tr>
-            `;
-
-          for (let index = 0; index < lowStockName.length; index++) {
-    const row = table.insertRow();
-    row.innerHTML = `
-        <td>${productCode[index]}</td>
-        <td>${lowStockName[index]}</td>
-        <td>${closingInv[index]}</td>
-        <td>${lowStockThreshold[index]}</td>
-    `;
-
-    table.appendChild(row);
-}
-
-            // Clear previous table, if any, and append the new table
-            tableContainer.innerHTML = '';
-            tableContainer.appendChild(table);
-
-
-            // ... your previous code for displaying the table
-
-        // Create the download button
-        const downloadContainer = document.createElement('div');
-        downloadContainer.classList.add('download-container');
-        downloadContainer.innerHTML = `
-            <button id="downloadBtn">Download as PDF</button>
-        `;
-
-        // Append the download button after the table
-        tableContainer.appendChild(downloadContainer);
-
-window.jsPDF = window.jspdf.jsPDF;
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    const doc = new jsPDF();
-
-    // Set font size for the table content and caption
-    const fontSize = 15; // Change this value to adjust the font size for the table
-    const captionFontSize = 20; // Change this value to adjust the caption font size
-
-    const styles = {
-        fontSize: fontSize,
-        // Add more styling options as needed
-    };
-
-    // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles, startY: 20,});
-
-    // Add caption to the PDF and center it horizontally
-    const captionText = "LOW STOCK TABLE";
-    const pageWidth = doc.internal.pageSize.width;
-    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
-    const textOffset = (pageWidth - textWidth) / 2;
-
-    doc.setFontSize(captionFontSize); // Set the caption font size
-    doc.text(captionText, textOffset, 10); // Centered caption position
-
-    //generateDate File name
-    var currentDate = new Date();
-
-    // Get individual components of the date (year, month, day)
-    var year = currentDate.getFullYear();
-    var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-indexed
-    var day = ('0' + currentDate.getDate()).slice(-2);
-
-    // Concatenate the date components into a string in the format 'YYYYMMDD'
-    var dateVariable = year + month + day;
-
-
-    // Save the PDF file
-    const fileName = 'LowStockTable_'+dateVariable+'.pdf';
-    console.log(fileName);
-    doc.save(fileName);
-});
-
-
-
-    } else if (document.getElementById("selectOptions").value === "leastSeller") {
-        const leastSellerName = leastSelectedNameArray;
-        const leastSellerValue = leastSelectedSoldArray;
-
-            const tableContainer = document.getElementById('table-container');
-            const table = document.createElement('table');
-            table.id = "report-table"
-            table.innerHTML = `
-                <caption>Least Seller Table</caption>
-                <tr>
-                    <th>CODE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>QTY SOLD</th>
-                </tr>
-            `;
-
-            leastSellerName.forEach((item, index) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-                <td>${leastSellerCodeArray[index]}</td>
-                    <td>${item}</td>
-                    <td>${leastSellerValue[index]}</td>
-                `;
-                
-                table.appendChild(row);
-
-            });
-
-            // Clear previous table, if any, and append the new table
-            tableContainer.innerHTML = '';
-            tableContainer.appendChild(table);
-
-
-            // ... your previous code for displaying the table
-
-        // Create the download button
-        const downloadContainer = document.createElement('div');
-        downloadContainer.classList.add('download-container');
-        downloadContainer.innerHTML = `
-            <button id="downloadBtn">Download as PDF</button>
-        `;
-
-        // Append the download button after the table
-        tableContainer.appendChild(downloadContainer);
-
-
-window.jsPDF = window.jspdf.jsPDF;
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    const doc = new jsPDF();
-
-    // Set font size for the table content and caption
-    const fontSize = 15; // Change this value to adjust the font size for the table
-    const captionFontSize = 20; // Change this value to adjust the caption font size
-
-    const styles = {
-        fontSize: fontSize,
-        // Add more styling options as needed
-    };
-
-    // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
-
-    // Add caption to the PDF and center it horizontally
-    const captionText = "LEAST SELLER TABLE";
-    const pageWidth = doc.internal.pageSize.width;
-    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
-    const textOffset = (pageWidth - textWidth) / 2;
-
-    doc.setFontSize(captionFontSize); // Set the caption font size
-    doc.text(captionText, textOffset, 10); // Centered caption position
-
-    // Save the PDF file
-    doc.save('table.pdf');
-});
-
-    } else if (document.getElementById("selectOptions").value === "bestSeller") {
-        const bestSellerName = topSellerArrayName;
-        const bestSellerValue = topSellerArrayValue;
-
-            const tableContainer = document.getElementById('table-container');
-            const table = document.createElement('table');
-            table.id = "report-table"
-            table.innerHTML = `
-                <caption>Best Seller Table</caption>
-                <tr>
-                    <th>CODE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>QTY SOLD</th>
-                </tr>
-            `;
-
-            bestSellerName.forEach((item, index) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-                    <td>${bestSellerCodeArray[index]}</td>
-                    <td>${item}</td>
-                    <td>${bestSellerValue[index]}</td>
-                `;
-                
-                table.appendChild(row);
-
-            });
-
-            // Clear previous table, if any, and append the new table
-            tableContainer.innerHTML = '';
-            tableContainer.appendChild(table);
-
-
-            // ... your previous code for displaying the table
-
-        // Create the download button
-        const downloadContainer = document.createElement('div');
-        downloadContainer.classList.add('download-container');
-        downloadContainer.innerHTML = `
-            <button id="downloadBtn">Download as PDF</button>
-        `;
-
-        // Append the download button after the table
-        tableContainer.appendChild(downloadContainer);
-
-
-window.jsPDF = window.jspdf.jsPDF;
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    const doc = new jsPDF();
-
-    // Set font size for the table content and caption
-    const fontSize = 15; // Change this value to adjust the font size for the table
-    const captionFontSize = 20; // Change this value to adjust the caption font size
-
-    const styles = {
-        fontSize: fontSize,
-        // Add more styling options as needed
-    };
-
-    // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
-
-    // Add caption to the PDF and center it horizontally
-    const captionText = "BEST SELLER TABLE";
-    const pageWidth = doc.internal.pageSize.width;
-    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
-    const textOffset = (pageWidth - textWidth) / 2;
-
-    doc.setFontSize(captionFontSize); // Set the caption font size
-    doc.text(captionText, textOffset, 10); // Centered caption position
-
-    // Save the PDF file
-    doc.save('table.pdf');
-});
-
-    } else if (document.getElementById("selectOptions").value === "topRevenue") {
-        const topRC = topRevenueCode;
-        const topRN = topRevenueNames;
-        const topRV = topRevenueValues;
-
-            const tableContainer = document.getElementById('table-container');
-            const table = document.createElement('table');
-            table.id = "report-table"
-            table.innerHTML = `
-                <caption>Top Revenue Table</caption>
-                <tr>
-                    <th>CODE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>VALUE</th>
-                </tr>
-            `;
-
-            topRC.forEach((item, index) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-                <td>${topRC[index]}</td>
-                    <td>${topRN[index]}</td>
-                    <td>${topRV[index]}</td>
-                `;
-                
-                table.appendChild(row);
-
-            });
-
-            // Clear previous table, if any, and append the new table
-            tableContainer.innerHTML = '';
-            tableContainer.appendChild(table);
-
-
-            // ... your previous code for displaying the table
-
-        // Create the download button
-        const downloadContainer = document.createElement('div');
-        downloadContainer.classList.add('download-container');
-        downloadContainer.innerHTML = `
-            <button id="downloadBtn">Download as PDF</button>
-        `;
-
-        // Append the download button after the table
-        tableContainer.appendChild(downloadContainer);
-
-
-    window.jsPDF = window.jspdf.jsPDF;
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    const doc = new jsPDF();
-
-    // Set font size for the table content and caption
-    const fontSize = 15; // Change this value to adjust the font size for the table
-    const captionFontSize = 20  ; // Change this value to adjust the caption font size
-
-    const styles = {
-        fontSize: fontSize,
-        // Add more styling options as needed
-    };
-
-    // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
-
-    // Add caption to the PDF and center it horizontally
-    const captionText = "TOP REVENUE TABLE";
-    const pageWidth = doc.internal.pageSize.width;
-    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
-    const textOffset = (pageWidth - textWidth) / 2;
-
-    doc.setFontSize(captionFontSize); // Set the caption font size
-    doc.text(captionText, textOffset, 10); // Centered caption position
-
-    // Save the PDF file
-    doc.save('table.pdf');
-});
-
-        } else if (document.getElementById("selectOptions").value === "leastRevenue") {
-          //LEAST REVENUE
-        let LRC = leastRevenueCode
-        let LRN =  leastRevenueNames
-        let LRV =  leastRevenueValues
-
-
-            const tableContainer = document.getElementById('table-container');
-            const table = document.createElement('table');
-            table.id = "report-table"
-            table.innerHTML = `
-                <caption>Least Revenue Table</caption>
-                <tr>
-                    <th>CODE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>VALUE</th>
-                </tr>
-            `;
-
-            LRN.forEach((item, index) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-                <td>${LRC[index]}</td>
-                    <td>${LRN[index]}</td>
-                    <td>${LRV[index]}</td>
-                `;
-                
-                table.appendChild(row);
-
-            });
-
-            // Clear previous table, if any, and append the new table
-            tableContainer.innerHTML = '';
-            tableContainer.appendChild(table);
-
-
-            // ... your previous code for displaying the table
-
-        // Create the download button
-        const downloadContainer = document.createElement('div');
-        downloadContainer.classList.add('download-container');
-        downloadContainer.innerHTML = `
-            <button id="downloadBtn">Download as PDF</button>
-        `;
-
-        // Append the download button after the table
-        tableContainer.appendChild(downloadContainer);
-        window.jsPDF = window.jspdf.jsPDF;
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    const doc = new jsPDF();
-
-    // Set font size for the table content and caption
-    const fontSize = 15; // Change this value to adjust the font size for the table
-    const captionFontSize = 20; // Change this value to adjust the caption font size
-
-    const styles = {
-        fontSize: fontSize,
-        // Add more styling options as needed
-    };
-
-    // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
-
-    // Add caption to the PDF and center it horizontally
-    const captionText = "LEAST REVENUE TABLE";
-    const pageWidth = doc.internal.pageSize.width;
-    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
-    const textOffset = (pageWidth - textWidth) / 2;
-
-    doc.setFontSize(captionFontSize); // Set the caption font size
-    doc.text(captionText, textOffset, 10); // Centered caption position
-
-    // Save the PDF file
-    doc.save('table.pdf');
-});
-
-     } else if (document.getElementById("selectOptions").value === "allRevenue") {
-
-        let ASP = allSalesProdNameArray
-        let ASN =  allSalesNumOfPurchasedArray
-        let ASU =  allSalesUnitPricesArray
-        let ASR = allSalesRevenuesArray
-
-            const tableContainer = document.getElementById('table-container');
-            const table = document.createElement('table');
-            table.id = "report-table"
-            table.innerHTML = `
-                <caption>Revenue Table</caption>
-                <tr>
-                    <th>PRODUCT NAME</th>
-                    <th>QTY SOLD</th>
-                    <th>UNIT PRICE</th>
-                    <th>REVENUE</th>
-                </tr>
-                
-            `;
-
-            ASP.forEach((item, index) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-                    <td>${ASP[index]}</td>
-                    <td>${ASN[index]}</td>
-                    <td>${ASU[index]}</td>
-                    <td>${ASR[index]}</td>
-                `;
-                
-                table.appendChild(row);
-
-            });
-
-            // Clear previous table, if any, and append the new table
-            tableContainer.innerHTML = '';
-            tableContainer.appendChild(table);
-
-
-            // ... your previous code for displaying the table
-
-        // Create the download button
-        const downloadContainer = document.createElement('div');
-        downloadContainer.classList.add('download-container');
-        downloadContainer.innerHTML = `
-            <button id="downloadBtn">Download as PDF</button>
-        `;
-
-        // Append the download button after the table
-        tableContainer.appendChild(downloadContainer);
-        window.jsPDF = window.jspdf.jsPDF;
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    const doc = new jsPDF();
-
-    // Set font size for the table content and caption
-    const fontSize = 8; // Change this value to adjust the font size for the table
-    const captionFontSize = 20; // Change this value to adjust the caption font size
-
-    const styles = {
-        fontSize: fontSize,
-        // Add more styling options as needed
-    };
-
-    // Convert table to PDF format with adjusted font size
-    doc.autoTable({ html: '#report-table', styles: styles, startY: 20, });
-
-    // Add caption to the PDF and center it horizontally
-    const captionText = "REVENUE TABLE";
-    const pageWidth = doc.internal.pageSize.width;
-    const textWidth = doc.getStringUnitWidth(captionText) * captionFontSize / doc.internal.scaleFactor;
-    const textOffset = (pageWidth - textWidth) / 2;
-
-    doc.setFontSize(captionFontSize); // Set the caption font size
-    doc.text(captionText, textOffset, 10); // Centered caption position
-
-    // Save the PDF file
-
-    
-    const fileName = 'RevenueTable_'+ startDatePicker.value +' to '+ endDatePicker.value+'.pdf';
-    console.log(fileName);
-    doc.save(fileName);
-}); 
-    }
-});
-
-
-
-
-
-        //GRAPHS CODE BELOOW
-
-        // Best Seller Chart
-
-        var canvas = document.getElementById("myChart");
 
         
-        var topSellerString = '<%= topSellerName%>';
-        console.log(topSellerString);
-
-        const topSellerArrayName = topSellerString.split(',');
-        console.log(topSellerArrayName);
-
-        var topSellerStringValues = '<%= topSellerValue%>';
-        console.log(topSellerString);
-
-        const topSellerArrayValue = topSellerStringValues.split(',');
-        console.log(topSellerArrayValue);
-
-         // Top Revenue Chart
-        var topRevenueName = '<%= revenueProductName%>';
-        const topRevenueNameArray = topRevenueName.split(',');
+        document.getElementById("saveproductbtn").addEventListener("click", 
+            
+            function() {
+            document.getElementById("saveProduct").submit();
+            }
+         );
         
-
-        var topRevenueValue = '<%= revenueValue%>';
-        const topRevenueValueArray = topRevenueValue.split(',');
-
-         // Least Seller Chart
-        var leastSellerValuesString = '<%= leastSelectedValuesSold %>';
-        const leastSellerValuesArray = leastSellerValuesString.split(',');
-
-        var leastSellerNameString = '<%= leastSelectedValuesName %>';
-        const leastSellerNameArray = leastSellerNameString.split(',');
-
-        // Least Revenue Chart
-        var leastRevenueNameString = '<%= leastRevenueProductName %>';
-        const leastRevenueNameArray = leastRevenueNameString.split(',');
-
-        var leastRevenueValueString = '<%= leastRevenueValue %>';
-        const leastRevenueValueArray = leastRevenueValueString.split(',');
       
 
+        // Function to add a new row to the table
+        /* function addRow() {
+            const tableBody = document.querySelector("#productTable2 tbody");
+            const newRow = tableBody.insertRow();
 
-        // Variables for the first bar chart
-       
-        var option = "bestSeller";
-        var labels1;
-        var data1;
-        var LabelOfChart;
-        var color;
-        var lineColor;
+            // Add cells (columns) to the new row
+                const code = newRow.insertCell(0);
+                const productName = newRow.insertCell(1);
+                const unitCost = newRow.insertCell(2);
+                const unitPrice = newRow.insertCell(3);
+                const lowStockThreshold = newRow.insertCell(4);
+                const startingInventory = newRow.insertCell(5);
+                const status = newRow.insertCell(6);
+                const bt = newRow.insertCell(7);
 
+            // Create input elements for each cell
+            const codeInput = document.createElement("input");
+            codeInput.type = "text";
+            codeInput.name = "code[]"; // Use an array to collect multiple names
+            code.appendChild(codeInput);
 
-        // Get the canvas element and its context
-        var canvas = document.getElementById('myChart');
-        var ctx = canvas.getContext('2d');
-        var myChart = null;
+            const productInput = document.createElement("input");
+            productInput.type = "text";
+            productInput.name = "productName[]"; // Use an array to collect multiple emails
+            productName.appendChild(productInput);
 
-        document.getElementById("selectOptions").addEventListener("change", () => {
+            const costInput = document.createElement("input");
+            costInput.type = "number";
+            costInput.name = "unitCost[]"; // Use an array to collect multiple emails
+            unitCost.appendChild(costInput);
 
-         if (myChart !== null) {
-        myChart.destroy(); // Destroy the existing chart if it exists
-    }
+            const priceInput = document.createElement("input");
+            priceInput.type = "number";
+            priceInput.name = "unitPrice[]"; // Use an array to collect multiple emails
+            unitPrice.appendChild(priceInput);
 
-        if(document.getElementById('selectOptions').value === "bestSeller"){
-            
-                LabelOfChart = "Bestseller";
+            const lowStockInput = document.createElement("input");
+            lowStockInput.type = "number";
+            lowStockInput.name = "lowStockThreshold[]"; // Use an array to collect multiple emails
+            lowStockThreshold.appendChild(lowStockInput);
 
-                labels1 = topSellerArrayName;
-                data1 = topSellerArrayValue;
-                color = 'rgba(75, 192, 192, 5.0)';
-                lineColor = 'rgba(75, 192, 192, 5.0)';
+            const startInvInput = document.createElement("input");
+            startInvInput.type = "number";
+            startInvInput.name = "startingInventory[]"; // Use an array to collect multiple emails
+            startingInventory.appendChild(startInvInput);
 
-    
-    
-        // Create a bar chart with two datasets
-        myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels1,
-                datasets: [{
-                    label: LabelOfChart,
-                    data: data1,
-                    backgroundColor: color,
-                    borderColor: lineColor,
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-        canvas.style.display = "block";    
+            const statusInput = document.createElement("input");
+            statusInput.type = "range";
+            statusInput.max = "1";
+            statusInput.min = "0";
+            statusInput.name = "status[]"; // Use an array to collect multiple emails
+            status.appendChild(statusInput);
 
-        } else if(document.getElementById('selectOptions').value === "topRevenue"){
+            const button = document.createElement("button");
+            button.textContent = "Save"
+            button.classList.add("saveBtn")
+            bt.appendChild(button);
 
-                LabelOfChart = "Top Revenue";
-                
-                labels1 = topRevenueNameArray;
-                data1 = topRevenueValueArray;
-        
-                color = 'rgba(75, 192, 192, 5.0)';
-                lineColor = 'rgba(75, 192, 192, 1)';
-    
+            const saveproductbtn = document.getElementById("saveproductbtn");
+            saveproductbtn.style.display = "block";
 
-            myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels1,
-                datasets: [{
-                    label: LabelOfChart,
-                    data: data1,
-                    backgroundColor: color,
-                    borderColor: lineColor,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-        canvas.style.display = "block";
-        }else if(document.getElementById('selectOptions').value === "leastSeller"){
+            const editSavebtn = document.getElementById("editSave");
+            editSavebtn.style.display = "none";
 
-            LabelOfChart = "Least Seller";
-                
-                labels1 = leastSellerNameArray;
-                data1 = leastSellerValuesArray;
-
-                color = 'rgba(255, 99, 132, 5.0)';
-                lineColor = 'rgba(255, 99, 132, 1)';
-
-            myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels1,
-                    datasets: [{
-                        label: LabelOfChart,
-                        data: data1,
-                        backgroundColor: color,
-                        borderColor: lineColor,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                }
-            }
-        });
-        canvas.style.display = "block";
-
-        }else if(document.getElementById('selectOptions').value === "leastRevenue"){
-            
-            LabelOfChart = "Least Revenue";
-                
-                labels1 = leastRevenueNameArray;
-                data1 = leastRevenueValueArray;
-                color = 'rgba(255, 99, 132, 5.0)';
-                lineColor = 'rgba(255, 99, 132, 1)';
-
-                myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels1,
-                    datasets: [{
-                        label: LabelOfChart,
-                        data: data1,
-                        backgroundColor: color,
-                        borderColor: lineColor,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                }
-            }
-            
-        });
-        canvas.style.display = "block";
-
-        }else if(document.getElementById('selectOptions').value === "lowstock"){
-            canvas.style.display = "none";
+            const cancelProduct= document.getElementById("cancelProduct");
+            cancelProduct.style.display = "block";
         }
-    })
-        /*
-        // Variables for the second bar chart
-        var labels2 = ['Ballpen', 'Category B', 'Category C', 'Category D', 'Category E'];
-        var data2 = [15, 30, 45, 25, 55];*/
-    
-        // Get the canvas element and its context
-       
-        if (localStorage.getItem("TOKEN") === null) {
+ */
+        
+        function hideNewRow(){
+
+            var table = document.getElementById("productTable2");
+
+                    // Clear all rows by removing them one by one
+                    while (table.rows.length > 0) {
+                        table.deleteRow(0);
+                    }
+           
+            const editSavebtn = document.getElementById("editSave");
+            editSavebtn.style.display = "block";
+
+            const cancelProduct= document.getElementById("cancelProduct");
+            cancelProduct.style.display = "none";
+
+            const saveproductbtn = document.getElementById("saveproductbtn");
+            saveproductbtn.style.display = "none"; 
+        }
+
+        
+        function submitRow(button){
+            // Traverse the DOM to find the row
+            var row = button.closest('div');
+            
+            // Find the form in the row (assuming the form is in the same row)
+            var form = row.querySelector('form');
+            
+            // Submit the form
+            form.submit();
+        }
+
+       function handleStatusChange(input) {
+    // Get the row of the changed input
+    var row = input.parentNode.parentNode;
+
+    // Get the value of the status input
+    var statusValue = input.value;
+
+    // If the status is changed to 0, set other columns (except code and productName) to -1
+    if (statusValue === '0') {
+        // Get the lowStockThreshold input in the row
+        var lowStockThresholdInput = row.querySelector('input[name^="lowStockThreshold"]');
+        
+        // Set the value of the lowStockThreshold input to -1
+        if (lowStockThresholdInput) {
+            lowStockThresholdInput.value = '-1';
+        }
+
+        // Get all the input elements in the row, excluding lowStockThreshold
+        var otherInputs = row.querySelectorAll('input[name^="unitCost"], input[name^="unitPrice"], input[name^="startingInventory"]');
+        
+        // Set the value of each input to 0
+        otherInputs.forEach(function (input) {
+            input.value = '0';
+        });
+    }
+}
+
+    if (localStorage.getItem("TOKEN") === null) {
         document.getElementById("body").style.display = "none"
         alert("You don't have permission to access this page.");
-   
             window.history.back();
     }
 
+  
 
-        let accBtn = document.getElementById("accBtn")
+
+        // Event listener for the "Add Row" button
+       /*  document.querySelector("#addRowButton").addEventListener("click", addRow); */
+        document.querySelector("#cancelProduct").addEventListener("click", hideNewRow);
+
+    
     let accType = parseJwt(localStorage.getItem("TOKEN")).type
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
             accBtn.style.display = "flex"
         } else {
-            console.log("Employee")
+            console.log("Should not")
             accBtn.style.display = "none"
         }
     }
 
-/*
-    const datePicker = document.getElementById("datePicker");
-    datePicker.addEventListener("change", handleDateChange);
-
-    function handleDateChange() {
-  const selectedDate = datePicker.value;
-
-  // Make an AJAX request to your Node.js server to fetch the updated startingInventory
-  fetch(`/inventoryData?date=${selectedDate}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-
-        console.log(data.startingInventory);
-      console.log(data.docuTodayExists);
-      console.log(data.docuYesterdayExists);
-      console.log(data.productStartingInventory);
-
-     //console.log(inv);
-
-        if (Array.isArray(data.startingInventory)) {
-        const updatedStartingInventoryArray = data.startingInventory;
-
-        // Update all startingInventory input fields in your table
-        const startingInventoryInputs = document.querySelectorAll(".startingInv");
-
-        startingInventoryInputs.forEach((input, index) => {
-          if (index < updatedStartingInventoryArray.length) {
-            input.value = updatedStartingInventoryArray[index];
-          } else {
-            input.value = ''; // Clear input if no corresponding value in the array
-          }
-        });
-      } else {
-        console.error("Starting inventory is not an array");
-      }
-        
-    
-
-
-
-    })
-    .catch((error) => {
-      console.error("Error fetching or processing startingInventory data:", error);
-    });
-}
-
-*/
-
-
-   
-
-   // '<%= leastSelectedValuesSold %>'
-    </script>
-    
-</body>
+        </script>
+    </body>
 </html>

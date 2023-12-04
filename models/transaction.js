@@ -14,10 +14,12 @@ const transactionSchema = new Schema({
 
     },
 
+    code:{
+        type:String
+    },
+
     userLogsOnly:{
         type: String,
- 
-
     },
 
     action:{
@@ -72,6 +74,11 @@ const transactionSchema = new Schema({
         
         get: (v) => parseFloat(v).toFixed(2),
         set: (v) => parseFloat(v).toFixed(2),
+    },
+
+    totalSales: {
+        type: Number
+    
     },
 
 

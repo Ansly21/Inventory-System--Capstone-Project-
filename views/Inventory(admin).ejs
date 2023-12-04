@@ -132,7 +132,7 @@
                 <td><input type="text" contenteditable="true" name = "productName[]"  value="<%= product.productName %>" disabled></td>
                 <td><input type="text" contenteditable="true" name = "currentInv[]" value="<%= product.currentInv %>" disabled></td>
                 <td><input type="number" contenteditable="true" name = "wholesalePrice[]"  value="<%= product.wholesalePrice %>" disabled></td>
-                <td><input type="number" contenteditable="true" name = "retailPrice[]" value="<%= product.retailPrice %>" disabled></td> 
+                <td><input type="number" contenteditable="true" id="defaultRetailPrice_<%= product._id %>" name = "retailPrice[]" value="<%= product.retailPrice %>" disabled></td> 
                 <td><input type="number" contenteditable="true" name = "totalRetailPrice[]" id="prevTotalRetail_<%= product.id %>" value="<%= product.prevTotalRetail %>" disabled></td> 
               
         
@@ -319,6 +319,7 @@ if (decodedProducts.length > 0) {
     }
 } else {
     notifDiv.style.display = 'none';
+    notifIcon.style.display = 'none';
 }
 
 
@@ -392,9 +393,10 @@ function openstockInModal(productId) {
     let stockInBrandName = document.getElementById(`stockInBrandName_${productId}`);
     let stockInProductName = document.getElementById(`stockInProductName_${productId}`);
     let stockInWholeSalePrice = document.getElementById(`stockInWholeSalePrice_${productId}`);
-    let editRetailPrice = document.getElementById(`editRetailPrice_${productId}`);
+    let defaultRetailPriceValue = parseFloat(document.getElementById(`defaultRetailPrice_${productId}`).value);
     let stockInLowStockThreshold = document.getElementById(`stockInLowStockThreshold_${productId}`);
-    
+    let prevTotalRetail = parseFloat(document.getElementById(`prevTotalRetail_${productId}`).value);
+
     let stockInRemark = document.getElementById(`remarksOptions_${productId}`);
 
     
@@ -408,12 +410,19 @@ stockInForm.addEventListener("submit", (event) => {
     let currentInv = stockInCurrentInvValue + qtyStockIn;
     console.log("EDITCODE", stockInCode.value)
 
+    let prevTotalRetail = currentInv * defaultRetailPriceValue
+
+    let totalRetail = prevTotalRetail + (defaultRetailPriceValue * qtyStockIn)
+
+ 
     // Get the updated values from the form fields
     const updatedData = {
         code: stockInCode.value,
         brandName: stockInBrandName.value,
         productName: stockInProductName.value,
         lowStockThreshold: stockInLowStockThreshold.value,
+        totalRetail: prevTotalRetail,
+        prevTotalRetail: prevTotalRetail,
         currentInv: currentInv,
         prevQtyStockIn: qtyStockIn
     };
@@ -510,7 +519,9 @@ stockOutForm.addEventListener("submit", (event) => {
     let currentInv = stockOutCurrentInvValue - qtyStockOut;
     console.log("EDITCODE", stockOutCode.value)
 
-    let totalRetail = prevTotalRetail + (retailPriceValue * qtyStockOut)
+    let totalRetail = prevTotalRetail - (retailPriceValue * qtyStockOut)
+
+    let totalSales = /* prevTotalRetail + */(retailPriceValue * qtyStockOut)
 
    
 
@@ -555,33 +566,6 @@ stockOutForm.addEventListener("submit", (event) => {
     });
 
 
-    fetch(`/stockInInventory/${productId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedData)
-    })
-    .then(response => {
-        if (response.ok) {
-            // Handle success
-            return response.json(); // Parse the response body as JSON
-        } else {
-            throw new Error('Error stocking in inventory');
-        }
-    })
-    .then(data => {
-        // Here 'data' contains the updated product from the server
-        console.log(data.updatedProduct);
-        // Perform actions with the updated product data as needed
-        const stockInModal = document.getElementById('stockInModal');
-        // Close the modal, update UI, etc.
-        location.reload()
-    })
-    .catch(error => {
-        location.reload()
-    });
-
     let user = parseJwt(localStorage.getItem("TOKEN")).email
     fetch('/transactions', {
     method: 'POST',
@@ -590,12 +574,14 @@ stockOutForm.addEventListener("submit", (event) => {
     },
     body: JSON.stringify({
         user: user,
+        code: stockOutCode.value,
         productName: stockOutProductName.value,
         stockIn: 0,
         stockOut: qtyStockOut,
         wholesalePrice: 0,
         retailPrice: retailPriceValue,
-        remarks: stockOutRemarks.value
+        remarks: stockOutRemarks.value,
+        totalSales: totalSales
     })
   })
     .then(response => {

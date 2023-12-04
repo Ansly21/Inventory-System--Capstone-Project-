@@ -119,6 +119,7 @@
                     <th>STOCK OUT</th>
                     <th>WHOLESALE PRICE</th>
                     <th>RETAIL PRICE</th>
+                    <th>SALES</th>
                     <th>REMARKS</th>
                     <th>TIMESTAMPS</th>
                 </tr>
@@ -137,6 +138,7 @@
                 <td><%= transaction.stockOut %></td>
                 <td><%= transaction.wholesalePrice %></td>
                 <td><%= transaction.retailPrice %></td>
+                <td><%= transaction.totalSales %></td>
                 <td><%= transaction.remarks %></td>
                 <td><%= transaction.createdAt %></td>
               </tr>
@@ -196,6 +198,7 @@ if (decodedProducts.length > 0) {
     }
 } else {
     notifDiv.style.display = 'none';
+    notifIcon.style.display = 'none';
 }
 
 
