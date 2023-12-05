@@ -581,6 +581,13 @@ stockOutForm.addEventListener("submit", (event) => {
         location.reload()
     })
     .catch(error => {
+        if(currentInv <= stockOutLowStockThreshold.value) {
+            alert("STOCKED OUT PRODUCT IS NOW LOW STOCK!")
+        }
+        else {
+            location.reload()
+
+        }
         location.reload()
     });
 
