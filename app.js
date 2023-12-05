@@ -563,7 +563,7 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
       const suppliers = await Supplier.find({});
       const filteredProducts = await Product.find({ isActive: 'Active', category: 'WS' });
       const filteredProductsOS = await Product.find({ isActive: 'Active', category: 'OS' });
-      const filteredProductsPS = await Product.find({ isActive: 'Active', category: 'PSS' });
+      const filteredProductsPS = await Product.find({ isActive: 'Active', category: 'PS' });
 
   if (typeof query === 'undefined') {
       console.log("walang laman");
