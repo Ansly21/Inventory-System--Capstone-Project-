@@ -211,7 +211,7 @@ if (decodedProducts.length > 0) {
     for (let i = 0; i < decodedProducts.length; i++) {
         if (decodedProducts[i].currentInv <= decodedProducts[i].lowStockThreshold) {
             lowStockCount++;
-            let productDetails = `Product: ${decodedProducts[i].productName}, TH: ${decodedProducts[i].lowStockThreshold}, Inv: ${decodedProducts[i].currentInv} <br>`;
+            let productDetails = `Code: ${decodedProducts[i].code}, TH: ${decodedProducts[i].lowStockThreshold}, Inv: ${decodedProducts[i].currentInv} <br>`;
             productDetailsHTML += productDetails;
         }
     }
