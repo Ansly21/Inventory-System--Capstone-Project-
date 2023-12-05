@@ -53,7 +53,8 @@ const productsSchema = new Schema({
 
     currentInv:{
         type: Number,
-        default: 0
+        default: 0,
+        min: 0
        
     },
 
