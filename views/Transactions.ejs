@@ -137,6 +137,9 @@
             <%
             // Filter out transactions where user is not available
             const filteredTransactions = transactions.filter(transaction => transaction.user);
+
+            // Sort transactions by createdAt in descending order
+            filteredTransactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           %>
           
           <% if (filteredTransactions.length > 0) { %>
@@ -191,7 +194,7 @@ $(document).ready(function () {
          });
       });
    });
-   
+
 const productsData = document.getElementById('productsDisplay').innerHTML;
 const decodedProducts = JSON.parse(productsData.replace(/&quot;/g, '"'));
 console.log(decodedProducts);

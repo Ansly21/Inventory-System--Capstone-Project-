@@ -126,6 +126,9 @@
             <%
             // Filter out transactions where user is not available
             const filteredTransactions = transactions.filter(transaction => transaction.userLogsOnly);
+
+            // Sort transactions by createdAt in descending order
+            filteredTransactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           %>
           
           <% if (filteredTransactions.length > 0) { %>
