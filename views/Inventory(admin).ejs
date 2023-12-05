@@ -177,7 +177,7 @@
                         <input class="readOnlyBG" type="number" id="stockInCurrentInv_<%= product.id %>" name="stockInCurrentInv" value="<%= product.currentInv %>" readonly><br><br>
 
                         <label for="stockInWholeSalePrice">Wholesale Price:</label>
-                        <input type="number" id="stockInWholeSalePrice_<%= product.id %>" name="stockInWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
+                        <input type="number" class="readOnlyBG" id="stockInWholeSalePrice_<%= product.id %>" name="stockInWholeSalePrice" value="<%= product.wholesalePrice %>" readonly><br><br>
                         
                         <label for="stockInRemarks">Remarks:</label>
                         <select name="stockInRemarks" id="remarksOptions_<%= product.id %>">
@@ -220,7 +220,7 @@
                         <input class="readOnlyBG" type="number" id="stockOutWholeSalePrice_<%= product.id %>" name="stockOutWholeSalePrice" value="<%= product.wholesalePrice %>"><br><br>
 
                         <label for="stockOuRetailPrice">Retail Price:</label>
-                        <input type="number" id="stockOutRetailPrice_<%= product.id %>" name="stockOuRetailPrice" value="<%= product.retailPrice %>"><br><br>
+                        <input type="number" class="readOnlyBG" id="stockOutRetailPrice_<%= product.id %>" name="stockOuRetailPrice" value="<%= product.retailPrice %>" readonly><br><br>
                      
                         <label for="stockOutRemarks">Remarks:</label>
                         <select name="stockOutRemarks" id="stockOutRemarksOptions_<%= product.id %>">
@@ -533,8 +533,15 @@ stockOutForm.addEventListener("submit", (event) => {
 
     let totalRetail = prevTotalRetail - (retailPriceValue * qtyStockOut)
 
-    let totalSales = /* prevTotalRetail + */(retailPriceValue * qtyStockOut)
+    let totalSales
 
+    if (stockOutRemarks.value == "Sold") {
+        totalSales = /* prevTotalRetail + */(retailPriceValue * qtyStockOut)
+    } else if (stockOutRemarks.value == "Lost" || stockOutRemarks.value == "Donated") {
+        totalSales = 0;
+    }
+    
+   
    
 
 
