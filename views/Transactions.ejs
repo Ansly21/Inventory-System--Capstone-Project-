@@ -56,7 +56,7 @@
         
         <a class="bb" href="/transactions">
             <div class="te" id="currentPage">
-                <h5 class="test" id="accBtn">Transactions</h5>
+                <h5 class="test">Transactions</h5>
             </div>
         </a>
 
@@ -68,16 +68,22 @@
 
         <a class="bb" href="/archive">
             <div class="te"">
-                <h5 class="test" id="accBtn">Archive</h5>
+                <h5 class="test employeeHidden" id="accBtn">Archive</h5>
             </div>
         </a>
 
 
         <a class="bb" href="/account">
             <div class="te">
-                <h5 class="test" id="accBtn">Accounts</h5>
+                <h5 class="test employeeHidden" id="accBtn">Accounts</h5>
             </div>
         </a>
+
+        
+        <div id="logoutBtn" onclick="logout()" style="cursor: pointer;">
+            <h5 class="testLogout" id="accBtn">Logout</h5>
+        </div>
+
     </div>
     </div>
     
@@ -236,153 +242,6 @@ editBtns.forEach(button => {
 
 
 let accBtn = document.getElementById("accBtn")
-document.getElementById('modalSubmit').addEventListener('click', function () {
-
-    const supplierName = document.getElementById('supplierName').value;
-    const brandName = document.getElementById('brandName').value;
-    const supplierContact = document.getElementById('supplierContact').value;
-
-  // Prepare the data object to send to the server
-  const data = {
-    supplierName: supplierName,
-    brandName: brandName,
-    supplierContact: supplierContact,
-  };
-
-  // Send the form data to the backend using fetch
-  fetch('/supplier', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then(response => {
-      if (response.ok) {
-        // Handle success, e.g., close the modal and perform any UI updates
-        const modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-        // Perform any other necessary actions upon successful addition of a new product
-      } else {
-        // Handle errors if the request fails
-        console.error('Error adding product');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-});
-
-
-   // Get the modal
-const modal = document.getElementById('myModal');
-const editModal = document.getElementById(`editModal`);
-
-// Get the button that opens the modal
-const btn = document.getElementById('addRowButton');
-
-// Get the <span> element that closes the modal
-const span = document.getElementById("close")
-
-// When the user clicks the button, open the modal
-btn.onclick = function () {
-  modal.style.display = 'block';
-  editModal.style.display = 'block';
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-  modal.style.display = 'none';
-  editModal.style.display = 'none';
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target === modal || event.target === editModal ) {
-    modal.style.display = 'none';
-    editModal.style.display = 'none';
-  }
-};
-
-
-function openEditModal(supplierId) {
-  const modal = document.getElementById(`editModal_${supplierId}`);
-  if (modal) {
-    modal.style.display = 'block';
-
-    const editForm = document.getElementById('editForm');
-    let supplierName = document.getElementById(`supplierName_${supplierId}`);
-    let brandName = document.getElementById(`brandName_${supplierId}`);
-    let supplierContact = document.getElementById(`supplierContact_${supplierId}`);
-
-
-// Assuming this code runs after the creation or update of the form
-console.log("EDITCODE", editCodeID.value)
-
-editForm.addEventListener("submit", (event) => {
-
-    console.log("EDITCODE", editCodeID.value)
-console.log("put sub")
-    // Get the updated values from the form fields
-    const updatedData = {
-        supplierName: supplierName.value,
-        brandName: brandName.value,
-        supplierContact: supplierContact.value,
-    };
-
-    fetch(`/supplier/${supplierId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedData)
-    })
-    .then(response => {
-        if (response.ok) {
-            // Handle success
-            return response.json(); // Parse the response body as JSON
-        } else {
-            throw new Error('Error updating product');
-        }
-    })
-    .then(data => {
-        // Here 'data' contains the updated product from the server
-        console.log(data.updatedProduct);
-        // Perform actions with the updated product data as needed
-        const editModal = document.getElementById('editModal');
-        // Close the modal, update UI, etc.
-        location.reload()
-    })
-    .catch(error => {
-        location.reload()
-    });
-
-    event.preventDefault();
-});
-  }
-}
-// Function to close the edit modal
-function closeEditModal(productId) {
-  const modal = document.getElementById(`editModal_${idLastClicked}`);
-  if (modal) {
-    modal.style.display = 'none';
-  }
-}
-// Function to save the edited data (you'll need to implement this)
-function saveEditedData() {
-  // Retrieve the edited data from the form fields
-  const editedProductName = document.getElementById('productNameEdit').value;
-  // Retrieve other edited data similarly
-
-  // Perform actions to save the edited data (e.g., send it to the server via AJAX)
-  // Implement your logic to save the edited data
-  // ...
-
-  // Close the edit modal after saving the changes
-  closeEditModal();
-}
-
-
 
 
 //FOR DECODING JWT TOKEN AFTER LOGGING IN
@@ -397,33 +256,9 @@ function parseJwt (token) {
 
 
 
-        
-        document.getElementById("saveproductbtn").addEventListener("click", 
-            
-            function() {
-            document.getElementById("saveProduct").submit();
-            }
-         );
-        
+     
        
-        function hideNewRow(){
-
-            var table = document.getElementById("productTable2");
-
-                    // Clear all rows by removing them one by one
-                    while (table.rows.length > 0) {
-                        table.deleteRow(0);
-                    }
-           
-            const editSavebtn = document.getElementById("editSave");
-            editSavebtn.style.display = "block";
-
-            const cancelProduct= document.getElementById("cancelProduct");
-            cancelProduct.style.display = "none";
-
-            const saveproductbtn = document.getElementById("saveproductbtn");
-            saveproductbtn.style.display = "none"; 
-        }
+      
 
         
         function submitRow(button){
@@ -464,6 +299,19 @@ function parseJwt (token) {
     }
 }
 
+function logout() {
+    if (localStorage.getItem("TOKEN")) {
+        localStorage.removeItem("TOKEN")
+        window.location.href = "/"
+        alert("Logged out sucessfully, redirecting to homepage")
+    } else {
+        fullSentence.textContent = "Not logged in"
+        showEmail.textContent = " "
+    }
+}
+
+
+
     if (localStorage.getItem("TOKEN") === null) {
         document.getElementById("body").style.display = "none"
         alert("You don't have permission to access this page.");
@@ -471,14 +319,9 @@ function parseJwt (token) {
     }
 
   
-
-
-        // Event listener for the "Add Row" button
-       /*  document.querySelector("#addRowButton").addEventListener("click", addRow); */
-        document.querySelector("#cancelProduct").addEventListener("click", hideNewRow);
-
-    
     let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    let employeeHidden = document.getElementsByClassName("employeeHidden");
+
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
@@ -486,6 +329,9 @@ function parseJwt (token) {
         } else {
             console.log("Should not")
             accBtn.style.display = "none"
+            for (let i = 0; i < employeeHidden.length; i++) {
+                employeeHidden[i].style.display = "none";
+            }
         }
     }
 

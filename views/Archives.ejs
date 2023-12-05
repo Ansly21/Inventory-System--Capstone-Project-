@@ -68,15 +68,20 @@
 
         <a class="bb" href="/archive">
             <div class="te"  id="currentPage">
-                <h5 class="test" id="accBtn">Archive</h5>
+                <h5 class="test employeeHidden" id="accBtn">Archive</h5>
             </div>
         </a>
 
         <a class="bb" href="/account">
             <div class="te">
-                <h5 class="test" id="accBtn">Accounts</h5>
+                <h5 class="test employeeHidden" id="accBtn">Accounts</h5>
             </div>
         </a>
+
+        <div id="logoutBtn" onclick="logout()" style="cursor: pointer;">
+            <h5 class="testLogout" id="accBtn">Logout</h5>
+        </div>
+
     </div>
     </div>
     
@@ -369,6 +374,18 @@ function parseJwt (token) {
     }
 }
 
+function logout() {
+    if (localStorage.getItem("TOKEN")) {
+        localStorage.removeItem("TOKEN")
+        window.location.href = "/"
+        alert("Logged out sucessfully, redirecting to homepage")
+    } else {
+        fullSentence.textContent = "Not logged in"
+        showEmail.textContent = " "
+    }
+}
+
+
     if (localStorage.getItem("TOKEN") === null) {
         document.getElementById("body").style.display = "none"
         alert("You don't have permission to access this page.");
@@ -384,6 +401,8 @@ function parseJwt (token) {
 
     
     let accType = parseJwt(localStorage.getItem("TOKEN")).type
+    let employeeHidden = document.getElementsByClassName("employeeHidden");
+
     console.log(accType)
     if (localStorage.getItem("TOKEN")) {
         if (accType === "Admin") {
@@ -391,6 +410,9 @@ function parseJwt (token) {
         } else {
             console.log("Should not")
             accBtn.style.display = "none"
+            for (let i = 0; i < editBtn.length; i++) {
+            editBtn[i].style.display = "none";
+            }
         }
     }
 

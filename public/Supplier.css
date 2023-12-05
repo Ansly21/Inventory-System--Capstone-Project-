@@ -35,7 +35,6 @@ body {
 
 .we {
     margin-top: 2rem;
-    width: 300px;
 }
 
 .test {
@@ -358,6 +357,17 @@ th:nth-child(1) {
     color: red;
 }
 
+.testLogout {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding: 1rem 0;
+}
+
+#logoutBtn {
+    background-color: gray;
+    text-align: center;
+}
   
 @media (max-width:800px) {
     :root {
