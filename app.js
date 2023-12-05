@@ -348,18 +348,24 @@ app.post('/supplier/:supplierId', async (req, res) => {
 
  //Inventory
  app.get('/inventory', async(req, res)=>{
-  try {
-    const result = await Product.find({ isActive: 'Active' });
-    res.render('Inventory(admin)', { title: 'Inventory', products: result });
-} catch (err) {
-    console.log(err);
-    res.status(500).send('Internal server error');
-}
+  
+
+    try {
+      const result = await Product.find({ isActive: 'Active' });
+      res.render('Inventory(admin)', { title: 'Inventory', products: result });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send('Internal server error');
+    }
+
+    const targetDate = req.query.date; // Get the selected date from the query parameter
+    console.log(targetDate);
  
-         const targetDate = req.query.date; // Get the selected date from the query parameter
-           
-         console.log(targetDate)
+
+
+
 })
+
 
 
 app.get('/inventoryData', (req, res)=>{
@@ -553,12 +559,16 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
   const query = req.query.query;
   console.log(query);
 
-  if (typeof query === 'undefined') {
-      console.log("walang laman");
+
       const suppliers = await Supplier.find({});
       const filteredProducts = await Product.find({ isActive: 'Active', category: 'WS' });
       const filteredProductsOS = await Product.find({ isActive: 'Active', category: 'OS' });
       const filteredProductsPS = await Product.find({ isActive: 'Active', category: 'PSS' });
+
+  if (typeof query === 'undefined') {
+      console.log("walang laman");
+      
+     
 
       try {
           const result = await Product.find({ isActive: 'Active' });
@@ -578,14 +588,16 @@ app.post('/stockOutInventory/:productId', async (req, res) => {
             $or:[
             {productName: { $regex: regexPattern } },
             {code: { $regex: regexPattern } },
+            {brandName: { $regex: regexPattern } },
             ],
             
+            isActive: 'Active', // Add this condition for isActive
             })
             
 
           .then((result) => {
 
-            res.render('Products(admin)', { title: 'Products', products: result });
+            res.render('Products(admin)', { title: 'Products', products: result, suppliers, filteredProducts, filteredProductsOS, filteredProductsPS  });
             console.log("query result: ", result); // Use the results as needed
             // Respond to the client or perform further actions here
           })

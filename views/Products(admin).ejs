@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Products</title>
     <link rel="stylesheet" href="/Products (Admin).css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body id="body">
 
@@ -110,11 +111,11 @@
             <div id = "prodTableContainer">
             <div class="search-date">
 
-                <form action="/products" method ="get">
+              <!--   <form action="/products" method ="get">-->
                 <input type="search" id="search" name = "query" placeholder="enter product name or id">
-                <button type = "submit" style="display: none;">Search</button>
+              <!--   <button type = "submit" style="display: none;">Search</button>-->
 
-                </form>
+              <!--  </form>-->
                <!-- <p id="date">-->
                     <!-- Date is dynamically rendered from JS -->
                <!--  </p> -->
@@ -141,7 +142,7 @@
          
                  <% if(products.length > 0) { %>
                     <% products.forEach((product,index) => { %>
-                <tr class = "database-row">
+                <tr class = "database-row product-row">
 
                     
                     <input type="hidden" name="action" value="saveEditedRow">
@@ -714,6 +715,25 @@ function parseJwt (token) {
         });
     }
 }
+
+
+$(document).ready(function () {
+      $('#search').on('input', function () {
+         var searchTerm = $(this).val().toLowerCase();
+
+         $('.product-row').each(function () {
+            var rowText = $(this).find('input, select').map(function() {
+               return $(this).val().toLowerCase();
+            }).get().join(' ');
+
+            if (rowText.includes(searchTerm)) {
+               $(this).show();
+            } else {
+               $(this).hide();
+            }
+         });
+      });
+   });
 
 function logout() {
     if (localStorage.getItem("TOKEN")) {

@@ -8,6 +8,7 @@
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/copy.css' rel='stylesheet'>
     <link href='https://unpkg.com/css.gg@2.0.0/icons/css/pen.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <title>Supplier</title>
     <link rel="stylesheet" href="/Supplier.css">
@@ -109,15 +110,9 @@
             <div id = "prodTableContainer">
             <div class="search-date">
 
-                <form action="/products" method ="get">
+                
                 <input type="search" id="search" name = "query" placeholder="enter product name or id">
-                <button type = "submit" style="display: none;">Search</button>
-
-                </form>
-               <!-- <p id="date">-->
-                    <!-- Date is dynamically rendered from JS -->
-               <!--  </p> -->
-
+               
 
             </div>
             
@@ -134,7 +129,7 @@
               
             <% if(suppliers.length > 0) { %>
                 <% suppliers.forEach((supplier,index) => { %>
-            <tr class = "database-row">
+            <tr class = "database-row product-row">
 
                 
                 <input type="hidden" name="action" value="saveEditedRow">
@@ -236,6 +231,26 @@
 
 
     <script>
+
+
+$(document).ready(function () {
+      $('#search').on('input', function () {
+         var searchTerm = $(this).val().toLowerCase();
+
+         $('.product-row').each(function () {
+            var rowText = $(this).find('input, select').map(function() {
+               return $(this).val().toLowerCase();
+            }).get().join(' ');
+
+            if (rowText.includes(searchTerm)) {
+               $(this).show();
+            } else {
+               $(this).hide();
+            }
+         });
+      });
+   });
+   
 const productsData = document.getElementById('productsDisplay').innerHTML;
 const decodedProducts = JSON.parse(productsData.replace(/&quot;/g, '"'));
 console.log(decodedProducts);
